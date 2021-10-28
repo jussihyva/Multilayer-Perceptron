@@ -6,13 +6,15 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/20 10:35:04 by ubuntu            #+#    #+#              #
-#    Updated: 2021/10/28 12:33:00 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/10/28 15:31:30 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SHELL					=	zsh
 C_PROGRAMS				=	training prediction
-SUB_FOLDERS				=	Docker C Python Jupyter Data Documentation
+SUB_FOLDERS				=	Docker C Python Jupyter Data Documentation .vscode
+VS_CODE_FILE			=	workspace.code-workspace
+
+SHELL					=	zsh
 CUR_DIR					=	$(abspath .)
 DOCKER_NAME				=	$(shell which docker)
 DOCKER-COMPOSE_NAME		=	$(shell which docker-compose)
@@ -27,6 +29,16 @@ YELLOW					=	\033[0;33m
 GRAY					=	\033[1;30m
 PURPLE					=	\033[0;35m
 END						=	\033[0m
+
+define VS_CODE_CONTENT
+{\n\
+\t"folders": [\n\
+\t\t{\n\
+\t\t\t"path": "."\n\
+\t\t}\n\
+\t]\n\
+}\n
+endef
 
 define DOCKER_NOT_INSTALLED_ERROR
 
@@ -82,7 +94,7 @@ help: all
 $(C_PROGRAMS): build
 
 .PHONY: build
-build: check_openssl check_docker $(SUB_FOLDERS) folders check_jupyter start_jupyter
+build: check_openssl check_docker $(SUB_FOLDERS) folders $(VS_CODE_FILE) check_jupyter start_jupyter
 	@echo -n "$(GREEN)"
 	@echo "DONE"
 	@echo -n "$(END)"
@@ -106,6 +118,9 @@ folders:
 		make -C $$folder ; \
 	done
 	@echo "$(END)"
+
+$(VS_CODE_FILE):
+	echo '$(VS_CODE_CONTENT)' > $(VS_CODE_FILE)
 
 .PHONY: clean
 clean:
