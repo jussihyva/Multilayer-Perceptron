@@ -1,33 +1,28 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    describe.py                                        :+:      :+:    :+:    #
+#    MyDescribe.py                                      :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/06 15:45:44 by jkauppi           #+#    #+#              #
-#    Updated: 2021/10/28 19:19:53 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/10/29 14:40:40 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import os
-import sys
 import math
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from pandas.core import indexing
 
 class MyDescribe():
 	def __init__(self):
 		self.interpolation = "lower"
 
-	def __calculate_percentile(self, dataset_fd, quantile, validate, columnNames):
+	def __calculate_percentile(self, dataFrame, quantile, validate, columnNames):
 		name = str(int(quantile * 100)) + "%"
 		value_list = []
 		if self.interpolation == "lower":
 			for columnName in columnNames:
-				value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+				value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 				value_list_sorted = value_list_sorted.reset_index(drop=True)
 				numOfValues = len(value_list_sorted)
 				rankValuePrel = int(numOfValues * int(quantile * 100))
@@ -42,55 +37,55 @@ class MyDescribe():
 				value_list.append(value)
 			value_series = pd.Series(value_list, index=columnNames)
 			if validate:
-				self.describeValidator.percentile(dataset_fd, value_series, quantile, name)
+				self.describeValidator.percentile(dataFrame, value_series, quantile, name)
 		return ({name: value_list})
 
-	def __calculate_max(self, dataset_fd, validate, columnNames):
+	def __calculate_max(self, dataFrame, validate, columnNames):
 		name = "Max"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+			value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			numOfValues = len(value_list_sorted)
 			value = value_list_sorted[numOfValues - 1]
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.max(dataset_fd, value_series, name)
+			self.describeValidator.max(dataFrame, value_series, name)
 		return ({name: value_list})
 
-	def __calculate_min(self, dataset_fd, validate, columnNames):
+	def __calculate_min(self, dataFrame, validate, columnNames):
 		name = "Min"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+			value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			value = value_list_sorted[0]
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.min(dataset_fd, value_series, name)
+			self.describeValidator.min(dataFrame, value_series, name)
 		return ({name: value_list})
 
-	def __calculate_count(self, dataset_fd, validate, columnNames):
+	def __calculate_count(self, dataFrame, validate, columnNames):
 		name = "Count"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna())
+			value_list_sorted = (dataFrame[columnName].dropna())
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			numOfValues = len(value_list_sorted)
 			value = numOfValues
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.count(dataset_fd, value_series, name)
+			self.describeValidator.count(dataFrame, value_series, name)
 		return ({name: value_list})
 
-	def __calculate_median(self, dataset_fd, validate, columnNames):
+	def __calculate_median(self, dataFrame, validate, columnNames):
 		name = "Median"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+			value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			numOfValues = len(value_list_sorted)
 			rankValuePrel = int(numOfValues * 50)
@@ -102,7 +97,7 @@ class MyDescribe():
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.median(dataset_fd, value_series, name)
+			self.describeValidator.median(dataFrame, value_series, name)
 		return ({name: value_list})
 
 	def __sum(self, valueList):
@@ -121,11 +116,11 @@ class MyDescribe():
 			variance = sum / len(valueList)
 		return (variance)
 
-	def __calculate_mean(self, dataset_fd, validate, columnNames):
+	def __calculate_mean(self, dataFrame, validate, columnNames):
 		name = "Mean"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+			value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			sum = self.__sum(value_list_sorted)
 			numOfValues = len(value_list_sorted)
@@ -133,14 +128,14 @@ class MyDescribe():
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.mean(dataset_fd, value_series, name)
+			self.describeValidator.mean(dataFrame, value_series, name)
 		return ({name: value_list})
 
-	def __calculate_std(self, dataset_fd, validate, std2, columnNames):
+	def __calculate_std(self, dataFrame, validate, std2, columnNames):
 		name = "Std"
 		value_list = []
 		for columnName in columnNames:
-			value_list_sorted = (dataset_fd[columnName].dropna()).sort_values()
+			value_list_sorted = (dataFrame[columnName].dropna()).sort_values()
 			value_list_sorted = value_list_sorted.reset_index(drop=True)
 			sum = self.__sum(value_list_sorted)
 			numOfValues = len(value_list_sorted)
@@ -149,17 +144,17 @@ class MyDescribe():
 			value_list.append(value)
 		value_series = pd.Series(value_list, index=columnNames)
 		if validate:
-			self.describeValidator.std(dataset_fd, value_series, name)
+			self.describeValidator.std(dataFrame, value_series, name)
 		return ({name: value_list})
 
-	def createDescribeDataFrame(self, dataset_fd, validate, std2, columnNames):
+	def createDescribeDataFrame(self, dataFrame, validate, std2, columnNames):
 		describe_list = {}
-		describe_list.update(self.__calculate_count(dataset_fd, validate, columnNames))
-		describe_list.update(self.__calculate_mean(dataset_fd, validate, columnNames))
-		describe_list.update(self.__calculate_std(dataset_fd, validate, std2, columnNames))
-		describe_list.update(self.__calculate_median(dataset_fd, validate, columnNames))
-		describe_list.update(self.__calculate_min(dataset_fd, validate, columnNames))
-		describe_list.update(self.__calculate_max(dataset_fd, validate, columnNames))
+		describe_list.update(self.__calculate_count(dataFrame, validate, columnNames))
+		describe_list.update(self.__calculate_mean(dataFrame, validate, columnNames))
+		describe_list.update(self.__calculate_std(dataFrame, validate, std2, columnNames))
+		describe_list.update(self.__calculate_median(dataFrame, validate, columnNames))
+		describe_list.update(self.__calculate_min(dataFrame, validate, columnNames))
+		describe_list.update(self.__calculate_max(dataFrame, validate, columnNames))
 		for quantile in [0.01, 0.25, 0.50, 0.75, 0.99]:
-			describe_list.update(self.__calculate_percentile(dataset_fd, quantile, validate, columnNames))
+			describe_list.update(self.__calculate_percentile(dataFrame, quantile, validate, columnNames))
 		return (describe_list)
