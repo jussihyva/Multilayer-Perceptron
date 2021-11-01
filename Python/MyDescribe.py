@@ -6,10 +6,11 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/06 15:45:44 by jkauppi           #+#    #+#              #
-#    Updated: 2021/10/29 14:40:40 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/01 11:41:11 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+import os
 import math
 import pandas as pd
 
@@ -158,3 +159,24 @@ class MyDescribe():
 		for quantile in [0.01, 0.25, 0.50, 0.75, 0.99]:
 			describe_list.update(self.__calculate_percentile(dataFrame, quantile, validate, columnNames))
 		return (describe_list)
+
+if __name__ == "__main__":
+	scriptDirectory = (os.path.dirname(os.path.realpath(__file__)))
+	gaugeColumnList = {}
+	gaugeColumnList["Mean"] = ["Mean Radius","Mean Texture","Mean Perimeter","Mean Area","Mean Smoothness","Mean Compactness","Mean Concavity","Mean Concave points","Mean Symmetry","Mean Fractal dimension"]
+	gaugeColumnList["SE"] = ["Radius SE","Texture SE","Perimeter SE","Area SE","Smoothness SE","Compactness SE","Concavity SE","Concave points SE","Symmetry SE","Fractal dimension SE"]
+	gaugeColumnList["Worst"] = ["Worst Radius","Worst Texture","Worst Perimeter","Worst Area","Worst Smoothness","Worst Compactness","Worst Concavity","Worst Concave points","Worst Symmetry","Worst Fractal dimension"]
+	columnNames = []
+	columnNames.extend(["ID number","Diagnosis"])
+	columnNames.extend(gaugeColumnList["Mean"])
+	columnNames.extend(gaugeColumnList["SE"])
+	columnNames.extend(gaugeColumnList["Worst"])
+	dataset_training = pd.read_csv(str(scriptDirectory) + "/../Data/data.csv", header=None, names=columnNames)
+	myDescribe = MyDescribe()
+	columnsTypeList = ["Mean", "SE", "Worst"]
+	for columnsType in columnsTypeList:
+		describe_list = myDescribe.createDescribeDataFrame(dataset_training, False, False, gaugeColumnList[columnsType])
+		my_describe_df = pd.DataFrame(describe_list, index=gaugeColumnList[columnsType])
+		print("Data type: " + str(columnsType))
+		print(my_describe_df)
+		print("")
