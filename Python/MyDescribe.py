@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/06 15:45:44 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/01 11:41:11 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/01 15:19:51 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -155,9 +155,9 @@ class MyDescribe():
 		describe_list.update(self.__calculate_std(dataFrame, validate, std2, columnNames))
 		describe_list.update(self.__calculate_median(dataFrame, validate, columnNames))
 		describe_list.update(self.__calculate_min(dataFrame, validate, columnNames))
-		describe_list.update(self.__calculate_max(dataFrame, validate, columnNames))
 		for quantile in [0.01, 0.25, 0.50, 0.75, 0.99]:
 			describe_list.update(self.__calculate_percentile(dataFrame, quantile, validate, columnNames))
+		describe_list.update(self.__calculate_max(dataFrame, validate, columnNames))
 		return (describe_list)
 
 if __name__ == "__main__":
