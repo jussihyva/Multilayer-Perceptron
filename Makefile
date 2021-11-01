@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/20 10:35:04 by ubuntu            #+#    #+#              #
-#    Updated: 2021/10/31 18:01:39 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/01 12:29:51 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,14 +15,6 @@ include Makefile_System.mk
 C_PROGRAMS				=	training prediction
 SUB_FOLDERS				=	Docker C Python Jupyter Data Documentation .vscode
 VS_CODE_FILE			=	workspace.code-workspace
-
-# Colours for printouts
-RED						=	\033[0;31m
-GREEN					=	\033[0;32m
-YELLOW					=	\033[0;33m
-GRAY					=	\033[1;30m
-PURPLE					=	\033[0;35m
-END						=	\033[0m
 
 define VS_CODE_CONTENT
 {\n\
@@ -44,33 +36,9 @@ define OPENSSL_ERROR
 endef
 
 .PHONY: all
-all: required_apps
-	@echo "$(GRAY)"
-	@echo "Docker                   : ${DOCKER_NAME}"
-	@echo "Docker compose           : ${DOCKER-COMPOSE_NAME}"
-	@echo "Jupyter                  : ${JUPYTER_NAME}"
-	@echo "Python numpy ver         : ${PYTHON_NUMPY_VER}"
-	@echo "Python matplotlib ver    : ${PYTHON_MATPLOTLIB_VER}"
-	@echo "Python pandas ver        : ${PYTHON_PANDAS_VER}"
-	@echo "$(END)"
-	@echo ""
-	@echo "$(GREEN)"
-	@echo "1. Installation"
-	@echo "  make build"
-	@echo ""
-	@echo "2. Run the program"
-	@echo "  make run"
-	@echo ""
-	@echo "3. Help"
-	@for program in $(C_PROGRAMS) ; do \
-		echo "  $(CUR_DIR)/$$program -h" ; \
-	done
-	@echo "$(END)"
-	@echo ""
+all: required_apps help
 
-.PHONY: help
-help: all
-	@echo "DONE"
+include Makefile_Help.mk
 
 $(C_PROGRAMS): build
 
