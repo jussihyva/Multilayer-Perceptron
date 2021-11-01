@@ -81,3 +81,19 @@ Based on the result I did these observations:
 ![Histogram SE](Documentation/Scatter_matrix_SE.png)
 
 ![Histogram worst](Documentation/Scatter_matrix_worst.png)
+
+## 3.1.4 Box
+
+![Histogram mean](Documentation/Box_mean.png)
+
+![Histogram SE](Documentation/Box_SE.png)
+
+![Histogram worst](Documentation/Box_worst.png)
+
+## 3.1.5 Correlation
+
+![Histogram mean](Documentation/Correlation_mean.png)
+
+![Histogram SE](Documentation/Correlation_SE.png)
+
+![Histogram worst](Documentation/Correlation_worst.png)
