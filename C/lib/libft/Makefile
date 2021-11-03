@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/17 09:54:35 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 16:59:33 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 17:38:26 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,11 +67,11 @@ END				=	\033[0m
 all: $(TARGET_NAME)
 	@echo ""
 
-$(TARGET_NAME): $(FOLDERS) $(O_FILES) $(notdir $@)
+$(TARGET_NAME): $(FOLDERS) $(O_FILES)
 	@cp $(notdir $@) $@
 	@echo "$(GREEN)Done!$(END)"
 
-$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
+$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile $(notdir $@)
 	$(CC) -c -o $@ $< $(C_FLAGS)
 	ar -rcs $(NAME) $@
 
