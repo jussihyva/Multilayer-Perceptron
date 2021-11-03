@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 11:58:09 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 15:21:15 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ LIB_FOLDERS			=	$(addprefix -L, $(GLOBAL_LIB_FOLDERS))
 
 # Path folders for H, C, O and APP files
 H_FILES				=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
-H_FILES				+=	$(addprefix $(INCLUDE)/, $(C_PROGRAMS).h)
+H_FILES				+=	$(addprefix $(INCLUDE)/, $(patsubst %, %.h, $(C_PROGRAMS)))
 C_FILES				=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES				=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
 # APP_FILES			=	$(addprefix $(BIN)/, $(NAMES))
@@ -64,10 +64,10 @@ endif
 LD_FLAGS			+=	$(D_ATTRIBUTES)
 
 .PHONY: all
-all: $(C_PROGRAMS)
+all: prepare $(C_PROGRAMS)
 
 $(C_PROGRAMS): $(BIN)/%: $(SRC)/%.c $(H_FILES) $(O_FILES) | prepare
-	$(CC) -o $@ $< $(O_FILES) $(LD_FLAGS) $(C_FLAGS)
+	@$(CC) -o $@ $< $(O_FILES) $(LD_FLAGS) $(C_FLAGS)
 	@echo "Program $(GREEN)$@$(END) created!"
 
 $(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile $(MAKEFILES) $(LOCAL_LIB_FILES)
