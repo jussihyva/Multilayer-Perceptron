@@ -6,14 +6,16 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 22:26:35 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 23:56:36 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include Makefile_System.mk
 
 # Application specific parameters
-C_PROGRAMS		=	training prediction
+NAME1			=	training
+NAME2			=	prediction
+C_PROGRAMS		=	$(NAME1) $(NAME2)
 
 # Input parameters
 
@@ -47,7 +49,6 @@ H_FILES				=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
 H_FILES				+=	$(addprefix $(INCLUDE)/, $(patsubst %, %.h, $(C_PROGRAMS)))
 C_FILES				=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES				=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
-# APP_FILES			=	$(addprefix $(BIN)/, $(NAMES))
 C_PROGRAM_FILES		=	$(addprefix $(SRC)/, $(patsubst %, %.c, $(C_PROGRAMS)))
 
 # Compiler and linking parameters
@@ -63,7 +64,7 @@ endif
 LD_FLAGS			+=	$(D_ATTRIBUTES)
 
 .PHONY: all
-all: prepare $(C_PROGRAMS)
+all: $(C_PROGRAMS)
 
 $(C_PROGRAMS): $(BIN)/%: $(SRC)/%.c $(H_FILES) $(O_FILES) | prepare
 	@$(CC) -o $@ $< $(O_FILES) $(LD_FLAGS) $(C_FLAGS)
@@ -106,18 +107,18 @@ libraries_norm:
 .PHONY: run
 run: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
 else
-	$(CUR_DIR)/$(BIN)/$(NAME) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
 endif
 
 .PHONY: run_leaks
 run_leaks: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME) -S $(ITERATIONS) $(LEVEL) -l $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) -l $(MODE) $(DATASET)
 else
 	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all \
-	$(CUR_DIR)/$(BIN)/$(NAME) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
 endif
 
 .PHONY: clean
@@ -128,7 +129,8 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@make -C ${LIB} fclean
-	rm -f $(BIN)/$(NAME)
+	rm -f $(BIN)/$(NAME1)
+	rm -f $(BIN)/$(NAME2)
 
 .PHONY: re
 re: fclean all
