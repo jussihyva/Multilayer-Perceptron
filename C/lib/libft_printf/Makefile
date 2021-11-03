@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 17:38:35 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 23:03:00 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,13 +55,15 @@ END				=	\033[0m
 all: libraries $(TARGET_NAME)
 	@echo ""
 
-$(TARGET_NAME): $(FOLDERS) $(C_FILES) $(O_FILES)
+$(TARGET_NAME): $(FOLDERS) $(C_FILES) $(NAME)
 	@cp $(notdir $@) $@
 	@echo "$(GREEN)Done!$(END)"
 
-$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile $(notdir $@)
+$(NAME): $(O_FILES)
+	@ar -rcs $(NAME) $(O_FILES)
+
+$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
 	$(CC) -c -o $@ $< $(C_FLAGS)
-	ar -rcs $(NAME) $@
 
 $(FOLDERS):
 	mkdir $@

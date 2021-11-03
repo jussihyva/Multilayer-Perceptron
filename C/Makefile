@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 15:21:15 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 22:26:35 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,7 @@ OBJ					=	obj
 SRC					=	src
 INCLUDE				=	include
 TEST				=	test
-DOC					=	doc
-FOLDERS				=	$(LIB) $(BIN) $(OBJ) $(SRC) $(INCLUDE) $(TEST) $(DOC)
+FOLDERS				=	$(LIB) $(BIN) $(OBJ) $(SRC) $(INCLUDE) $(TEST)
 INCLUDE_FILES		=	-I $(INCLUDE) -I $(LIB)
 
 # C (Source code) and H (Header) files

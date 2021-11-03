@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 17:02:16 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 17:09:44 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/03 23:01:12 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,6 @@ LIB_FOLDERS			=	$(dir $(A_FILES))
 
 .PHONY: all
 all: h_files $(A_FILES) libraries
-
-# $(A_FILES):
-# 	ar -rcs $@ Makefile
-# 	ar -d $@ Makefile
 
 .PHONY: h_files
 h_files: $(H_FILES)
