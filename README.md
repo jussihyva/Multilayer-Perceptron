@@ -64,11 +64,11 @@ ID number|Diagnosis|Mean Radius|Mean Texture|Mean Perimeter|Mean Area|Mean Smoot
 
 ## 3. Solution
 
-## 3.1 Exploratory data analysis
+### 3.1 Exploratory data analysis
 
 The aim of this chapter is to give an overview of the dataset content
 
-## 3.1.1 Aggregate functions
+#### 3.1.1 Aggregate functions
 
 Based on the result I did these observations:
 
@@ -78,7 +78,7 @@ Based on the result I did these observations:
 
 ![Aggregate functions](Documentation/Aggregate_functions.png)
 
-## 3.1.2 Histogram
+#### 3.1.2 Histogram
 
 Six of the mean gauges (Radius, Perimeter, Area, Compactness, Concavity and Concave points) separate cancer types very well. The rest four are overlapping. So, maybe only six gauges could be used as input for a machine-learning model. Error gauges are overlapping much more. I don't have experience with cancer-related medical details, I cannot make a decision on how important error gauges are analysis point of view. Worst-gauges behave similarly to mean gauges. So, maybe the usage of mean gauges gives a good enough result to predict a type of cancer.
 So, based on Histogram visualization, I think that mean gauge values are enough for valid cancer type prediction.
@@ -89,7 +89,7 @@ So, based on Histogram visualization, I think that mean gauge values are enough 
 
 ![Histogram worst](Documentation/Histogram_worst.png)
 
-## 3.1.3 Scatter matrix
+#### 3.1.3 Scatter matrix
 
 There are three gauges (Radius, Perimeter and Area) that correlate very well with each other, so maybe just one of them is enough to be used for cancer type prediction.
 
@@ -99,7 +99,7 @@ There are three gauges (Radius, Perimeter and Area) that correlate very well wit
 
 ![Histogram worst](Documentation/Scatter_matrix_worst.png)
 
-## 3.1.4 Box
+#### 3.1.4 Box
 
 All gauges have some values that are out of the box (nice sentence). So, maybe those measurement results should be removed. I have to check (I don't know yet how to do that professionally) are those measurements invalid with all gauge values or just randomly one faulty result here and there.
 
@@ -109,7 +109,7 @@ All gauges have some values that are out of the box (nice sentence). So, maybe t
 
 ![Histogram worst](Documentation/Box_worst.png)
 
-## 3.1.5 Correlation
+#### 3.1.5 Correlation
 
 The correlation pictures indicate similar things to Scatter matrix pictures. So, there is nothing additional information from these pictures.
 
@@ -118,3 +118,21 @@ The correlation pictures indicate similar things to Scatter matrix pictures. So,
 ![Histogram SE](Documentation/Correlation_SE.png)
 
 ![Histogram worst](Documentation/Correlation_worst.png)
+
+### 3.2 Implemented functions
+
+#### 3.2.1 Logistic regression
+
+[Logistic regression](https://en.m.wikipedia.org/wiki/Logistic_regression) functionality is implemented with [sigmoid](https://en.m.wikipedia.org/wiki/Sigmoid_function) equation. Why did I decide to use sigmoid? To be honest I don't know (maybe in the future, I will) any other possible functionality to get a logistic result (0 < x < 1) than sigmoid. And it seems that sigmoid is widely used in machine learning models.
+
+##### 3.2.1.1 Equation of sigmoid
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=-\frac{1}{1+e^{-z}}=\sigma)
+
+##### 3.2.1.2 Sigmoid curve (Values from -5 to 5)
+
+<img src="Documentation/Sigmoid.png" alt="drawing" width="600"/>
+
+#### 3.2.2 Cost function for logistic regression
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;f(\sigma)=\begin{Bmatrix}if\space\sigma=1,log(y)\\\\if\space\sigma=0,log(1-y)\end{Bmatrix})
