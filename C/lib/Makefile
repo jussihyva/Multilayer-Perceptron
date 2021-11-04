@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 17:02:16 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/04 15:00:14 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/04 15:23:31 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ GRAY					=	\033[1;30m
 PURPLE					=	\033[0;35m
 END						=	\033[0m
 
-LIB_FOLDERS		=	libft libft_printf libft_addons
+LIB_FOLDERS		=	libft libft_printf libft_addons libml
 
 .PHONY: all
 all: libraries
