@@ -6,13 +6,21 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 23:03:00 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/04 15:00:53 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	libftprintf.a
+OS			=	$(shell uname -s)
+CUR_DIR		=	$(abspath .)
+
+ifeq ($(OS), Darwin)
+	SHELL				=	zsh
+endif
+
+NAME1				=	libftprintf.a
+C_ARCHIVES			=	$(NAME1)
+
 LIBFT_FOLDER	=	../libft
-LIBFT			=	libft.a
 
 # Folders
 OBJ				=	obj
@@ -27,7 +35,6 @@ CC				=	clang
 C_FLAGS			=	-std=gnu17 -fPIE -g -Wall -Wextra -Werror $(INCLUDES)
 
 # C (Source code) and H (Header) files
-TARGET_NAME		=	../$(NAME)
 SRC_C_FILES		=	ft_printf.c split_input_string.c create_converters.c \
 					ft_lltoa_base.c ft_ulltoa_base.c param_type.c \
 					width_and_prediction.c modify_character.c \
@@ -45,6 +52,10 @@ H_FILES			=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
 C_FILES			=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES			=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
 
+# Target files (Object archive and H files)
+TARGET_C_ARCHIVES	=	$(addprefix ../, $(C_ARCHIVES))
+TARGET_H_FILES		=	$(addprefix ../, $(notdir $(H_FILES)))
+
 # Colours for printouts
 RED				=	\033[0;31m
 GREEN			=	\033[0;32m
@@ -52,18 +63,28 @@ YELLOW			=	\033[0;33m
 END				=	\033[0m
 
 .PHONY: all
-all: libraries $(TARGET_NAME)
-	@echo ""
+all: libraries $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
+	@echo -n ""
 
-$(TARGET_NAME): $(FOLDERS) $(C_FILES) $(NAME)
+$(TARGET_H_FILES): $(H_FILES) Makefile
+	@for file in $(H_FILES) ; do \
+	    cp $$file ../ ; \
+		echo "File $(YELLOW)$$file$(END) -> $(GREEN)../`basename $$file`$(END) copied!" ; \
+	done
+
+$(TARGET_C_ARCHIVES): Makefile $(C_ARCHIVES) | prepare
 	@cp $(notdir $@) $@
-	@echo "$(GREEN)Done!$(END)"
+	@echo "File $(YELLOW)$(notdir $@)$(END) -> $(GREEN)$@$(END) copied!"
 
-$(NAME): $(O_FILES)
-	@ar -rcs $(NAME) $(O_FILES)
+$(C_ARCHIVES): $(O_FILES)
+	@ar -rcs $@ $(O_FILES)
 
 $(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
-	$(CC) -c -o $@ $< $(C_FLAGS)
+	@$(CC) -c -o $@ $< $(C_FLAGS)
+	@echo "    File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
+
+.PHONY: prepare
+prepare: $(FOLDERS) $(C_FILES)
 
 $(FOLDERS):
 	mkdir $@
@@ -83,7 +104,9 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@make -C ${LIBFT_FOLDER} fclean
-	rm -f $(NAME)
+	rm -f $(C_ARCHIVES)
+	rm -f $(TARGET_C_ARCHIVES)
+	rm -f $(TARGET_H_FILES)
 
 .PHONY: re
 re: fclean all
@@ -91,7 +114,7 @@ re: fclean all
 .PHONY: norm
 norm:
 ifeq ($(OS), Darwin)
-	norminette-beta
+	norminette
 else
 	norminette
 endif

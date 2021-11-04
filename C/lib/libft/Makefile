@@ -6,24 +6,26 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/17 09:54:35 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 23:03:04 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/04 15:02:48 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-OS				=	$(shell uname -s)
+OS			=	$(shell uname -s)
+CUR_DIR		=	$(abspath .)
 
-NAME		=	libft.a
-LIB_SUFFIX	=	ft
-A_NAME		=	lib$(LIB_SUFFIX).a
-SO_NAME		=	lib$(LIB_SUFFIX).so
+ifeq ($(OS), Darwin)
+	SHELL				=	zsh
+endif
+
+NAME1			=	libft.a
+C_ARCHIVES		=	$(NAME1)
 
 # Folders
 LIB				=	.
 OBJ				=	obj
-OBJ_SO			=	obj_so
 SRC				=	.
 INCLUDE			=	.
-FOLDERS			=	$(OBJ) $(OBJ_SO)
+FOLDERS			=	$(OBJ)
 INCLUDES		=	-I $(INCLUDE)
 
 # Compiler and linking parameters
@@ -31,7 +33,6 @@ CC				=	clang
 C_FLAGS			=	-fPIE -std=gnu17 -g -Wall -Wextra -Werror $(INCLUDES)
 
 # C (Source code) and H (Header) files
-TARGET_NAME		=	../$(NAME)
 SRC_C_FILES		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 					ft_memchr.c ft_memcmp.c ft_strlen.c ft_strdup.c ft_strcpy.c \
 					ft_strncpy.c ft_strcat.c ft_strncat.c ft_strlcat.c ft_strchr.c \
@@ -55,7 +56,10 @@ SRC_H_FILES		=	libft.h
 H_FILES			=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
 C_FILES			=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES			=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
-SO_FILES		=	$(addprefix $(OBJ_SO)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
+
+# Target files (Object archive and H files)
+TARGET_C_ARCHIVES	=	$(addprefix ../, $(C_ARCHIVES))
+TARGET_H_FILES		=	$(addprefix ../, $(notdir $(H_FILES)))
 
 # Colours for printouts
 RED				=	\033[0;31m
@@ -64,38 +68,44 @@ YELLOW			=	\033[0;33m
 END				=	\033[0m
 
 .PHONY: all
-all: $(TARGET_NAME)
-	@echo ""
+all: $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
+	@echo -n ""
 
-$(TARGET_NAME): $(FOLDERS) $(NAME)
+$(TARGET_H_FILES): $(H_FILES) Makefile
+	@for file in $(H_FILES) ; do \
+	    cp $$file ../ ; \
+		echo "File $(YELLOW)$$file$(END) -> $(GREEN)../`basename $$file`$(END) copied!" ; \
+	done
+
+$(TARGET_C_ARCHIVES): Makefile $(C_ARCHIVES) | prepare
 	@cp $(notdir $@) $@
-	@echo "$(GREEN)Done!$(END)"
+	@echo "File $(YELLOW)$(notdir $@)$(END) -> $(GREEN)$@$(END) copied!"
 
-$(NAME): $(O_FILES)
-	@ar -rcs $(NAME) $(O_FILES)
+$(C_ARCHIVES): $(O_FILES)
+	@ar -rcs $@ $(O_FILES)
 
 $(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
-	$(CC) -c -o $@ $< $(C_FLAGS)
+	@$(CC) -c -o $@ $< $(C_FLAGS)
+	@echo "    File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
 
-.PHONY: so
-so: $(SO_FILES)
-	$(CC) -shared -fPIC -o $(SO_NAME) $(SO_FILES)
-
-$(SO_FILES): $(OBJ_SO)/%.o: $(SRC)/%.c $(H_FILES) Makefile
-	$(CC) -fPIC -c -o $@ $< $(C_FLAGS)
+.PHONY: prepare
+prepare: $(FOLDERS) $(C_FILES)
 
 $(FOLDERS):
 	mkdir $@
 
+$(C_FILES):
+	touch $@
+
 .PHONY: clean
 clean:
 	rm -f $(O_FILES)
-	rm -f $(SO_FILES)
 
 .PHONY: fclean
 fclean: clean
-	rm -f $(A_NAME)
-	rm -f $(SO_NAME)
+	rm -f $(C_ARCHIVES)
+	rm -f $(TARGET_C_ARCHIVES)
+	rm -f $(TARGET_H_FILES)
 
 .PHONY: re
 re: fclean all
@@ -106,7 +116,7 @@ bonus: all
 .PHONY: norm
 norm:
 ifeq ($(OS), Darwin)
-	norminette-beta
+	norminette
 else
 	norminette
 endif
