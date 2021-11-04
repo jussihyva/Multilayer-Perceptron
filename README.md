@@ -135,4 +135,10 @@ The correlation pictures indicate similar things to Scatter matrix pictures. So,
 
 #### 3.2.2 Cost function for logistic regression
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;f(\sigma)=\begin{Bmatrix}if\space\sigma=1,log(y)\\\\if\space\sigma=0,log(1-y)\end{Bmatrix})
+##### 3.2.2.1 Loss
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y}^{(i)},y^{(i)})=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
+
+##### 3.2.2.2 Cost
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=\frac{1}{m}\sum_{i=1}^{m}\ell(\hat{y}^{(i)},y^{(i)}))
