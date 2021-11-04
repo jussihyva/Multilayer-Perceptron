@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/04 15:22:42 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/04 18:26:34 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,10 +54,8 @@ $(TARGET_H_FILES): $(H_FILES) Makefile
 	done
 
 $(TARGET_C_ARCHIVES): Makefile $(C_ARCHIVES) | prepare
-ifneq ("$(wildcard $(notdir $@))","")
 	@cp $(notdir $@) $@
 	@echo "File $(YELLOW)$(notdir $@)$(END) -> $(GREEN)$@$(END) copied!"
-endif
 
 $(C_ARCHIVES): $(O_FILES)
 ifneq (, $(O_FILES))

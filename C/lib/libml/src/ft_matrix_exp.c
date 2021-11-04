@@ -6,18 +6,18 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 16:25:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/04 16:45:41 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/04 18:59:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-static double	do_exp(const double value, const int sign_value)
+static double	do_exp(double value, const int sign_value)
 {
 	double	new_value;
 
+	value *= sign_value;
 	new_value = exp(value);
-	new_value *= sign_value;
 	return (new_value);
 }
 
