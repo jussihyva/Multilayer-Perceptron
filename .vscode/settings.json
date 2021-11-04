@@ -1,3 +1,10 @@
 {
-	"python.pythonPath": "/usr/local/bin/python3"
+	"python.pythonPath": "/usr/local/bin/python3",
+	"C_Cpp.default.includePath":
+	[
+		"${default}",
+		"${workspaceFolder}/**",
+		"${env:HOME}/.brew/Cellar/openssl@1.1/1.1.1k/include/**",
+		"${env:HOME}/.brew/Cellar/openssl@1.1/1.1.1l/include/**"
+	]
 }

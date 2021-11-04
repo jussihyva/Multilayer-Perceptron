@@ -3,6 +3,12 @@
  		{
  			"path": "."
  		}
- 	]
+	],
+	"settings": {
+		"files.associations": {
+			"iosfwd": "c",
+			"iterator": "c"
+		}
+	}
  }
 
