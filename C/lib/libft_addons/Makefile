@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 12:24:06 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 15:38:53 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,7 @@ OBJ					=	obj
 SRC					=	src
 INCLUDE				=	include
 FOLDERS				=	$(OBJ) $(SRC) $(INCLUDE)
-INCLUDES			=	-I $(INCLUDE) -I ../libft -I ../libft_printf/include \
-						$(SYSTEM_INCLUDE)
+INCLUDES			=	-I $(INCLUDE) -I .. $(SYSTEM_INCLUDE)
 
 # Compiler and linking parameters
 CC					=	clang

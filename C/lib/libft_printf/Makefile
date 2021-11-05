@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 12:23:46 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 15:40:15 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,12 @@ endif
 NAME1				=	libftprintf.a
 C_ARCHIVES			=	$(NAME1)
 
-LIB					=	../libft
-
 # Folders
 OBJ				=	obj
 SRC				=	src
 INCLUDE			=	include
 FOLDERS			=	$(OBJ) $(SRC) $(INCLUDE)
-INCLUDES		=	-I $(INCLUDE) -I $(LIB)
+INCLUDES		=	-I $(INCLUDE) -I ..
 
 # Compiler and linking parameters
 OS				=	$(shell uname -s)
@@ -85,7 +83,7 @@ $(O_FILES): $(OBJ)/%.o: $(SRC)/%.c Prerequisites $(H_FILES)
 	@$(CC) -c -o $@ $< $(C_FLAGS)
 	@echo "    File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
 
-Prerequisites: $(H_FILES) Makefile | $(SOURCE_FILES) Libraries ${LIB}/Makefile
+Prerequisites: $(H_FILES) Makefile | $(SOURCE_FILES)
 	@touch Prerequisites
 	@echo "$(YELLOW)Prerequisites are modified$(END)"
 
@@ -96,21 +94,12 @@ $(SOURCE_FILES): | $(FOLDERS)
 $(FOLDERS):
 	mkdir $@
 
-.PHONY: Libraries
-Libraries:
-	@make --no-print-directory -C ${LIB} SHELL=$(SHELL)
-
-${LIB}/Makefile:
-	@echo "all:\n\t@echo -n \"\"" > $@
-
 .PHONY: clean
 clean:
-	@make -C ${LIB} clean
 	rm -f $(O_FILES)
 
 .PHONY: fclean
 fclean: clean
-	@make -C ${LIB} fclean
 	rm -f $(C_ARCHIVES)
 	rm -f $(TARGET_C_ARCHIVES)
 	rm -f $(TARGET_H_FILES)

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/04 18:36:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/05 17:08:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,23 @@ typedef enum e_sign
 	E_PLUS
 }				t_sign;
 
+typedef struct s_size_2d
+{
+	size_t	rows;
+	size_t	cols;
+}				t_size_2d;
+
 typedef struct s_matrix
 {
-	t_matrix_size	size;
-	void			**values;
+	t_size_2d	size;
+	void		*data;
+	void		**table;
 }				t_matrix;
 
-const t_matrix		*ft_sigmoid(const t_matrix *const input);
+// const t_matrix		*ft_sigmoid(const t_matrix *const input);
+const t_matrix		*ft_sigmoid(const t_matrix *const input,
+						t_matrix *const div, t_matrix *const exp,
+						t_matrix *const add);
 t_matrix			*ft_matrix_create(size_t size, const size_t rows,
 						const size_t columns);
 void				ft_double_div_matrix(const double value,

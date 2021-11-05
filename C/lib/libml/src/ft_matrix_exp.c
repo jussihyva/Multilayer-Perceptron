@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 16:25:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/04 18:59:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/05 17:14:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,24 @@ void	ft_matrix_exp(
 				t_matrix *const new_matrix,
 				const t_sign sign)
 {
-	t_vector_size		i;
-	const double		**values;
-	double				**new_values;
-	int					sign_value;
+	t_size_2d		i;
+	const double	**values;
+	double			**new_values;
+	int				sign_value;
 
 	if (sign == E_PLUS)
 		sign_value = 1;
 	else
 		sign_value = -1;
-	values = (const double **)matrix->values;
-	new_values = (double **)new_matrix->values;
+	values = (const double **)matrix->table;
+	new_values = (double **)new_matrix->table;
 	i.rows = -1;
 	while (++i.rows < matrix->size.rows)
 	{
-		i.columns = -1;
-		while (++i.columns < matrix->size.columns)
-			new_values[i.rows][i.columns]
-				= do_exp(values[i.rows][i.columns], sign_value);
+		i.cols = -1;
+		while (++i.cols < matrix->size.cols)
+			new_values[i.rows][i.cols]
+				= do_exp(values[i.rows][i.cols], sign_value);
 	}
 	return ;
 }

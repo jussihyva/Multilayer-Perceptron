@@ -1,18 +1,17 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    mk_source_files.mk                                 :+:      :+:    :+:    #
+#    Makefile_Source_Files.mk                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/07 14:28:42 by jkauppi           #+#    #+#              #
-#    Updated: 2021/09/07 18:02:53 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 17:16:56 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_C_FILES		=	ft_radian.c ft_max_int.c ft_min_int.c \
 					ft_mod_int.c ft_mod_double.c \
-					ft_matrix_x_vector_double.c \
 					ft_max_double.c ft_min_double.c ft_isdigit_base.c \
 					ft_strtoi.c ft_event_logging_1.c ft_event_logging_2.c \
 					ft_event_logging_3.c ft_event_logging_4.c \

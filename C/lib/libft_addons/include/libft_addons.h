@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/09/30 09:07:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/05 17:15:34 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,6 @@ typedef struct s_tcp_connection
 	SSL_CTX		*ctx;
 	SSL			*ssl_bio;
 }				t_tcp_connection;
-
-typedef struct s_matrix_size
-{
-	size_t		rows;
-	size_t		columns;
-}				t_matrix_size;
-
-typedef t_matrix_size	t_vector_size;
 
 typedef struct s_log_event
 {
@@ -230,9 +222,6 @@ double					ft_max_double(double nbr1, double nbr2);
 double					ft_min_double(double nbr1, double nbr2);
 double					ft_mod_double(double dividend, double divisor);
 int						ft_mod_int(int dividend, int divisor);
-void					ft_matrix_x_vector_double(t_matrix_size matrix_size,
-							double **matrix, double *vector,
-							double *new_vector);
 int						ft_isdigit_base(int c, int base);
 int						ft_strtoi(const char *str, char **endptr, int base);
 void					stdout_callback(t_log_event *event);
