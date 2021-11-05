@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/17 09:54:35 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/04 15:02:48 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 12:24:38 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ H_FILES			=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
 C_FILES			=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES			=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
 
+SOURCE_FILES		=	$(H_FILES) $(C_FILES)
+
 # Target files (Object archive and H files)
 TARGET_C_ARCHIVES	=	$(addprefix ../, $(C_ARCHIVES))
 TARGET_H_FILES		=	$(addprefix ../, $(notdir $(H_FILES)))
@@ -71,31 +73,33 @@ END				=	\033[0m
 all: $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
 	@echo -n ""
 
-$(TARGET_H_FILES): $(H_FILES) Makefile
+$(TARGET_H_FILES): $(H_FILES)
 	@for file in $(H_FILES) ; do \
 	    cp $$file ../ ; \
 		echo "File $(YELLOW)$$file$(END) -> $(GREEN)../`basename $$file`$(END) copied!" ; \
 	done
 
-$(TARGET_C_ARCHIVES): Makefile $(C_ARCHIVES) | prepare
+$(TARGET_C_ARCHIVES): $(C_ARCHIVES)
 	@cp $(notdir $@) $@
 	@echo "File $(YELLOW)$(notdir $@)$(END) -> $(GREEN)$@$(END) copied!"
 
 $(C_ARCHIVES): $(O_FILES)
 	@ar -rcs $@ $(O_FILES)
 
-$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
+$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c Prerequisites $(H_FILES)
 	@$(CC) -c -o $@ $< $(C_FLAGS)
 	@echo "    File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
 
-.PHONY: prepare
-prepare: $(FOLDERS) $(C_FILES)
+Prerequisites: $(H_FILES) Makefile | $(SOURCE_FILES) 
+	@touch Prerequisites
+	@echo "$(YELLOW)Prerequisites are modified$(END)"
+
+$(SOURCE_FILES): | $(FOLDERS)
+	touch $@
+	@echo "Source file $(GREEN)$@$(END) created (empty)!"
 
 $(FOLDERS):
 	mkdir $@
-
-$(C_FILES):
-	touch $@
 
 .PHONY: clean
 clean:

@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 08:42:47 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 09:49:42 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,5 +20,5 @@ ifeq ($(OS), Darwin)
 	GLOBAL_LIBS			+=
 	GLOBAL_LIB_FOLDERS	+=
 else
-	GLOBAL_LIBS			+= m
+	GLOBAL_LIBS			+= libm.a
 endif

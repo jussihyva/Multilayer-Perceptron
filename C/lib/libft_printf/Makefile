@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/04 15:00:53 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 12:23:46 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,14 @@ endif
 NAME1				=	libftprintf.a
 C_ARCHIVES			=	$(NAME1)
 
-LIBFT_FOLDER	=	../libft
+LIB					=	../libft
 
 # Folders
 OBJ				=	obj
 SRC				=	src
 INCLUDE			=	include
 FOLDERS			=	$(OBJ) $(SRC) $(INCLUDE)
-INCLUDES		=	-I $(INCLUDE) -I $(LIBFT_FOLDER)
+INCLUDES		=	-I $(INCLUDE) -I $(LIB)
 
 # Compiler and linking parameters
 OS				=	$(shell uname -s)
@@ -48,9 +48,11 @@ SRC_C_FILES		=	ft_printf.c split_input_string.c create_converters.c \
 SRC_H_FILES		=	ft_printf.h
 
 # Path folders for H, C, O and APP files
-H_FILES			=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
-C_FILES			=	$(addprefix $(SRC)/, $(SRC_C_FILES))
-O_FILES			=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
+H_FILES				=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
+C_FILES				=	$(addprefix $(SRC)/, $(SRC_C_FILES))
+O_FILES				=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
+
+SOURCE_FILES		=	$(H_FILES) $(C_FILES)
 
 # Target files (Object archive and H files)
 TARGET_C_ARCHIVES	=	$(addprefix ../, $(C_ARCHIVES))
@@ -63,47 +65,52 @@ YELLOW			=	\033[0;33m
 END				=	\033[0m
 
 .PHONY: all
-all: libraries $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
+all: $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
 	@echo -n ""
 
-$(TARGET_H_FILES): $(H_FILES) Makefile
+$(TARGET_H_FILES): $(H_FILES)
 	@for file in $(H_FILES) ; do \
 	    cp $$file ../ ; \
 		echo "File $(YELLOW)$$file$(END) -> $(GREEN)../`basename $$file`$(END) copied!" ; \
 	done
 
-$(TARGET_C_ARCHIVES): Makefile $(C_ARCHIVES) | prepare
+$(TARGET_C_ARCHIVES): $(C_ARCHIVES)
 	@cp $(notdir $@) $@
 	@echo "File $(YELLOW)$(notdir $@)$(END) -> $(GREEN)$@$(END) copied!"
 
 $(C_ARCHIVES): $(O_FILES)
 	@ar -rcs $@ $(O_FILES)
 
-$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile
+$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c Prerequisites $(H_FILES)
 	@$(CC) -c -o $@ $< $(C_FLAGS)
 	@echo "    File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
 
-.PHONY: prepare
-prepare: $(FOLDERS) $(C_FILES)
+Prerequisites: $(H_FILES) Makefile | $(SOURCE_FILES) Libraries ${LIB}/Makefile
+	@touch Prerequisites
+	@echo "$(YELLOW)Prerequisites are modified$(END)"
+
+$(SOURCE_FILES): | $(FOLDERS)
+	touch $@
+	@echo "Source file $(GREEN)$@$(END) created (empty)!"
 
 $(FOLDERS):
 	mkdir $@
 
-$(C_FILES):
-	touch $@
+.PHONY: Libraries
+Libraries:
+	@make --no-print-directory -C ${LIB} SHELL=$(SHELL)
 
-.PHONY: libraries
-libraries:
-	@make -C ${LIBFT_FOLDER}
+${LIB}/Makefile:
+	@echo "all:\n\t@echo -n \"\"" > $@
 
 .PHONY: clean
 clean:
-	@make -C ${LIBFT_FOLDER} clean
+	@make -C ${LIB} clean
 	rm -f $(O_FILES)
 
 .PHONY: fclean
 fclean: clean
-	@make -C ${LIBFT_FOLDER} fclean
+	@make -C ${LIB} fclean
 	rm -f $(C_ARCHIVES)
 	rm -f $(TARGET_C_ARCHIVES)
 	rm -f $(TARGET_H_FILES)

@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 23:56:36 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/05 12:20:00 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,11 @@ LIB_FILES			+=	$(addprefix -l , $(patsubst lib%.a, %, $(GLOBAL_LIBS)))
 LIB_FOLDERS			=	$(addprefix -L, $(GLOBAL_LIB_FOLDERS))
 
 # Path folders for H, C, O and APP files
-H_FILES				=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
-H_FILES				+=	$(addprefix $(INCLUDE)/, $(patsubst %, %.h, $(C_PROGRAMS)))
-C_FILES				=	$(addprefix $(SRC)/, $(SRC_C_FILES))
+H_FILES				=	$(addprefix $(INCLUDE)/, $(patsubst %, %.h, $(C_PROGRAMS)))
+H_FILES				+=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
+C_FILES				=	$(addprefix $(SRC)/, $(patsubst %, %.c, $(C_PROGRAMS)))
+C_FILES				+=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES				=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))
-C_PROGRAM_FILES		=	$(addprefix $(SRC)/, $(patsubst %, %.c, $(C_PROGRAMS)))
 
 # Compiler and linking parameters
 CC					=	clang
@@ -63,34 +63,33 @@ else
 endif
 LD_FLAGS			+=	$(D_ATTRIBUTES)
 
+SOURCE_FILES		=	$(H_FILES) $(C_FILES)
+
 .PHONY: all
 all: $(C_PROGRAMS)
+	@echo -n ""
 
-$(C_PROGRAMS): $(BIN)/%: $(SRC)/%.c $(H_FILES) $(O_FILES) | prepare
+$(C_PROGRAMS): $(BIN)/%: $(SRC)/%.c Prerequisites $(H_FILES) $(LOCAL_LIB_FILES) $(O_FILES)
 	@$(CC) -o $@ $< $(O_FILES) $(LD_FLAGS) $(C_FLAGS)
 	@echo "Program $(GREEN)$@$(END) created!"
 
-$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c $(H_FILES) Makefile $(MAKEFILES) $(LOCAL_LIB_FILES)
+$(O_FILES): $(OBJ)/%.o: $(SRC)/%.c Prerequisites $(H_FILES) $(LOCAL_LIB_FILES)
 	@$(CC) -c -o $@ $< $(C_FLAGS) $(D_ATTRIBUTES)
 	@echo "File $(YELLOW)$<$(END) -> $(GREEN)$@$(END) compiled!"
 
-.PHONY: prepare
-prepare: $(FOLDERS) $(H_FILES) $(C_PROGRAM_FILES) $(C_FILES) ${LIB}/Makefile libraries
+Prerequisites: $(H_FILES) Makefile $(MAKEFILES) | $(SOURCE_FILES) Libraries ${LIB}/Makefile 
+	@touch Prerequisites
+	@echo "$(YELLOW)Prerequisites are modified$(END)"
+
+$(SOURCE_FILES): | $(FOLDERS)
+	touch $@
+	@echo "Source file $(GREEN)$@$(END) created (empty)!"
 
 $(FOLDERS):
 	mkdir $@
 
-$(C_PROGRAM_FILES):
-	touch $@
-
-$(C_FILES):
-	touch $@
-
-$(H_FILES):
-	touch $@
-
-.PHONY: libraries
-libraries:
+.PHONY: Libraries
+Libraries:
 	@make --no-print-directory -C ${LIB} SHELL=$(SHELL)
 
 ${LIB}/Makefile:

@@ -6,9 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/05 08:52:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/05 12:13:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// while [ condition ]; do time ./training ; done
 
 #include "training.h"
 
