@@ -6,29 +6,26 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:30:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/05 17:22:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/06 09:27:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-// const t_matrix	*ft_sigmoid(const t_matrix *const input)
-const t_matrix	*ft_sigmoid(const t_matrix *const input, t_matrix *const div,
-						t_matrix *const exp, t_matrix *const add)
+void	ft_sigmoid(const t_matrix *const z, t_matrix *const y)
 {
-	// t_matrix			*exp;
-	// t_matrix			*add;
-	// t_matrix			*div;
-	const t_size_2d		*size;
+	double		*z_ptr;
+	double		*y_ptr;
+	double		*y_end_ptr;
 
-	size = &input->size;
-	// exp = ft_matrix_create(sizeof(double), input->size.rows, size->columns);
-	// add = ft_matrix_create(sizeof(double), input->size.rows, size->columns);
-	// div = ft_matrix_create(sizeof(double), input->size.rows, size->columns);
-	ft_matrix_exp(input, exp, E_MINUS);
-	ft_matrix_add_double(exp, 1, add);
-	// ft_matrix_remove(&exp);
-	ft_double_div_matrix(1, add, div);
-	// ft_matrix_remove(&add);
-	return (div);
+	y_end_ptr = (double *)y->data + y->size.rows * y->size.cols;
+	z_ptr = (double *)z->data;
+	y_ptr = (double *)y->data;
+	while (y_ptr < y_end_ptr)
+	{
+		*y_ptr = 1 / (1 + exp(-(*z_ptr)));
+		z_ptr++;
+		y_ptr++;
+	}
+	return ;
 }
