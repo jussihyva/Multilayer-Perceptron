@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_matrix_exp.c                                    :+:      :+:    :+:   */
+/*   ml_matrix_exp.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 16:25:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/05 17:14:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/07 13:44:23 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static double	do_exp(double value, const int sign_value)
 	return (new_value);
 }
 
-void	ft_matrix_exp(
+void	ml_matrix_exp(
 				const t_matrix *const matrix,
 				t_matrix *const new_matrix,
 				const t_sign sign)

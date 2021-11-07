@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_matrix_add_double.c                             :+:      :+:    :+:   */
+/*   ml_matrix_add_double.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 17:56:57 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/06 08:19:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/07 13:44:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-void	ft_matrix_add_double(
+void	ml_matrix_add_double(
 						const t_matrix *const matrix,
 						const double value,
 						t_matrix *const new_matrix)

@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_double_div_matrix.c                             :+:      :+:    :+:   */
+/*   ml_sigmoid.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 16:15:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/05 17:20:51 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/04 15:30:01 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/07 13:44:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-void	ft_double_div_matrix(
-						const double value,
-						const t_matrix *const matrix,
-						t_matrix *const new_matrix)
+void	ml_sigmoid(const t_matrix *const z, t_matrix *const y)
 {
-	t_size_2d	i;
-	double		**values;
-	double		**new_values;
+	double		*z_ptr;
+	double		*y_ptr;
+	double		*y_end_ptr;
 
-	values = (double **)matrix->table;
-	new_values = (double **)new_matrix->table;
-	i.rows = -1;
-	while (++i.rows < matrix->size.rows)
+	y_end_ptr = (double *)y->data + y->size.rows * y->size.cols;
+	z_ptr = (double *)z->data;
+	y_ptr = (double *)y->data;
+	while (y_ptr < y_end_ptr)
 	{
-		i.cols = -1;
-		while (++i.cols < matrix->size.cols)
-			new_values[i.rows][i.cols] = value / values[i.rows][i.cols];
+		*y_ptr = 1 / (1 + exp(-(*z_ptr)));
+		z_ptr++;
+		y_ptr++;
 	}
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/07 11:42:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/07 13:53:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,33 @@ typedef struct s_matrix
 	void		**table;
 }				t_matrix;
 
-void			ft_sigmoid(const t_matrix *const z, t_matrix *const y);
-t_matrix		*ft_matrix_create(size_t size, const size_t rows,
-					const size_t columns);
-void			ft_double_div_matrix(const double value,
+typedef struct s_vector
+{
+	size_t		size;
+	void		*data;
+}				t_vector;
+
+void			ml_sigmoid(const t_matrix *const z, t_matrix *const y);
+t_matrix		*ml_matrix_create(const size_t rows, const size_t columns);
+void			ml_double_div_matrix(const double value,
 					const t_matrix *const matrix,
 					t_matrix *const new_matrix);
-void			ft_matrix_exp(const t_matrix *const matrix,
+void			ml_matrix_exp(const t_matrix *const matrix,
 					t_matrix *const new_matrix, const t_sign sign);
-void			ft_matrix_add_double(const t_matrix *const matrix,
+void			ml_matrix_add_double(const t_matrix *const matrix,
 					const double value, t_matrix *const new_matrix);
-void			ft_matrix_remove(t_matrix **matrix);
-void			ft_matrix_print(const char *const matrix_name,
+void			ml_matrix_remove(t_matrix **matrix);
+void			ml_matrix_print(const char *const name,
 					const t_matrix *const matrix);
-void			ft_matrix_rand(t_matrix *const matrix, const int min,
+void			ml_matrix_rand(t_matrix *const matrix, const int min,
+					const int max);
+void			ml_matrix_cost(t_vector *const y, const t_matrix *const y_hat,
+					t_vector *const cost_vector);
+t_vector		*ml_vector_create(const size_t length);
+void			ml_vector_print(const char *const name,
+					const t_vector *const vector);
+int				ml_fast_rand(void);
+void			ml_vector_rand(t_vector *const vector, const int min,
 					const int max);
 
 #endif
