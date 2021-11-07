@@ -6,13 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/06 08:54:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/07 11:42:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBML_H
 # define LIBML_H
 # include "libft_addons.h"
+# include <time.h>
 
 typedef enum e_sign
 {
@@ -46,5 +47,7 @@ void			ft_matrix_add_double(const t_matrix *const matrix,
 void			ft_matrix_remove(t_matrix **matrix);
 void			ft_matrix_print(const char *const matrix_name,
 					const t_matrix *const matrix);
+void			ft_matrix_rand(t_matrix *const matrix, const int min,
+					const int max);
 
 #endif
