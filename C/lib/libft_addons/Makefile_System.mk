@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/31 15:56:00 by juhani            #+#    #+#              #
-#    Updated: 2021/11/04 09:54:55 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/08 15:12:12 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,7 @@ endif
 SYSTEM_INCLUDE		=
 ifeq ($(OS), Darwin)
 	D_ATTRIBUTES	=	-D DARWIN
-	SYSTEM_INCLUDE	+=	-I $(HOME)/.brew/Cellar/openssl@1.1/1.1.1k/include
-	SYSTEM_INCLUDE	+=	-I $(HOME)/.brew/Cellar/openssl@1.1/1.1.1l/include
+	SYSTEM_INCLUDE	+=	-I $(HOME)/.brew/Cellar/openssl@3/3.0.0_1/include
 endif
 
 # Colours for printouts

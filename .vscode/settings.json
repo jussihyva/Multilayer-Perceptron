@@ -4,7 +4,6 @@
 	[
 		"${default}",
 		"${workspaceFolder}/**",
-		"${env:HOME}/.brew/Cellar/openssl@1.1/1.1.1k/include/**",
-		"${env:HOME}/.brew/Cellar/openssl@1.1/1.1.1l/include/**"
+		"${env:HOME}/.brew/Cellar/openssl@3/3.0.0_1/include/**"
 	]
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/07 16:10:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/08 13:18:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void			ml_matrix_print(const char *const name,
 					const t_matrix *const matrix);
 void			ml_matrix_rand(t_matrix *const matrix, const int min,
 					const int max);
-void			ml_matrix_cost(t_vector *const y, const t_matrix *const y_hat,
-					t_vector *const cost_vector);
+void			ml_matrix_cost(const t_matrix *const y,
+					const t_matrix *const y_hat, t_vector *const cost_vector);
 t_vector		*ml_vector_create(const size_t length);
 void			ml_vector_print(const char *const name,
 					const t_vector *const vector);
