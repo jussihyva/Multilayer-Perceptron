@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/05 17:15:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/11 14:24:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,28 @@ typedef enum e_cmd_param_type
 	E_OPTIONAL_LONG,
 	E_MANDATORY
 }				t_cmd_param_type;
+
+typedef enum e_file_type
+{
+	E_CSV
+}				t_file_type;
+
+typedef struct s_queue
+{
+	t_list		**in_stack;
+	t_list		**out_stack;
+}				t_queue;
+
+typedef struct s_read_attributes
+{
+	t_bool			read_failure;
+	int				fd;
+	int				ret;
+	size_t			rows;
+	char			*line;
+	t_file_type		file_type;
+	const char		***row_array;
+}				t_read_attributes;
 
 typedef struct s_argc_argv
 {
@@ -135,12 +157,6 @@ typedef struct s_logging_params
 	const char				**level_colors;
 	t_logging_extension		*logging_extensions[MAX_LOGGING_EXTENSIONS];
 }				t_logging_params;
-
-typedef struct s_queue
-{
-	t_list		**in_stack;
-	t_list		**out_stack;
-}				t_queue;
 
 typedef struct s_bt_key
 {
@@ -252,6 +268,7 @@ void					ft_enqueue(t_queue *queue, void *data);
 void					*ft_dequeue(t_queue *queue);
 int						ft_is_queue_empty(t_queue *queue);
 t_queue					*ft_queue_init(void);
+void					ft_queue_remove(t_queue **queue);
 void					ft_bt_instert(t_bt_key *bt_key, t_bt_data *bt_data,
 							t_bt_node **bt_root);
 void					ft_bt_print(t_bt_node *bt_node, int *count);
@@ -291,5 +308,10 @@ t_bool					ft_influxdb_write(
 void					ft_strarray_print(
 							const char **const array);
 void					ft_strarray_trim(const char **const value_array);
+t_read_attributes		*ft_read_file(const char *const file_path,
+							const t_file_type file_type);
+const char				**ft_strsplit_ex(const char *const str,
+							const char delim, size_t *const number_of_values,
+							t_bool do_trim);
 
 #endif

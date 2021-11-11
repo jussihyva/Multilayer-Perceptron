@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/08 13:35:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/11 14:27:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@
 
 int	main(void)
 {
-	t_size_2d		size;
-	t_matrix		*input;
-	t_matrix		*weight;
-	t_vector		*bias;
-	t_matrix		*y;
-	t_matrix		*z;
-	t_matrix		*y_hat;
-	t_vector		*cost;
-	size_t			num_of_examples;
-	size_t			num_of_functions;
-	size_t			num_of_nodes;
+	t_size_2d			size;
+	t_matrix			*input;
+	t_matrix			*weight;
+	t_vector			*bias;
+	t_matrix			*y;
+	t_matrix			*z;
+	t_matrix			*y_hat;
+	t_vector			*cost;
+	size_t				num_of_examples;
+	size_t				num_of_functions;
+	size_t				num_of_nodes;
+	t_read_attributes	*read_attributes;
 
+	read_attributes = ft_read_file("../Data/data.csv", E_CSV);
 	num_of_examples = 5;
 	num_of_functions = 10;
 	num_of_nodes = num_of_functions;

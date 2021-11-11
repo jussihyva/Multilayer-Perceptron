@@ -11,7 +11,7 @@
 			"program": "${workspaceFolder}/C/training",
 			"args": [],
 			"stopAtEntry": false,
-			"cwd": "${fileDirname}",
+			"cwd": "${workspaceFolder}/C",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb"

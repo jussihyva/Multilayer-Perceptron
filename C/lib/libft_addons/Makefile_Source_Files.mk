@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/07 14:28:42 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 17:16:56 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/11 14:21:47 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,11 @@ SRC_C_FILES		=	ft_radian.c ft_max_int.c ft_min_int.c \
 					ft_openssl_init.c ft_openssl_connect.c \
 					ft_openssl_rel_conn.c ft_stack_push.c ft_stack_pop.c \
 					ft_enqueue.c ft_dequeue.c ft_is_queue_empty.c \
-					ft_queue_init.c \
+					ft_queue_init.c ft_queue_remove.c \
 					ft_bt_instert.c ft_bt_print.c ft_bt_find.c ft_bt_remove.c \
 					ft_prio_enqueue.c ft_prio_dequeue.c ft_print_memory.c \
 					ft_open_fd.c ft_arg_parser.c ft_print_leaks.c \
 					ft_strarraydel.c ft_influxdb_connect.c ft_file_create.c \
-					ft_home_dir.c ft_influxdb_write.c
+					ft_home_dir.c ft_influxdb_write.c ft_read_file.c \
+					ft_strsplit_ex.c ft_strarray_print.c
 SRC_H_FILES		=	libft_addons.h libft_addons_against_norm.h
