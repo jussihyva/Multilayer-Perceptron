@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dequeue.c                                       :+:      :+:    :+:   */
+/*   ml_vector_remove.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/12 08:53:18 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 19:23:15 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/11 19:52:18 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/11 19:55:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_addons.h"
+#include "libml.h"
 
-void	*ft_dequeue(t_queue *queue)
+void	ml_vector_remove(t_vector **vector)
 {
-	void	*data;
-
-	data = NULL;
-	if (!*queue->out_stack)
-	{
-		while (*queue->in_stack)
-		{
-			data = ft_stack_pop(queue->in_stack);
-			ft_stack_push(queue->out_stack, data);
-		}
-	}
-	data = ft_stack_pop(queue->out_stack);
-	queue->len--;
-	return (data);
+	ft_memdel(&(*vector)->data);
+	ft_memdel((void **)vector);
+	return ;
 }

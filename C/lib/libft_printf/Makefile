@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 15:40:15 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/11 19:31:05 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ YELLOW			=	\033[0;33m
 END				=	\033[0m
 
 .PHONY: all
-all: $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
+all: $(TARGET_H_FILES) $(TARGET_C_ARCHIVES)
 	@echo -n ""
 
 $(TARGET_H_FILES): $(H_FILES)

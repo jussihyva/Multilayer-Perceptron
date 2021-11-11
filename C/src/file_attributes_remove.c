@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dequeue.c                                       :+:      :+:    :+:   */
+/*   file_attributes_remove.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/12 08:53:18 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 19:23:15 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/11 20:08:39 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/11 20:09:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_addons.h"
+#include "training.h"
 
-void	*ft_dequeue(t_queue *queue)
+void	file_attributes_remove(t_file_attributes **file_attributes)
 {
-	void	*data;
+	size_t		i;
 
-	data = NULL;
-	if (!*queue->out_stack)
+	i = -1;
+	while (++i < (*file_attributes)->rows)
 	{
-		while (*queue->in_stack)
-		{
-			data = ft_stack_pop(queue->in_stack);
-			ft_stack_push(queue->out_stack, data);
-		}
+		ft_strarraydel(&(*file_attributes)->row_array[i]);
 	}
-	data = ft_stack_pop(queue->out_stack);
-	queue->len--;
-	return (data);
+	ft_memdel((void **)&(*file_attributes)->row_array);
+	ft_memdel((void **)file_attributes);
+	return ;
 }

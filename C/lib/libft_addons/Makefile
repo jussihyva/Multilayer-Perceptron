@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 15:38:53 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/11 19:12:45 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ TARGET_C_ARCHIVES	=	$(addprefix ../, $(C_ARCHIVES))
 TARGET_H_FILES		=	$(addprefix ../, $(notdir $(H_FILES)))
 
 .PHONY: all
-all: $(SELF_SIGNED_CRT) $(TARGET_C_ARCHIVES) $(TARGET_H_FILES)
+all: $(SELF_SIGNED_CRT) $(TARGET_H_FILES) $(TARGET_C_ARCHIVES)
 	@echo -n ""
 
 $(TARGET_H_FILES): $(H_FILES)

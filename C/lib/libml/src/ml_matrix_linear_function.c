@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 15:45:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/08 12:36:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/11 20:16:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ml_matrix_linear_function(
 	t_size_2d	x_i;
 	t_size_2d	y_i;
 
-	ml_matrix_print("X", x);
+	// ml_matrix_print("X", x);
 	ml_matrix_print("A", a);
 	ml_vector_print("B", b);
 	x_i.cols = -1;

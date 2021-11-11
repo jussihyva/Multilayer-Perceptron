@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/08 13:18:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/11 19:51:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void			ml_matrix_exp(const t_matrix *const matrix,
 void			ml_matrix_add_double(const t_matrix *const matrix,
 					const double value, t_matrix *const new_matrix);
 void			ml_matrix_remove(t_matrix **matrix);
+void			ml_vector_remove(t_vector **vector);
 void			ml_matrix_print(const char *const name,
 					const t_matrix *const matrix);
 void			ml_matrix_rand(t_matrix *const matrix, const int min,
