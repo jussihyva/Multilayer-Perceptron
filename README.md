@@ -121,24 +121,52 @@ The correlation pictures indicate similar things to Scatter matrix pictures. So,
 
 ### 3.2 Implemented functions
 
-#### 3.2.1 Logistic regression
+Implemented functions are used for [Logistic regression](https://en.m.wikipedia.org/wiki/Logistic_regression).
 
-[Logistic regression](https://en.m.wikipedia.org/wiki/Logistic_regression) functionality is implemented with [sigmoid](https://en.m.wikipedia.org/wiki/Sigmoid_function) equation. Why did I decide to use sigmoid? To be honest I don't know (maybe in the future, I will) any other possible functionality to get a logistic result (0 < x < 1) than sigmoid. And it seems that sigmoid is widely used in machine learning models.
+#### 3.2.1 Linear function
 
-##### 3.2.1.1 Equation of sigmoid
+##### 3.2.1.1 Linear Equation
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;z=wx+b)
+
+#### 3.2.2 Sigmoid function
+
+[sigmoid function](https://en.m.wikipedia.org/wiki/Sigmoid_function) is used in last layer to get results (0 or 1) from a model. Why did I decide to use sigmoid? To be honest I don't know (maybe in the future, I will) any other possible functionality to get a logistic result (0 < x < 1) than sigmoid. And it seems that sigmoid is widely used in machine learning models.
+
+##### 3.2.2.1 Sigmoid Equation
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=-\frac{1}{1+e^{-z}}=\sigma)
 
-##### 3.2.1.2 Sigmoid curve (Values from -5 to 5)
+<img src="Documentation/Sigmoid.jpg" alt="drawing" width="600"/>
 
-<img src="Documentation/Sigmoid.png" alt="drawing" width="600"/>
+#### 3.2.3 Cost function
 
-#### 3.2.2 Cost function for logistic regression
+##### 3.2.3.1 Loss Equation
 
-##### 3.2.2.1 Loss
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y},y)=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y}^{(i)},y^{(i)})=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
-
-##### 3.2.2.2 Cost
+##### 3.2.3.2 Cost Equation
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=\frac{1}{m}\sum_{i=1}^{m}\ell(\hat{y}^{(i)},y^{(i)}))
+
+#### 3.2.4 Derivatives
+
+##### 3.2.4.1 derivative of y hat
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{\hat{y}}=-(\frac{y}{\hat{y}}+\frac{1-y}{1-\hat{y}}))
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>\hat{y}"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}\hat{y}})
+
+##### 3.2.4.2 derivative of z
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{z}=\hat{y}-y)
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>z"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}z)
+
+##### 3.2.4.3 derivative of w
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{w}=x*\delta{z})
+
+##### 3.2.4.4 derivative of b
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b}=\delta{z})
