@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ml_matrix_remove.c                                 :+:      :+:    :+:   */
+/*   dataset_remove.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 18:06:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 23:27:26 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/11 23:23:40 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/11 23:26:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libml.h"
+#include "training.h"
 
-void	ml_matrix_remove(t_matrix **matrix)
+void	dataset_remove(t_dataset **dataset)
 {
-	if (*matrix)
-	{
-		ft_memdel((void **)&(*matrix)->table);
-		ft_memdel((void **)&(*matrix)->data);
-		ft_memdel((void **)matrix);
-	}
+	ml_matrix_remove(&(*dataset)->x);
+	ml_matrix_remove(&(*dataset)->y);
+	ft_memdel((void **)dataset);
 	return ;
 }
