@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 23:25:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/12 20:21:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,7 @@ typedef struct s_dataset
 t_dataset	*read_dataset(const char *const file_path);
 void		file_attributes_remove(t_file_attributes **file_attributes);
 void		dataset_remove(t_dataset **dataset);
+t_vector	*calculate_derivative_of_z(t_matrix *y_hat, t_matrix *y);
+t_matrix	*calculate_derivative_of_w(t_matrix *x, t_vector *derivative_z);
 
 #endif

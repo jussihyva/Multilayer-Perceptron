@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 19:51:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/12 16:10:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define LIBML_H
 # include "libft_addons.h"
 # include <time.h>
+
+# define EPSILON		0.0000001
 
 typedef enum e_sign
 {
