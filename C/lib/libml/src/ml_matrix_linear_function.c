@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 15:45:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 20:16:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/12 15:44:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,36 @@
 
 void	ml_matrix_linear_function(
 						const t_matrix *const x,
-						const t_matrix *const a,
+						const t_matrix *const w,
 						const t_vector *const b,
-						const t_matrix *const y)
+						const t_matrix *const z)
 {
-	t_size_2d	x_i;
-	t_size_2d	y_i;
+	size_t		x_row;
+	size_t		x_col;
+	size_t		z_row;
 
 	// ml_matrix_print("X", x);
-	ml_matrix_print("A", a);
-	ml_vector_print("B", b);
-	x_i.cols = -1;
-	while (++x_i.cols < x->size.cols)
+	ml_matrix_print("Weight", w);
+	ml_vector_print("Bias", b);
+	x_col = -1;
+	while (++x_col < x->size.cols)
 	{
-		y_i.cols = x_i.cols;
-		y_i.rows = -1;
-		while (++y_i.rows < y->size.rows)
+		z_row = -1;
+		while (++z_row < z->size.rows)
 		{
-			x_i.rows = -1;
-			while (++x_i.rows < x->size.rows)
+			x_row = -1;
+			while (++x_row < x->size.rows)
 			{
-				((double **)y->table)[y_i.rows][y_i.cols]
-					+= ((double **)a->table)[y_i.rows][x_i.rows]
-					* ((double **)x->table)[x_i.rows][x_i.cols];
+				((double **)z->table)[z_row][x_col]
+					+= ((double **)w->table)[z_row][x_row]
+					* ((double **)x->table)[x_row][x_col];
 			}
-			((double **)y->table)[y_i.rows][y_i.cols]
-				+= ((double *)b->data)[y_i.rows];
+		}
+		z_row = -1;
+		while (++z_row < z->size.rows)
+		{
+			((double **)z->table)[z_row][x_col]
+				+= ((double *)b->data)[z_row];
 		}
 	}
 	return ;
