@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 23:23:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/12 12:41:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(void)
 	ml_sigmoid(z, y_hat);
 	cost = ml_vector_create(num_of_nodes);
 	ml_matrix_cost(y, y_hat, cost);
-	// ml_matrix_print("Y hat", y_hat);
+	// ml_matrix_print("X", dataset->x);
 	// ml_vector_print("Cost", cost);
 	ml_matrix_remove(&y);
 	ml_matrix_remove(&z);
