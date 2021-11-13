@@ -6,11 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 23:23:40 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 23:26:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/13 14:27:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "training.h"
+#include "multilayer_perceptron.h"
 
 void	dataset_remove(t_dataset **dataset)
 {

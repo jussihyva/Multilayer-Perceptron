@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/05 12:20:00 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/13 14:18:09 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,7 @@ LIB_FILES			+=	$(addprefix -l , $(patsubst lib%.a, %, $(GLOBAL_LIBS)))
 LIB_FOLDERS			=	$(addprefix -L, $(GLOBAL_LIB_FOLDERS))
 
 # Path folders for H, C, O and APP files
-H_FILES				=	$(addprefix $(INCLUDE)/, $(patsubst %, %.h, $(C_PROGRAMS)))
-H_FILES				+=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
+H_FILES				=	$(addprefix $(INCLUDE)/, $(SRC_H_FILES))
 C_FILES				=	$(addprefix $(SRC)/, $(patsubst %, %.c, $(C_PROGRAMS)))
 C_FILES				+=	$(addprefix $(SRC)/, $(SRC_C_FILES))
 O_FILES				=	$(addprefix $(OBJ)/, $(patsubst %.c, %.o, $(SRC_C_FILES)))

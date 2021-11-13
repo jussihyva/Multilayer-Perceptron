@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:37:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 19:34:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/13 20:07:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static t_bool	read_csv_file(
 			&read_attributes->line);
 	while (read_attributes->ret > 0)
 	{
-		// ft_printf("%3d: %s\n", read_attributes->rows,
-		// 	read_attributes->line);
 		array = ft_strsplit_ex(read_attributes->line, ',', &len, E_TRUE);
 		ft_strdel(&read_attributes->line);
 		add_array_to_queue(array, queue);
@@ -45,6 +43,21 @@ static t_bool	read_csv_file(
 		read_failure = E_TRUE;
 	ft_strdel(&read_attributes->line);
 	return (read_failure);
+}
+
+static char	***move_rows_from_queue_to_array(t_queue *queue)
+{
+	const char		***array;
+	size_t			i;
+
+	array = ft_memalloc(sizeof(*array) * queue->len);
+	i = 0;
+	while (!ft_is_queue_empty(queue))
+	{
+		array[i] = (const char **)ft_dequeue(queue);
+		i++;
+	}
+	return (array);
 }
 
 t_file_attributes	*ft_read_file(
@@ -66,14 +79,7 @@ t_file_attributes	*ft_read_file(
 	else
 		file_attributes->read_failure = E_TRUE;
 	file_attributes->rows = queue->len;
-	file_attributes->row_array = ft_memalloc(sizeof(*file_attributes->row_array)
-			* file_attributes->rows);
-	i = 0;
-	while (!ft_is_queue_empty(queue))
-	{
-		file_attributes->row_array[i] = (const char **)ft_dequeue(queue);
-		i++;
-	}
+	file_attributes->row_array = move_rows_from_queue_to_array(queue);
 	ft_queue_remove(&queue);
 	ft_memdel((void **)&read_attributes);
 	return (file_attributes);

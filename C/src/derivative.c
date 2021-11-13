@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/12 20:44:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/13 19:26:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "training.h"
+#include "multilayer_perceptron.h"
 
-t_vector	*calculate_derivative_of_z(t_matrix *y_hat, t_matrix *y)
+t_vector	*calculate_derivative_z(t_matrix *y_hat, t_matrix *y)
 {
 	t_vector	*derivative_z;
 	t_size_2d	i;
@@ -38,7 +38,7 @@ t_vector	*calculate_derivative_of_z(t_matrix *y_hat, t_matrix *y)
 	return (derivative_z);
 }
 
-t_matrix	*calculate_derivative_of_w(t_matrix *x, t_vector *derivative_z)
+t_matrix	*calculate_derivative_w(t_matrix *x, t_vector *derivative_z)
 {
 	t_matrix	*derivative_w;
 	t_size_2d	i_w;
@@ -64,4 +64,16 @@ t_matrix	*calculate_derivative_of_w(t_matrix *x, t_vector *derivative_z)
 		}
 	}
 	return (derivative_w);
+}
+
+t_vector	*calculate_derivative_b(t_vector *derivative_z)
+{
+	t_vector	*derivative_b;
+	double		*data_b;
+
+	derivative_b = ml_vector_create(derivative_z->size);
+	data_b = (double *)derivative_b->data;
+	ft_memcpy(derivative_b->data, derivative_z->data,
+		sizeof(double) * derivative_b->size);
+	return (derivative_b);
 }

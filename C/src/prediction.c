@@ -6,11 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/03 15:23:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/13 15:22:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "prediction.h"
+#include "multilayer_perceptron.h"
 
 int	main(void)
 {

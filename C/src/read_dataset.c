@@ -6,11 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/12 13:44:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/13 19:48:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "training.h"
+#include "multilayer_perceptron.h"
 
 static t_matrix	*update_content_of_matrix(
 							const char ***row_array,
@@ -123,25 +123,10 @@ static size_t	*get_valid_columns_and_create_matrix_y(
 	return (valid_columns);
 }
 
-t_dataset	*read_dataset(const char *const file_path)
+static void	select_functions_print(void)
 {
-	t_file_attributes	*file_attributes;
-	size_t				i;
-	t_dataset			*dataset;
-	size_t				*valid_columns;
+	size_t		i;
 
-	dataset = ft_memalloc(sizeof(*dataset));
-	file_attributes = ft_read_file(file_path, E_CSV);
-	valid_columns = get_valid_columns_and_create_matrix(file_attributes->rows,
-			g_dataset_file_x_columns, &dataset->x);
-	update_content_of_matrix(file_attributes->row_array, valid_columns,
-		dataset->x);
-	ft_memdel((void **)&valid_columns);
-	valid_columns = get_valid_columns_and_create_matrix_y(file_attributes->rows,
-			g_dataset_file_y_columns, &dataset->y);
-	update_content_of_matrix_y(file_attributes->row_array, valid_columns,
-		dataset->y);
-	ft_memdel((void **)&valid_columns);
 	i = -1;
 	while (++i < NUMBER_OF_COLUMNS)
 	{
@@ -157,6 +142,28 @@ t_dataset	*read_dataset(const char *const file_path)
 			ft_printf(" %s", g_dataset_file_column_names[i]);
 	}
 	ft_printf("\n");
+	return ;
+}
+
+t_dataset	*read_dataset(const char *const file_path)
+{
+	t_file_attributes	*file_attributes;
+	t_dataset			*dataset;
+	size_t				*valid_columns;
+
+	dataset = ft_memalloc(sizeof(*dataset));
+	file_attributes = ft_read_file(file_path, E_CSV);
+	valid_columns = get_valid_columns_and_create_matrix(file_attributes->rows,
+			g_dataset_file_x_columns, &dataset->x);
+	update_content_of_matrix(file_attributes->row_array, valid_columns,
+		dataset->x);
+	ft_memdel((void **)&valid_columns);
+	valid_columns = get_valid_columns_and_create_matrix_y(file_attributes->rows,
+			g_dataset_file_y_columns, &dataset->y);
+	update_content_of_matrix_y(file_attributes->row_array, valid_columns,
+		dataset->y);
+	ft_memdel((void **)&valid_columns);
+	select_functions_print();
 	file_attributes_remove(&file_attributes);
 	return (dataset);
 }
