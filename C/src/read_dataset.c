@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 19:48:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 10:02:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,23 +147,23 @@ static void	select_functions_print(void)
 
 t_dataset	*read_dataset(const char *const file_path)
 {
-	t_file_attributes	*file_attributes;
-	t_dataset			*dataset;
-	size_t				*valid_columns;
+	t_file_attr		*file_attr;
+	t_dataset		*dataset;
+	size_t			*valid_columns;
 
 	dataset = ft_memalloc(sizeof(*dataset));
-	file_attributes = ft_read_file(file_path, E_CSV);
-	valid_columns = get_valid_columns_and_create_matrix(file_attributes->rows,
+	file_attr = ft_read_file(file_path, E_CSV);
+	valid_columns = get_valid_columns_and_create_matrix(file_attr->rows,
 			g_dataset_file_x_columns, &dataset->x);
-	update_content_of_matrix(file_attributes->row_array, valid_columns,
+	update_content_of_matrix(file_attr->row_array, valid_columns,
 		dataset->x);
 	ft_memdel((void **)&valid_columns);
-	valid_columns = get_valid_columns_and_create_matrix_y(file_attributes->rows,
+	valid_columns = get_valid_columns_and_create_matrix_y(file_attr->rows,
 			g_dataset_file_y_columns, &dataset->y);
-	update_content_of_matrix_y(file_attributes->row_array, valid_columns,
+	update_content_of_matrix_y(file_attr->row_array, valid_columns,
 		dataset->y);
 	ft_memdel((void **)&valid_columns);
 	select_functions_print();
-	file_attributes_remove(&file_attributes);
+	file_attr_remove(&file_attr);
 	return (dataset);
 }

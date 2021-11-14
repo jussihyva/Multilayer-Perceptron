@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 19:24:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 09:50:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,10 @@
 
 int	main(void)
 {
-	t_grad_descent_attributes	grad_descent_attributes;
-	t_logistic_reg_attributes	*logistic_reg_attributes;
-	t_layer						*layer;
+	t_grad_descent_attr		*grad_descent_attr;
 
-	logistic_reg_attributes = ft_memalloc(sizeof(*logistic_reg_attributes));
-	grad_descent_attributes.dataset = read_dataset("../Data/data.csv");
-	logistic_reg_attributes->neural_network
-		= neural_network_initialize(grad_descent_attributes.dataset);
-	layer = &logistic_reg_attributes->neural_network->layers[0];
-	logistic_reg_attributes->cost = ml_vector_create(layer->num_of_nodes);
-	logistic_regression(&grad_descent_attributes, logistic_reg_attributes);
-	dataset_remove(&grad_descent_attributes.dataset);
-	logistic_reg_attributes_remove(&logistic_reg_attributes);
+	grad_descent_attr = grad_descent_attr_initialize();
+	grad_descent(grad_descent_attr);
+	grad_descent_attr_remove(&grad_descent_attr);
 	return (0);
 }

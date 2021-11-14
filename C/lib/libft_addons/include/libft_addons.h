@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/11 19:39:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 09:57:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,21 @@ typedef struct s_queue
 	t_list		**out_stack;
 }				t_queue;
 
-typedef struct s_read_attributes
+typedef struct s_read_attr
 {
 	t_bool			read_failure;
 	int				fd;
 	int				ret;
 	char			*line;
-}				t_read_attributes;
+}				t_read_attr;
 
-typedef struct s_file_attributes
+typedef struct s_file_attr
 {
 	t_bool			read_failure;
 	size_t			rows;
 	t_file_type		file_type;
 	const char		***row_array;
-}				t_file_attributes;
+}				t_file_attr;
 
 typedef struct s_argc_argv
 {
@@ -314,7 +314,7 @@ t_bool					ft_influxdb_write(
 void					ft_strarray_print(
 							const char **const array);
 void					ft_strarray_trim(const char **const value_array);
-t_file_attributes		*ft_read_file(const char *const file_path,
+t_file_attr				*ft_read_file(const char *const file_path,
 							const t_file_type file_type);
 const char				**ft_strsplit_ex(const char *const str,
 							const char delim, size_t *const number_of_values,

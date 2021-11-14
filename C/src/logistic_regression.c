@@ -6,13 +6,15 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 20:23:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 09:39:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static void	calculate_derivatives(t_layer *layer, t_dataset *dataset)
+static void	calculate_derivatives(
+							t_layer *const layer,
+							t_dataset *dataset)
 {
 	layer->derivative_z = calculate_derivative_z(layer->y_hat, dataset->y);
 	ml_vector_print("dz", layer->derivative_z);
@@ -25,29 +27,27 @@ static void	calculate_derivatives(t_layer *layer, t_dataset *dataset)
 }
 
 void	logistic_regression(
-				const t_grad_descent_attributes *const grad_descent_attributes,
-				t_logistic_reg_attributes *const logistic_reg_attributes)
+				const t_grad_descent_attr *const grad_descent_attr,
+				t_layer *const layer)
 {
-	t_layer			*layer;
 	t_dataset		*dataset;
 
-	layer = &logistic_reg_attributes->neural_network->layers[0];
-	dataset = grad_descent_attributes->dataset;
+	dataset = grad_descent_attr->dataset;
 	linear_function(layer);
 	ml_sigmoid(layer->z, layer->y_hat);
-	ml_matrix_cost(dataset->y, layer->y_hat, logistic_reg_attributes->cost);
-	ml_vector_print("Cost", logistic_reg_attributes->cost);
+	ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
+	ml_vector_print("Cost", grad_descent_attr->cost);
 	calculate_derivatives(layer, dataset);
 	return ;
 }
 
-void	logistic_reg_attributes_remove(
-						t_logistic_reg_attributes **logistic_reg_attributes)
+void	logistic_reg_attr_remove(
+						t_logistic_reg_attr **logistic_reg_attr)
 {
 	t_layer				*layer;
 	t_neural_network	*neural_network;
 
-	neural_network = (*logistic_reg_attributes)->neural_network;
+	neural_network = (*logistic_reg_attr)->neural_network;
 	layer = &neural_network->layers[0];
 	ml_matrix_remove(&layer->z);
 	ml_matrix_remove(&layer->y_hat);
@@ -56,9 +56,8 @@ void	logistic_reg_attributes_remove(
 	ml_vector_remove(&layer->derivative_b);
 	ml_matrix_remove(&layer->derivative_w);
 	ml_vector_remove(&layer->derivative_z);
-	ml_vector_remove(&(*logistic_reg_attributes)->cost);
 	ft_memdel((void **)&neural_network->layers);
-	ft_memdel((void **)&(*logistic_reg_attributes)->neural_network);
-	ft_memdel((void **)logistic_reg_attributes);
+	ft_memdel((void **)&(*logistic_reg_attr)->neural_network);
+	ft_memdel((void **)logistic_reg_attr);
 	return ;
 }

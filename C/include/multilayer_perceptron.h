@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 19:50:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 09:55:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_layer
 	t_vector	*bias;
 	t_matrix	*z;
 	t_matrix	*y_hat;
+	t_vector	*derivative_y_hat;
 	t_vector	*derivative_z;
 	t_matrix	*derivative_w;
 	t_vector	*derivative_b;
@@ -126,33 +127,36 @@ typedef struct s_neural_network
 	t_layer		*layers;
 }				t_neural_network;
 
-typedef struct s_logistic_reg_attributes
+typedef struct s_logistic_reg_attr
 {
 	t_neural_network	*neural_network;
-	t_vector			*cost;
-	t_vector			*derivative_y_hat;
-}				t_logistic_reg_attributes;
+}				t_logistic_reg_attr;
 
-typedef struct s_grad_descent_attributes
+typedef struct s_grad_descent_attr
 {
-	t_dataset			*dataset;
-}				t_grad_descent_attributes;
+	t_dataset				*dataset;
+	t_logistic_reg_attr		*logistic_reg_attr;
+	t_vector				*cost;
+}				t_grad_descent_attr;
 
 t_dataset			*read_dataset(const char *const file_path);
-void				file_attributes_remove(t_file_attributes **file_attributes);
+void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(t_dataset **dataset);
 t_vector			*calculate_derivative_z(t_matrix *y_hat, t_matrix *y);
 t_matrix			*calculate_derivative_w(t_matrix *x,
 						t_vector *derivative_z);
 t_vector			*calculate_derivative_b(t_vector *derivative_z);
 void				logistic_regression(
-						const t_grad_descent_attributes \
-						*const grad_descent_attributes,
-						t_logistic_reg_attributes \
-						*const logistic_reg_attributes);
+						const t_grad_descent_attr \
+						*const grad_descent_attr,
+						t_layer *const layer);
 void				linear_function(const t_layer *const layer);
 t_neural_network	*neural_network_initialize(t_dataset *dataset);
-void				logistic_reg_attributes_remove(
-						t_logistic_reg_attributes **logistic_reg_attributes);
+void				grad_descent_attr_remove(
+						t_grad_descent_attr **grad_descent_attr);
+void				logistic_reg_attr_remove(
+						t_logistic_reg_attr **logistic_reg_attr);
+t_grad_descent_attr	*grad_descent_attr_initialize(void);
+void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 
 #endif

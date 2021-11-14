@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_attributes_remove.c                           :+:      :+:    :+:   */
+/*   file_attr_remove.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:08:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 14:27:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/14 10:03:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-void	file_attributes_remove(t_file_attributes **file_attributes)
+void	file_attr_remove(t_file_attr **file_attr)
 {
 	size_t		i;
 
 	i = -1;
-	while (++i < (*file_attributes)->rows)
-	{
-		ft_strarraydel(&(*file_attributes)->row_array[i]);
-	}
-	ft_memdel((void **)&(*file_attributes)->row_array);
-	ft_memdel((void **)file_attributes);
+	while (++i < (*file_attr)->rows)
+		ft_strarraydel(&(*file_attr)->row_array[i]);
+	ft_memdel((void **)&(*file_attr)->row_array);
+	ft_memdel((void **)file_attr);
 	return ;
 }
