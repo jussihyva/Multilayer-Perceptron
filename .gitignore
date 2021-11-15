@@ -1,3 +1,6 @@
 __pycache__
 *.dSYM
 Data/.~lock.data.csv#
+.local
+.ipython
+.cache
