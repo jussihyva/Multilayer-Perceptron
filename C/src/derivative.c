@@ -6,21 +6,23 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 19:26:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 13:05:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-t_vector	*calculate_derivative_z(t_matrix *y_hat, t_matrix *y)
+void	calculate_derivative_z(
+					const t_matrix *const y_hat,
+					const t_matrix *const y,
+					t_vector *const derivative_z)
 {
-	t_vector	*derivative_z;
 	t_size_2d	i;
 	double		**table_y;
 	double		**table_y_hat;
 	double		*data_z;
 
-	derivative_z = ml_vector_create(y->size.rows);
+	ml_vector_reset(derivative_z);
 	table_y = (double **)y->table;
 	table_y_hat = (double **)y_hat->table;
 	data_z = (double *)derivative_z->data;
@@ -35,17 +37,19 @@ t_vector	*calculate_derivative_z(t_matrix *y_hat, t_matrix *y)
 		}
 		data_z[i.rows] /= y->size.cols;
 	}
-	return (derivative_z);
+	return ;
 }
 
-t_matrix	*calculate_derivative_w(t_matrix *x, t_vector *derivative_z)
+void	calculate_derivative_w(
+						const t_matrix *const x,
+						const t_vector *const derivative_z,
+						t_matrix *const derivative_w)
 {
-	t_matrix	*derivative_w;
 	t_size_2d	i_w;
 	t_size_2d	i_x;
 	double		**table_w;
 
-	derivative_w = ml_matrix_create(derivative_z->size, x->size.rows);
+	ml_matrix_reset(derivative_w);
 	table_w = (double **)derivative_w->table;
 	i_w.rows = -1;
 	while (++i_w.rows < derivative_w->size.rows)
@@ -63,17 +67,18 @@ t_matrix	*calculate_derivative_w(t_matrix *x, t_vector *derivative_z)
 			table_w[i_w.rows][i_w.cols] /= x->size.cols;
 		}
 	}
-	return (derivative_w);
+	return ;
 }
 
-t_vector	*calculate_derivative_b(t_vector *derivative_z)
+void	calculate_derivative_b(
+					const t_vector *const derivative_z,
+					t_vector *const derivative_b)
 {
-	t_vector	*derivative_b;
 	double		*data_b;
 
-	derivative_b = ml_vector_create(derivative_z->size);
+	ml_vector_reset(derivative_b);
 	data_b = (double *)derivative_b->data;
 	ft_memcpy(derivative_b->data, derivative_z->data,
 		sizeof(double) * derivative_b->size);
-	return (derivative_b);
+	return ;
 }

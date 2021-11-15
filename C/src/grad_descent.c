@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 11:35:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 12:47:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static void	weight_bias_update(t_layer *const layer, const double learning_rate)
 	total_size = layer->weight->size.rows * layer->weight->size.cols;
 	i = -1;
 	while (++i < total_size)
-		((double *)layer->weight->data)[i] += learning_rate
+		((double *)layer->weight->data)[i] -= learning_rate
 			* ((double *)layer->derivative_w->data)[i];
 	total_size = layer->bias->size;
 	i = -1;
 	while (++i < total_size)
-		((double *)layer->bias->data)[i] += learning_rate
+		((double *)layer->bias->data)[i] -= learning_rate
 			* ((double *)layer->derivative_b->data)[i];
 	return ;
 }
@@ -34,11 +34,11 @@ static void	calculate_derivatives(
 							t_layer *const layer,
 							t_dataset *dataset)
 {
-	layer->derivative_z = calculate_derivative_z(layer->y_hat, dataset->y);
+	calculate_derivative_z(layer->y_hat, dataset->y, layer->derivative_z);
 	ml_vector_print("dz", layer->derivative_z);
-	layer->derivative_w = calculate_derivative_w(dataset->x,
-			layer->derivative_z);
-	layer->derivative_b = calculate_derivative_b(layer->derivative_z);
+	calculate_derivative_w(dataset->x, layer->derivative_z,
+		layer->derivative_w);
+	calculate_derivative_b(layer->derivative_z, layer->derivative_b);
 	ml_matrix_print("dw", layer->derivative_w);
 	ml_vector_print("db", layer->derivative_b);
 	return ;

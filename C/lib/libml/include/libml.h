@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/13 14:52:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 13:01:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ void			ml_vector_print(const char *const name,
 int				ml_fast_rand(void);
 void			ml_vector_rand(t_vector *const vector, const int min,
 					const int max);
+void			ml_vector_reset(t_vector *const vector);
+void			ml_matrix_reset(t_matrix *const matrix);
 
 #endif
