@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 14:15:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 15:30:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,19 @@ void	calculate_derivative_b(
 					t_vector *const derivative_b)
 {
 	double		*data_b;
-	double		**table_b;
+	double		**table_z;
 	size_t		node_id;
 	size_t		example_id;
 
 	ml_vector_reset(derivative_b);
 	data_b = (double *)derivative_b->data;
-	table_b = (double **)derivative_z->table;
+	table_z = (double **)derivative_z->table;
 	node_id = -1;
 	while (++node_id < derivative_z->size.rows)
 	{
 		example_id = -1;
 		while (++example_id < derivative_z->size.cols)
-		{
-			data_b[node_id] += table_b[node_id][example_id];
-		}
+			data_b[node_id] += table_z[node_id][example_id];
 		data_b[node_id] /= derivative_z->size.cols;
 	}
 	return ;
