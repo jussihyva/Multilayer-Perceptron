@@ -6,11 +6,43 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 09:50:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 11:35:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static void	weight_bias_update(t_layer *const layer, const double learning_rate)
+{
+	size_t		i;
+	size_t		total_size;
+
+	total_size = layer->weight->size.rows * layer->weight->size.cols;
+	i = -1;
+	while (++i < total_size)
+		((double *)layer->weight->data)[i] += learning_rate
+			* ((double *)layer->derivative_w->data)[i];
+	total_size = layer->bias->size;
+	i = -1;
+	while (++i < total_size)
+		((double *)layer->bias->data)[i] += learning_rate
+			* ((double *)layer->derivative_b->data)[i];
+	return ;
+}
+
+static void	calculate_derivatives(
+							t_layer *const layer,
+							t_dataset *dataset)
+{
+	layer->derivative_z = calculate_derivative_z(layer->y_hat, dataset->y);
+	ml_vector_print("dz", layer->derivative_z);
+	layer->derivative_w = calculate_derivative_w(dataset->x,
+			layer->derivative_z);
+	layer->derivative_b = calculate_derivative_b(layer->derivative_z);
+	ml_matrix_print("dw", layer->derivative_w);
+	ml_vector_print("db", layer->derivative_b);
+	return ;
+}
 
 t_grad_descent_attr	*grad_descent_attr_initialize(void)
 {
@@ -23,6 +55,10 @@ t_grad_descent_attr	*grad_descent_attr_initialize(void)
 	grad_descent_attr->dataset = read_dataset("../Data/data.csv");
 	grad_descent_attr->logistic_reg_attr->neural_network
 		= neural_network_initialize(grad_descent_attr->dataset);
+	grad_descent_attr->hyper_params
+		= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
+	grad_descent_attr->hyper_params->iters = 10;
+	grad_descent_attr->hyper_params->learning_rate = 0.2;
 	layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
 	grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
 	return (grad_descent_attr);
@@ -30,10 +66,22 @@ t_grad_descent_attr	*grad_descent_attr_initialize(void)
 
 void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 {
-	t_layer					*layer;
+	t_layer			*layer;
+	t_dataset		*dataset;
+	size_t			i;
 
 	layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
-	logistic_regression(grad_descent_attr, layer);
+	dataset = grad_descent_attr->dataset;
+	i = -1;
+	while (++i < grad_descent_attr->hyper_params->iters)
+	{
+		logistic_regression(layer);
+		ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
+		ml_vector_print("Cost", grad_descent_attr->cost);
+		calculate_derivatives(layer, dataset);
+		weight_bias_update(layer,
+			grad_descent_attr->hyper_params->learning_rate);
+	}
 	return ;
 }
 

@@ -123,9 +123,9 @@ The correlation pictures indicate similar things to Scatter matrix pictures. So,
 
 Implemented functions are used for [Logistic regression](https://en.m.wikipedia.org/wiki/Logistic_regression).
 
-#### 3.2.1 Linear function
+#### 3.2.1 Logistic regression
 
-##### 3.2.1.1 Linear Equation
+##### 3.2.1.1 Linear function
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;z=wx+b)
 
@@ -139,34 +139,42 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 <img src="Documentation/Sigmoid.jpg" alt="drawing" width="600"/>
 
-#### 3.2.3 Cost function
+#### 3.2.3 Gradient descent
 
-##### 3.2.3.1 Loss Equation
+##### 3.2.3.1 Loss function
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y},y)=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
 
-##### 3.2.3.2 Cost Equation
+##### 3.2.3.2 Cost function
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=\frac{1}{m}\sum_{i=1}^{m}\ell(\hat{y}^{(i)},y^{(i)}))
 
-#### 3.2.4 Derivatives
+##### 3.2.3.3 Derivative functions
 
-##### 3.2.4.1 derivative of y hat
+##### 3.2.3.3.1 y hat
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{\hat{y}}=-(\frac{y}{\hat{y}}+\frac{1-y}{1-\hat{y}}))
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>\hat{y}"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}\hat{y}})
 
-##### 3.2.4.2 derivative of z
+###### 3.2.3.3.2 z
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{z}=\hat{y}-y)
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>z"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}z)
 
-##### 3.2.4.3 derivative of w
+###### 3.2.3.3.3 weight
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{w}=x*\delta{z})
 
-##### 3.2.4.4 derivative of b
+###### 3.2.3.3.4 bias
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b}=\delta{z})
+
+##### 3.2.3.4 Update weight
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;w=\alpha*\delta{w})
+
+##### 3.2.3.5 Update bias
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;b=\alpha*\delta{b})

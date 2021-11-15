@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 09:55:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 09:51:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,12 @@ typedef struct s_layer
 	t_vector	*derivative_b;
 }				t_layer;
 
+typedef struct s_hyper_params
+{
+	double		learning_rate;
+	size_t		iters;
+}				t_hyper_params;
+
 typedef struct s_neural_network
 {
 	t_layer		*layers;
@@ -136,6 +142,7 @@ typedef struct s_grad_descent_attr
 {
 	t_dataset				*dataset;
 	t_logistic_reg_attr		*logistic_reg_attr;
+	t_hyper_params			*hyper_params;
 	t_vector				*cost;
 }				t_grad_descent_attr;
 
@@ -146,10 +153,7 @@ t_vector			*calculate_derivative_z(t_matrix *y_hat, t_matrix *y);
 t_matrix			*calculate_derivative_w(t_matrix *x,
 						t_vector *derivative_z);
 t_vector			*calculate_derivative_b(t_vector *derivative_z);
-void				logistic_regression(
-						const t_grad_descent_attr \
-						*const grad_descent_attr,
-						t_layer *const layer);
+void				logistic_regression(t_layer *const layer);
 void				linear_function(const t_layer *const layer);
 t_neural_network	*neural_network_initialize(t_dataset *dataset);
 void				grad_descent_attr_remove(

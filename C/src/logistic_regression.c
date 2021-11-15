@@ -6,38 +6,16 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 09:39:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 09:45:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static void	calculate_derivatives(
-							t_layer *const layer,
-							t_dataset *dataset)
+void	logistic_regression(t_layer *const layer)
 {
-	layer->derivative_z = calculate_derivative_z(layer->y_hat, dataset->y);
-	ml_vector_print("dz", layer->derivative_z);
-	layer->derivative_w = calculate_derivative_w(dataset->x,
-			layer->derivative_z);
-	layer->derivative_b = calculate_derivative_b(layer->derivative_z);
-	ml_matrix_print("dw", layer->derivative_w);
-	ml_vector_print("db", layer->derivative_b);
-	return ;
-}
-
-void	logistic_regression(
-				const t_grad_descent_attr *const grad_descent_attr,
-				t_layer *const layer)
-{
-	t_dataset		*dataset;
-
-	dataset = grad_descent_attr->dataset;
 	linear_function(layer);
 	ml_sigmoid(layer->z, layer->y_hat);
-	ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
-	ml_vector_print("Cost", grad_descent_attr->cost);
-	calculate_derivatives(layer, dataset);
 	return ;
 }
 
