@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 09:45:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 13:52:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	logistic_reg_attr_remove(
 	ml_vector_remove(&layer->bias);
 	ml_vector_remove(&layer->derivative_b);
 	ml_matrix_remove(&layer->derivative_w);
-	ml_vector_remove(&layer->derivative_z);
+	ml_matrix_remove(&layer->derivative_z);
 	ft_memdel((void **)&neural_network->layers);
 	ft_memdel((void **)&(*logistic_reg_attr)->neural_network);
 	ft_memdel((void **)logistic_reg_attr);

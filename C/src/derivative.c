@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 13:05:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 14:15:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,70 +15,82 @@
 void	calculate_derivative_z(
 					const t_matrix *const y_hat,
 					const t_matrix *const y,
-					t_vector *const derivative_z)
+					t_matrix *const derivative_z)
 {
-	t_size_2d	i;
+	size_t		node_id;
+	size_t		example_id;
 	double		**table_y;
 	double		**table_y_hat;
-	double		*data_z;
+	double		**table_z;
 
-	ml_vector_reset(derivative_z);
 	table_y = (double **)y->table;
 	table_y_hat = (double **)y_hat->table;
-	data_z = (double *)derivative_z->data;
-	i.rows = -1;
-	while (++i.rows < y->size.rows)
+	table_z = (double **)derivative_z->table;
+	node_id = -1;
+	while (++node_id < y->size.rows)
 	{
-		i.cols = -1;
-		while (++i.cols < y->size.cols)
+		example_id = -1;
+		while (++example_id < y->size.cols)
 		{
-			data_z[i.rows] += table_y_hat[i.rows][i.cols]
-				- table_y[i.rows][i.cols];
+			table_z[node_id][example_id] = table_y_hat[node_id][example_id]
+				- table_y[node_id][example_id];
 		}
-		data_z[i.rows] /= y->size.cols;
 	}
 	return ;
 }
 
 void	calculate_derivative_w(
 						const t_matrix *const x,
-						const t_vector *const derivative_z,
+						const t_matrix *const derivative_z,
 						t_matrix *const derivative_w)
 {
-	t_size_2d	i_w;
-	t_size_2d	i_x;
+	size_t		node_id;
+	size_t		function_id;
+	size_t		example_id;
 	double		**table_w;
 
 	ml_matrix_reset(derivative_w);
 	table_w = (double **)derivative_w->table;
-	i_w.rows = -1;
-	while (++i_w.rows < derivative_w->size.rows)
+	node_id = -1;
+	while (++node_id < derivative_w->size.rows)
 	{
-		i_w.cols = -1;
-		while (++i_w.cols < derivative_w->size.cols)
+		function_id = -1;
+		while (++function_id < derivative_w->size.cols)
 		{
-			i_x.cols = -1;
-			while (++i_x.cols < x->size.cols)
+			example_id = -1;
+			while (++example_id < x->size.cols)
 			{
-				table_w[i_w.rows][i_w.cols]
-					= ((double **)x->table)[i_w.cols][i_x.cols]
-					* ((double *)derivative_z->data)[i_w.rows];
+				table_w[node_id][function_id]
+					+= ((double **)x->table)[function_id][example_id]
+					* ((double **)derivative_z->table)[node_id][example_id];
 			}
-			table_w[i_w.rows][i_w.cols] /= x->size.cols;
+			table_w[node_id][function_id] /= x->size.cols;
 		}
 	}
 	return ;
 }
 
 void	calculate_derivative_b(
-					const t_vector *const derivative_z,
+					const t_matrix *const derivative_z,
 					t_vector *const derivative_b)
 {
 	double		*data_b;
+	double		**table_b;
+	size_t		node_id;
+	size_t		example_id;
 
 	ml_vector_reset(derivative_b);
 	data_b = (double *)derivative_b->data;
-	ft_memcpy(derivative_b->data, derivative_z->data,
-		sizeof(double) * derivative_b->size);
+	table_b = (double **)derivative_z->table;
+	node_id = -1;
+	while (++node_id < derivative_z->size.rows)
+	{
+		example_id = -1;
+		while (++example_id < derivative_z->size.cols)
+		{
+			data_b[node_id] += table_b[node_id][example_id];
+		}
+		data_b[node_id] /= derivative_z->size.cols;
+	}
 	return ;
 }

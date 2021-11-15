@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 12:56:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/08 13:17:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 13:26:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ml_matrix_cost(
 	double		*cost_data;
 	double		value;
 
+	ml_vector_reset(cost);
 	y_table = (double **)y->table;
 	y_hat_table = (double **)y_hat->table;
 	cost_data = (double *)cost->data;

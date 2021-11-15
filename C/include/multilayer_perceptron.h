@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 13:06:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 14:11:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct s_layer
 	t_matrix	*z;
 	t_matrix	*y_hat;
 	t_vector	*derivative_y_hat;
-	t_vector	*derivative_z;
+	t_matrix	*derivative_z;
 	t_matrix	*derivative_w;
 	t_vector	*derivative_b;
 }				t_layer;
@@ -150,11 +150,11 @@ t_dataset			*read_dataset(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(t_dataset **dataset);
 void				calculate_derivative_z(const t_matrix *const y_hat,
-						const t_matrix *const y, t_vector *const derivative_z);
+						const t_matrix *const y, t_matrix *const derivative_z);
 void				calculate_derivative_w(const t_matrix *const x,
-						const t_vector *const derivative_z,
+						const t_matrix *const derivative_z,
 						t_matrix *const derivative_w);
-void				calculate_derivative_b(const t_vector *const derivative_z,
+void				calculate_derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
 void				logistic_regression(t_layer *const layer);
 void				linear_function(const t_layer *const layer);

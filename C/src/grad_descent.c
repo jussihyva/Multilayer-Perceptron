@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 12:47:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/15 14:02:34 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	calculate_derivatives(
 							t_dataset *dataset)
 {
 	calculate_derivative_z(layer->y_hat, dataset->y, layer->derivative_z);
-	ml_vector_print("dz", layer->derivative_z);
+	ml_matrix_print("dz", layer->derivative_z);
 	calculate_derivative_w(dataset->x, layer->derivative_z,
 		layer->derivative_w);
 	calculate_derivative_b(layer->derivative_z, layer->derivative_b);
