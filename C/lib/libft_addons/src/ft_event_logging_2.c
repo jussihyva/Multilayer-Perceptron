@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:21:58 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 11:18:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 19:41:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bool	is_logging_function_activated(void)
 {
 	t_bool	is_active;
 
-	if (g_logging_params)
+	if (g_logging_params.level_colors)
 		is_active = E_TRUE;
 	else
 	{
@@ -34,9 +34,9 @@ void	execute_logging_extensions(t_log_event *event, const char *fmt, ...)
 	i = -1;
 	while (++i < MAX_LOGGING_EXTENSIONS)
 	{
-		if (g_logging_params->logging_extensions[i])
+		if (g_logging_params.logging_extensions[i])
 		{
-			logging_extension = g_logging_params->logging_extensions[i];
+			logging_extension = g_logging_params.logging_extensions[i];
 			if (event->level >= logging_extension->level)
 			{
 				event->additional_event_data
@@ -62,7 +62,7 @@ void	ft_log_error(const char *file, const int line, const char *fmt, ...)
 		event.level = LOG_ERROR;
 		gettimeofday(&event.tv, NULL);
 		lock();
-		if (!g_logging_params->quiet && event.level >= g_logging_params->level)
+		if (!g_logging_params.quiet && event.level >= g_logging_params.level)
 		{
 			va_start(event.ap, fmt);
 			stdout_callback(&event);
@@ -94,5 +94,5 @@ t_logging_level	ft_logging_level_param_validate(const char *level_str)
 
 t_logging_level	ft_log_get_level(void)
 {
-	return (g_logging_params->level);
+	return (g_logging_params.level);
 }

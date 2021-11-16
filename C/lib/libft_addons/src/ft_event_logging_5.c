@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 09:07:03 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 14:26:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 19:44:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_log_trace(const char *file, const int line, const char *fmt, ...)
 		event.level = LOG_TRACE;
 		gettimeofday(&event.tv, NULL);
 		lock();
-		if (!g_logging_params->quiet && event.level >= g_logging_params->level)
+		if (!g_logging_params.quiet && event.level >= g_logging_params.level)
 		{
 			va_start(event.ap, fmt);
 			stdout_callback(&event);
@@ -43,9 +43,9 @@ void	ft_log_trace(const char *file, const int line, const char *fmt, ...)
 
 void	unlock(void)
 {
-	if (g_logging_params->lock)
+	if (g_logging_params.lock)
 	{
-		g_logging_params->lock(1, g_logging_params->udata);
+		g_logging_params.lock(1, g_logging_params.udata);
 	}
 }
 
@@ -61,7 +61,7 @@ void	ft_log_fatal(const char *file, const int line, const char *fmt, ...)
 		event.level = LOG_FATAL;
 		gettimeofday(&event.tv, NULL);
 		lock();
-		if (!g_logging_params->quiet && event.level >= g_logging_params->level)
+		if (!g_logging_params.quiet && event.level >= g_logging_params.level)
 		{
 			va_start(event.ap, fmt);
 			stdout_callback(&event);

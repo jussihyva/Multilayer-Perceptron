@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 17:42:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/09/03 12:43:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 18:27:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static void	split_cmd_argument(
 							t_arg_parser *arg_parser,
 							t_cmd_param_type cmd_param_type)
 {
-	t_input_param_save		fn_input_param_save;
+	t_arg_analyze			fn_arg_analyze;
 	t_argc_argv				*argc_argv;
 	const char				*arg;
 
 	argc_argv = &arg_parser->argc_argv;
-	fn_input_param_save = arg_parser->fn_input_param_save;
+	fn_arg_analyze = arg_parser->fn_arg_analyze;
 	arg = (*argc_argv->argv)[argc_argv->i];
 	if (cmd_param_type == E_OPTIONAL_SHORT)
 	{
@@ -60,13 +60,13 @@ static void	split_cmd_argument(
 		{
 			if (!pre_analyse_argument(arg_parser->options, *arg, argc_argv))
 				cmd_param_type = E_MANDATORY;
-			fn_input_param_save(input_params, *arg, argc_argv, cmd_param_type);
+			fn_arg_analyze(input_params, *arg, argc_argv, cmd_param_type);
 			if (cmd_param_type == E_MANDATORY)
 				break ;
 		}
 	}
 	else if (cmd_param_type == E_MANDATORY || cmd_param_type == E_OPTIONAL_LONG)
-		fn_input_param_save(input_params, *arg, argc_argv, cmd_param_type);
+		fn_arg_analyze(input_params, *arg, argc_argv, cmd_param_type);
 	return ;
 }
 
@@ -78,7 +78,7 @@ const void	*ft_arg_parser(t_arg_parser *arg_parser)
 	void					*input_params;
 
 	argc_argv = &arg_parser->argc_argv;
-	input_params = (void *)arg_parser->fn_input_params_initialize(argc_argv);
+	input_params = (void *)arg_parser->fn_arg_init(argc_argv);
 	while (++argc_argv->i < *argc_argv->argc)
 	{
 		arg = (*argc_argv->argv)[argc_argv->i];

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 14:17:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 19:58:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
 # define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
+# define LEARNING_RATE							0.2
+# define ITERATION_LOOP							5000
 
 static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 		= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
@@ -165,6 +167,23 @@ typedef struct s_influxdb_elem
 	size_t		length;
 }				t_influxdb_elem;
 
+typedef struct s_hyper_parameters
+{
+	size_t					iterations;
+	double					learning_rate;
+}				t_hyper_parameters;
+
+typedef struct s_cmd_args
+{
+	const t_argc_argv		*argc_argv;
+	const t_logging_data	*logging_data;
+	t_logging_level			logging_level;
+	t_bool					print_leaks;
+	t_bool					is_influxdb;
+	const char				*dataset_file;
+	t_hyper_parameters		hyper_parameters;
+}				t_cmd_args;
+
 t_dataset			*read_dataset(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(t_dataset **dataset);
@@ -186,5 +205,10 @@ t_grad_descent_attr	*grad_descent_attr_initialize(void);
 void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 void				send_iteration_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
+void				*arg_init(t_argc_argv *argc_argv);
+void				arg_analyze(void *const input_params,
+						char opt, t_argc_argv *argc_argv,
+						t_cmd_param_type cmd_param_type);
+void				usage_print(void);
 
 #endif

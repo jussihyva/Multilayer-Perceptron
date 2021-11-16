@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 13:20:07 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 15:24:41 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 20:10:05 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_tcp_connection	*ft_influxdb_connect(
 	{
 		SSL_CTX_free(ctx);
 		FT_LOG_WARN("Connection setup to Influxdb failed!");
+		FT_LOG_ERROR("Connection setup to Influxdb failed!");
 	}
 	ft_strdel(&cert_file);
 	ft_strdel(&private_key_file);

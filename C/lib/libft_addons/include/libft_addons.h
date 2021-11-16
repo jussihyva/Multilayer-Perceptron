@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 14:14:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 20:00:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ typedef struct s_logging_params
 	t_logging_extension		*logging_extensions[MAX_LOGGING_EXTENSIONS];
 }				t_logging_params;
 
-static t_logging_params		*g_logging_params = NULL;
+static t_logging_params		g_logging_params;
 
 typedef struct s_bt_key
 {
@@ -193,18 +193,18 @@ typedef struct s_bt_node
 	t_bt_elem			bt_elem[MAX_NUM_OF_B_TREE_ELEMS];
 }				t_bt_node;
 
-typedef void			(*t_input_param_save)(void *const, char, t_argc_argv*,
+typedef void	(*t_arg_analyze)(void *const, char, t_argc_argv*,
 															t_cmd_param_type);
 
-typedef void*			(*t_input_params_initialize)(t_argc_argv *argc_argv);
+typedef void	*(*t_arg_init)(t_argc_argv *argc_argv);
 
-typedef void			(*t_usage_print)(void);
+typedef void	(*t_usage_print)(void);
 
 typedef struct s_arg_parser
 {
 	t_argc_argv					argc_argv;
-	t_input_params_initialize	fn_input_params_initialize;
-	t_input_param_save			fn_input_param_save;
+	t_arg_init					fn_arg_init;
+	t_arg_analyze				fn_arg_analyze;
 	t_usage_print				fn_usage_print;
 	char						*options;
 }				t_arg_parser;
@@ -318,5 +318,10 @@ const char				**ft_strsplit_ex(const char *const str,
 const char				*ft_strcat_queue(t_queue *const queue,
 							const size_t string_length);
 time_t					ft_gettime(void);
+t_arg_parser			*ft_arg_parser_init(
+							const t_argc_argv *const argc_argv,
+							t_arg_init fn_arg_init,
+							t_arg_analyze fn_arg_analyze,
+							t_usage_print fn_usage_print);
 
 #endif

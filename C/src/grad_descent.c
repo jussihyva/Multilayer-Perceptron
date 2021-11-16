@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 15:44:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 15:57:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(void)
 		= neural_network_initialize(grad_descent_attr->dataset);
 	grad_descent_attr->hyper_params
 		= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
-	grad_descent_attr->hyper_params->iters = 10;
+	grad_descent_attr->hyper_params->iters = 100;
 	grad_descent_attr->hyper_params->learning_rate = 0.2;
 	layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
 	grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);

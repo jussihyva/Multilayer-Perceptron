@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:22:06 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 11:21:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 19:42:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 void	ft_log_set_lock(t_logging_lock_function fn, void *udata)
 {
-	g_logging_params->lock = fn;
-	g_logging_params->udata = udata;
+	g_logging_params.lock = fn;
+	g_logging_params.udata = udata;
 }
 
 void	ft_log_set_level(int level)
 {
-	g_logging_params->level = level;
+	g_logging_params.level = level;
 }
 
 void	ft_log_set_quiet(int enable)
 {
-	g_logging_params->quiet = enable;
+	g_logging_params.quiet = enable;
 }
 
 int	ft_log_add_callback(t_logging_function fn, void *additional_event_data,
@@ -42,9 +42,9 @@ int	ft_log_add_callback(t_logging_function fn, void *additional_event_data,
 	i = -1;
 	while (++i < MAX_LOGGING_EXTENSIONS)
 	{
-		if (!g_logging_params->logging_extensions[i])
+		if (!g_logging_params.logging_extensions[i])
 		{
-			g_logging_params->logging_extensions[i] = logging_extension;
+			g_logging_params.logging_extensions[i] = logging_extension;
 			return (0);
 		}
 	}
