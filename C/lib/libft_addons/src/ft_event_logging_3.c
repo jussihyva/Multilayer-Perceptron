@@ -6,19 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:22:06 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/09/06 10:24:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 11:21:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_addons.h"
-
-static t_logging_params	*g_logging_params;
-
-void	logging_params_3_set(t_logging_params *logging_params)
-{
-	g_logging_params = logging_params;
-	return ;
-}
 
 void	ft_log_set_lock(t_logging_lock_function fn, void *udata)
 {

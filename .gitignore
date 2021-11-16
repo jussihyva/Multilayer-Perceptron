@@ -4,3 +4,7 @@ Data/.~lock.data.csv#
 .local
 .ipython
 .cache
+jupyter-selfsigned.key
+jupyter-selfsigned.crt
+influxdb-selfsigned.key
+influxdb-selfsigned.crt

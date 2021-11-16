@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:03:16 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 17:58:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 11:13:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,12 @@ static t_bool	response_validate(const t_tcp_connection *const connection)
 	while (chars <= 0)
 		chars = influxdb_read(connection, read_buf);
 	if (chars == -1)
-		;
-		// FT_LOG_ERROR("%s", "Reading of influxdb response failed!");
+		FT_LOG_ERROR("%s", "Reading of influxdb response failed!");
 	else
 	{
 		while (chars > 0)
 		{
-			// FT_LOG_TRACE("CHARS: %s", read_buf);
+			FT_LOG_TRACE("CHARS: %s", read_buf);
 			if (!ft_strncmp(read_buf, "HTTP/1.1 204", 12))
 				validation_result = E_TRUE;
 			chars = influxdb_read(connection, read_buf);
@@ -118,8 +117,8 @@ t_bool	ft_influxdb_write(
 			token = NULL;
 			header = header_influxdb1_create(token, body_length);
 			influxdb_write(connection, header);
-			// FT_LOG_TRACE("HEADER: %s", header);
-			// FT_LOG_TRACE("BODY: %s", body);
+			FT_LOG_TRACE("HEADER: %s", header);
+			FT_LOG_TRACE("BODY: %s", body);
 			influxdb_write(connection, body);
 			ft_strdel((char **)&header);
 			validation_result = response_validate(connection);

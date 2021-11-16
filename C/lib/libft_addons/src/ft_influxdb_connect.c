@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 13:20:07 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 17:56:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 11:11:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ t_tcp_connection	*ft_influxdb_connect(
 
 	ft_openssl_init();
 	cert_file = ft_file_create(ft_home_dir(), PEM_CERT_FILE);
+	FT_LOG_INFO("Cert: %s", cert_file);
 	private_key_file = ft_file_create(ft_home_dir(), PEM_PRIVTE_KEY_FILE);
+	FT_LOG_INFO("Private key: %s", private_key_file);
 	ctx = ft_openssl_init_client(cert_file, private_key_file, &socket_fd,
 			influxdb_connection_protocol);
 	tcp_connection = ft_openssl_connect(host_name, port_number, socket_fd, ctx);
@@ -52,7 +54,7 @@ t_tcp_connection	*ft_influxdb_connect(
 	else
 	{
 		SSL_CTX_free(ctx);
-		ft_printf("Connection setup to Influxdb failed!");
+		FT_LOG_WARN("Connection setup to Influxdb failed!");
 	}
 	ft_strdel(&cert_file);
 	ft_strdel(&private_key_file);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 09:57:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 11:06:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ typedef struct s_log_event
 	int				level;
 }				t_log_event;
 
-typedef void			(*t_logging_function)(t_log_event *event);
-typedef void			(*t_logging_lock_function)(int lock, void *udata);
+typedef void				(*t_logging_function)(t_log_event *event);
+typedef void				(*t_logging_lock_function)(int lock, void *udata);
 
 typedef struct s_logging_extension
 {
@@ -163,6 +163,8 @@ typedef struct s_logging_params
 	const char				**level_colors;
 	t_logging_extension		*logging_extensions[MAX_LOGGING_EXTENSIONS];
 }				t_logging_params;
+
+static t_logging_params		*g_logging_params = NULL;
 
 typedef struct s_bt_key
 {
@@ -230,10 +232,11 @@ t_logging_level			ft_log_get_level(void);
 int						ft_log_add_fd(int *fd, int level);
 void					ft_logging_params_set(const char **level_strings,
 							const char **level_colors);
-void					logging_params_2_set(t_logging_params *logging_params);
-void					logging_params_3_set(t_logging_params *logging_params);
-void					logging_params_4_set(t_logging_params *logging_params);
-void					logging_params_5_set(t_logging_params *logging_params);
+// void					logging_params_2_set(t_logging_params *logging_params);
+// void					logging_params_3_set(t_logging_params *logging_params);
+// void					logging_params_4_set(t_logging_params *logging_params);
+// void					logging_params_5_set(t_logging_params *logging_params);
+t_bool					is_logging_function_activated(void);
 t_logging_data			*ft_event_logging_init(t_logging_level logging_level);
 void					ft_logging_release(
 							const t_logging_data **const logging_data);

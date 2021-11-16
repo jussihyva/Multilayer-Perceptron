@@ -6,19 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:22:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/09/06 10:24:41 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 11:20:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_addons.h"
-
-static t_logging_params		*g_logging_params;
-
-void	logging_params_4_set(t_logging_params *logging_params)
-{
-	g_logging_params = logging_params;
-	return ;
-}
 
 static void	format_time_stamp(struct timeval tv, char *time_string,
 											size_t size, char *format_string)
