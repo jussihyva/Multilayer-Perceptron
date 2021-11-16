@@ -87,7 +87,7 @@
 		  "legend": {
 			"calcs": [],
 			"displayMode": "list",
-			"placement": "bottom"
+			"placement": "right"
 		  },
 		  "tooltip": {
 			"mode": "single"
@@ -109,7 +109,7 @@
 				"type": "fill"
 			  }
 			],
-			"measurement": "heartbeat",
+			"measurement": "dataset_train",
 			"orderByTime": "ASC",
 			"policy": "default",
 			"refId": "A",
@@ -118,20 +118,50 @@
 			  [
 				{
 				  "params": [
-					"value"
+					"0"
 				  ],
 				  "type": "field"
 				},
 				{
 				  "params": [],
 				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 2"
+				  ],
+				  "type": "alias"
 				}
 			  ]
 			],
-			"tags": []
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  }
+			]
 		  }
 		],
-		"title": "Hive default panel (records every events)",
+		"title": "Cost",
 		"type": "timeseries"
 	  }
 	],
@@ -143,13 +173,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-15m",
+	  "from": "now-1m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
-	"title": "HiveDefault",
-	"uid": "HiveDefault",
-	"version": 1
+	"title": "Cost",
+	"uid": "Cost",
+	"version": 2
   }
-  

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 13:20:07 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 11:11:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 15:24:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_tcp_connection	*ft_influxdb_connect(
 	if (tcp_connection)
 	{
 		set_client_socket_params(socket_fd);
-		ft_influxdb_write(tcp_connection, "RecordType=heartbeat value=1i", NULL,
+		ft_influxdb_write(tcp_connection, "heartbeat value=1i", NULL,
 			1);
 	}
 	else

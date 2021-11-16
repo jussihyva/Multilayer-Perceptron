@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 14:02:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 15:44:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 		calculate_derivatives(layer, dataset);
 		weight_bias_update(layer,
 			grad_descent_attr->hyper_params->learning_rate);
+		send_iteration_result_to_database(grad_descent_attr);
 	}
 	return ;
 }

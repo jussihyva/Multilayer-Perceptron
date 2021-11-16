@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   training.c                                         :+:      :+:    :+:   */
+/*   ft_strcat_queue.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 14:31:32 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/16 12:49:42 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/16 12:50:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// while [ condition ]; do time ./training ; done
+#include "libft_addons.h"
 
-#include "multilayer_perceptron.h"
-
-int	main(void)
+const char	*ft_strcat_queue(
+					t_queue *const queue,
+					const size_t string_length)
 {
-	t_grad_descent_attr			*grad_descent_attr;
+	char		*str;
+	const char	*sub_str;
 
-	grad_descent_attr = grad_descent_attr_initialize();
-	grad_descent_attr->connection = ft_influxdb_connect("127.0.0.1", "8086",
-			E_TLS);
-	grad_descent(grad_descent_attr);
-	grad_descent_attr_remove(&grad_descent_attr);
-	return (0);
+	str = ft_strnew(string_length);
+	while (!ft_is_queue_empty(queue))
+	{
+		sub_str = ft_dequeue(queue);
+		ft_strcat(str, sub_str);
+		ft_strdel((char **)&sub_str);
+	}
+	return (str);
 }

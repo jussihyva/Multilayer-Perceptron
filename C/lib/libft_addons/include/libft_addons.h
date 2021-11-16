@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 11:06:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 14:14:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,16 +226,9 @@ void					ft_log_set_lock(
 							void *udata);
 void					ft_log_set_level(int level);
 t_logging_level			ft_log_get_level(void);
-/*
-** void			log_set_quiet(int enable);
-*/
 int						ft_log_add_fd(int *fd, int level);
 void					ft_logging_params_set(const char **level_strings,
 							const char **level_colors);
-// void					logging_params_2_set(t_logging_params *logging_params);
-// void					logging_params_3_set(t_logging_params *logging_params);
-// void					logging_params_4_set(t_logging_params *logging_params);
-// void					logging_params_5_set(t_logging_params *logging_params);
 t_bool					is_logging_function_activated(void);
 t_logging_data			*ft_event_logging_init(t_logging_level logging_level);
 void					ft_logging_release(
@@ -322,5 +315,8 @@ t_file_attr				*ft_read_file(const char *const file_path,
 const char				**ft_strsplit_ex(const char *const str,
 							const char delim, size_t *const number_of_values,
 							t_bool do_trim);
+const char				*ft_strcat_queue(t_queue *const queue,
+							const size_t string_length);
+time_t					ft_gettime(void);
 
 #endif

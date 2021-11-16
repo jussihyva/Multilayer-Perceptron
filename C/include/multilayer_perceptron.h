@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 14:11:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/16 14:17:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 
 # define NEURAL_NETWORK_NUM_OF_LAYERS			1
 # define NUMBER_OF_COLUMNS						32
+# define NUM_INFLUXDB_ELEMENTS					4
+# define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
+# define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
+# define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
 
 static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 		= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
@@ -144,7 +148,22 @@ typedef struct s_grad_descent_attr
 	t_logistic_reg_attr		*logistic_reg_attr;
 	t_hyper_params			*hyper_params;
 	t_vector				*cost;
+	t_tcp_connection		*connection;
 }				t_grad_descent_attr;
+
+typedef enum e_influxdb_elem_type
+{
+	E_MEASUREMENT,
+	E_TAGS,
+	E_FIELDS,
+	E_TIMESTAMP
+}				t_influxdb_elem_type;
+
+typedef struct s_influxdb_elem
+{
+	const char	*string;
+	size_t		length;
+}				t_influxdb_elem;
 
 t_dataset			*read_dataset(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
@@ -165,5 +184,7 @@ void				logistic_reg_attr_remove(
 						t_logistic_reg_attr **logistic_reg_attr);
 t_grad_descent_attr	*grad_descent_attr_initialize(void);
 void				grad_descent(t_grad_descent_attr *grad_descent_attr);
+void				send_iteration_result_to_database(
+						const t_grad_descent_attr *const grad_descent_attr);
 
 #endif

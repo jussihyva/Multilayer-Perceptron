@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/20 10:35:04 by ubuntu            #+#    #+#              #
-#    Updated: 2021/11/15 16:51:30 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/16 11:26:56 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ include Makefile_Help.mk
 $(C_PROGRAMS): build
 
 .PHONY: build
-build: required_apps check_openssl check_docker $(SUB_FOLDERS) $(SUB_FOLDERS_WITH_MAKE) folders $(VS_CODE_FILE) start_jupyter
+build: required_apps check_openssl check_docker $(SUB_FOLDERS) $(SUB_FOLDERS_WITH_MAKE) folders $(VS_CODE_FILE)
 	@echo -n "$(GREEN)"
 	@echo "DONE"
 	@echo -n "$(END)"
@@ -102,9 +102,5 @@ norm:
 
 .PHONY: check_openssl
 check_openssl:
-
-.PHONY: start_jupyter
-start_jupyter:
-	cd Jupyter ; jupyter notebook
 
 include Makefile_Required.mk
