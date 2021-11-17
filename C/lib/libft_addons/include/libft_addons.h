@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 20:00:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 07:30:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,6 @@ typedef struct s_logging_params
 	t_logging_extension		*logging_extensions[MAX_LOGGING_EXTENSIONS];
 }				t_logging_params;
 
-static t_logging_params		g_logging_params;
-
 typedef struct s_bt_key
 {
 	void				*key;
@@ -229,6 +227,10 @@ t_logging_level			ft_log_get_level(void);
 int						ft_log_add_fd(int *fd, int level);
 void					ft_logging_params_set(const char **level_strings,
 							const char **level_colors);
+void					logging_params_2_set(t_logging_params *logging_params);
+void					logging_params_3_set(t_logging_params *logging_params);
+void					logging_params_4_set(t_logging_params *logging_params);
+void					logging_params_5_set(t_logging_params *logging_params);
 t_bool					is_logging_function_activated(void);
 t_logging_data			*ft_event_logging_init(t_logging_level logging_level);
 void					ft_logging_release(

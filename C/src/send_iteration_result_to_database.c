@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 15:47:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 07:34:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static const char	*elements_merge(
 		influxdb_elems[E_TAGS].string,
 		influxdb_elems[E_FIELDS].string,
 		influxdb_elems[E_TIMESTAMP].string);
-	if (ft_strlen(influxdb_string) != total_len)
+	if (ft_strlen(influxdb_string) != (total_len + 2))
 		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(influxdb_string),
 			total_len);
 	return (influxdb_string);
