@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:24:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 17:06:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ typedef struct s_grad_descent_attr
 	t_logistic_reg_attr			*logistic_reg_attr;
 	t_hyper_params				*hyper_params;
 	t_vector					*cost;
+	size_t						iter_cnt;
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
@@ -211,5 +212,6 @@ void				arg_analyze(void *const cmd_args, char opt,
 						void *arg_parser, t_cmd_param_type cmd_param_type);
 void				arg_usage_print(void);
 void				arg_remove(const t_cmd_args **cmd_args);
+void				normalize(t_matrix *const matrix);
 
 #endif

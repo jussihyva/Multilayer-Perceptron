@@ -8,7 +8,8 @@
 		"files.associations": {
 			"iosfwd": "c",
 			"iterator": "c",
-			"multilayer_perceptron.h": "c"
+			"multilayer_perceptron.h": "c",
+			"__locale": "c"
 		}
 	}
  }

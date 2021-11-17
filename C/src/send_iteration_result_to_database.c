@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 10:42:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 17:15:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ static size_t	influxdb_tags_add(
 
 static size_t	influxdb_fields_add(
 							t_influxdb_elem *const fields_elem,
+							const size_t iter_cnt,
 							const t_vector *vector)
 {
 	char				*string;
@@ -139,14 +140,14 @@ static size_t	influxdb_fields_add(
 
 	fields_elem->length = 0;
 	string_queue = ft_queue_init();
+	ft_sprintf(string_for_values, "iter=%u", iter_cnt);
+	fields_elem->length += ft_strlen(string_for_values);
+	ft_enqueue(string_queue, ft_strdup(string_for_values));
 	i = -1;
 	while (++i < vector->size)
 	{
-		if (i)
-		{
-			fields_elem->length++;
-			ft_enqueue(string_queue, ft_strdup(","));
-		}
+		fields_elem->length++;
+		ft_enqueue(string_queue, ft_strdup(","));
 		ft_sprintf(string_for_values, "%d", i);
 		fields_elem->length += ft_strlen(string_for_values);
 		ft_enqueue(string_queue, ft_strdup(string_for_values));
@@ -179,7 +180,7 @@ void	send_iteration_result_to_database(
 				"dataset_train");
 		total_len += influxdb_tags_add(&influxdb_elems[E_TAGS]);
 		total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS],
-				grad_descent_attr->cost);
+				grad_descent_attr->iter_cnt, grad_descent_attr->cost);
 		total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
 		influxdb_string = elements_merge(influxdb_elems, total_len);
 		influxdb_element_remove(&influxdb_elems);

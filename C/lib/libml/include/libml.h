@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 13:01:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 16:45:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBML_H
 # include "libft_addons.h"
 # include <time.h>
+# include <float.h>
 
 # define EPSILON		0.0000001
 
@@ -67,5 +68,8 @@ void			ml_vector_rand(t_vector *const vector, const int min,
 					const int max);
 void			ml_vector_reset(t_vector *const vector);
 void			ml_matrix_reset(t_matrix *const matrix);
+const t_vector	*ml_matrix_min(const t_matrix *const matrix);
+const t_vector	*ml_matrix_max(const t_matrix *const matrix);
+void			ml_vector_set(const t_vector *const vector, const double value);
 
 #endif

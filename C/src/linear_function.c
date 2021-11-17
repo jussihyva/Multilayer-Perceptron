@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 12:34:14 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 16:22:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void	linear_function(const t_layer *const layer)
 		}
 		add_bias_value(example_id, layer->z, layer->bias);
 	}
-	ml_matrix_print("Z", layer->z);
+	// ml_matrix_print("Z", layer->z);
 	return ;
 }
