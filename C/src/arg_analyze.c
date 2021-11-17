@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 19:14:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 10:19:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ static t_logging_level	set_logging_level(const t_argc_argv *const argc_argv)
 	return (logging_level);
 }
 
-static void	check_number_of_mandatory_variables(t_argc_argv *argc_argv)
+static void	check_number_of_mandatory_variables(t_arg_parser *arg_parser)
 {
 	static t_bool	is_num_of_mandatory_variables_valid = E_FALSE;
 	size_t			num_of_mandatory_variables;
 
 	if (!is_num_of_mandatory_variables_valid)
 	{
-		num_of_mandatory_variables = *argc_argv->argc - argc_argv->i;
+		num_of_mandatory_variables = *arg_parser->argc_argv.argc
+			- arg_parser->argc_argv.i;
 		if (num_of_mandatory_variables == 2)
 			is_num_of_mandatory_variables_valid = E_TRUE;
 		else
-			usage_print();
+			arg_parser->fn_usage_print();
 	}
 	return ;
 }
@@ -42,34 +43,34 @@ static void	check_number_of_mandatory_variables(t_argc_argv *argc_argv)
 static void	input_param_mandatory_validate(
 								t_cmd_args *const cmd_args,
 								char opt,
-								t_argc_argv *argc_argv)
+								t_arg_parser *arg_parser)
 {
 	const char		*arg;
 	const char		*dataset_file_path;
 
 	(void)opt;
 	(void)cmd_args;
-	check_number_of_mandatory_variables(argc_argv);
-	arg = (*argc_argv->argv)[argc_argv->i];
-	if (((*argc_argv->argc) - argc_argv->i) == 1)
+	check_number_of_mandatory_variables(arg_parser);
+	arg = (*arg_parser->argc_argv.argv)[arg_parser->argc_argv.i];
+	if (((*arg_parser->argc_argv.argc) - arg_parser->argc_argv.i) == 1)
 	{
 		dataset_file_path = (const char *)ft_strdup(arg);
 	}
 	else
-		usage_print();
+		arg_parser->fn_usage_print();
 	return ;
 }
 
 static void	input_param_save_short(
 								t_cmd_args *const cmd_args,
 								char opt,
-								t_argc_argv *argc_argv)
+								t_arg_parser *arg_parser)
 {
 	t_hyper_parameters	*hyper_parameters;
 
 	hyper_parameters = &cmd_args->hyper_parameters;
 	if (opt == 'L')
-		cmd_args->logging_level = set_logging_level(argc_argv);
+		cmd_args->logging_level = set_logging_level(&arg_parser->argc_argv);
 	else if (opt == 'S')
 		cmd_args->is_influxdb = E_TRUE;
 	// else if (opt == 'A')
@@ -79,18 +80,19 @@ static void	input_param_save_short(
 	else if (opt == 'l')
 		cmd_args->print_leaks = E_TRUE;
 	else if (opt == 'h')
-		usage_print();
+		arg_parser->fn_usage_print();
 	return ;
 }
 
 void	arg_analyze(
-					void *const input_params,
-					char opt, t_argc_argv *argc_argv,
+					void *const cmd_args,
+					char opt,
+					void *arg_parser,
 					t_cmd_param_type cmd_param_type)
 {
 	if (cmd_param_type == E_OPTIONAL_SHORT)
-		input_param_save_short(input_params, opt, argc_argv);
+		input_param_save_short(cmd_args, opt, arg_parser);
 	else
-		input_param_mandatory_validate(input_params, opt, argc_argv);
+		input_param_mandatory_validate(cmd_args, opt, arg_parser);
 	return ;
 }

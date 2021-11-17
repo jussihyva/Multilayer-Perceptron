@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 19:58:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 10:32:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,11 +146,11 @@ typedef struct s_logistic_reg_attr
 
 typedef struct s_grad_descent_attr
 {
-	t_dataset				*dataset;
-	t_logistic_reg_attr		*logistic_reg_attr;
-	t_hyper_params			*hyper_params;
-	t_vector				*cost;
-	t_tcp_connection		*connection;
+	t_dataset					*dataset;
+	t_logistic_reg_attr			*logistic_reg_attr;
+	t_hyper_params				*hyper_params;
+	t_vector					*cost;
+	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
 typedef enum e_influxdb_elem_type
@@ -206,9 +206,9 @@ void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 void				send_iteration_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
 void				*arg_init(t_argc_argv *argc_argv);
-void				arg_analyze(void *const input_params,
-						char opt, t_argc_argv *argc_argv,
-						t_cmd_param_type cmd_param_type);
-void				usage_print(void);
+void				arg_analyze(void *const cmd_args, char opt,
+						void *arg_parser, t_cmd_param_type cmd_param_type);
+void				arg_usage_print(void);
+void				arg_remove(const t_cmd_args **cmd_args);
 
 #endif

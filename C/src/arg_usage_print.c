@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   usage_print.c                                      :+:      :+:    :+:   */
+/*   arg_usage_print.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:05:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/16 19:06:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 09:47:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	examples_print(void)
 	return ;
 }
 
-void	usage_print(void)
+void	arg_usage_print(void)
 {
 	ft_printf("Usage:\n");
 	ft_printf("  ./dslr <mode> <input file>\n");

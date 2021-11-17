@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:30:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:03:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,7 @@ typedef struct s_bt_node
 	t_bt_elem			bt_elem[MAX_NUM_OF_B_TREE_ELEMS];
 }				t_bt_node;
 
-typedef void	(*t_arg_analyze)(void *const, char, t_argc_argv*,
-															t_cmd_param_type);
+typedef void	(*t_arg_analyze)(void *const, char, void*, t_cmd_param_type);
 
 typedef void	*(*t_arg_init)(t_argc_argv *argc_argv);
 
@@ -325,5 +324,7 @@ t_arg_parser			*ft_arg_parser_init(
 							t_arg_init fn_arg_init,
 							t_arg_analyze fn_arg_analyze,
 							t_usage_print fn_usage_print);
+void					ft_influxdb_remove(
+							const t_tcp_connection **influxdb_connection);
 
 #endif

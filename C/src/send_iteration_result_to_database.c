@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:36:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 10:42:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	send_iteration_result_to_database(
 	const char			*influxdb_string;
 	size_t				total_len;
 
-	if (grad_descent_attr->connection)
+	if (grad_descent_attr->influxdb_connection)
 	{
 		influxdb_elems = ft_memalloc(sizeof(*influxdb_elems)
 				* NUM_INFLUXDB_ELEMENTS);
@@ -183,8 +183,9 @@ void	send_iteration_result_to_database(
 		total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
 		influxdb_string = elements_merge(influxdb_elems, total_len);
 		influxdb_element_remove(&influxdb_elems);
-		ft_influxdb_write(grad_descent_attr->connection, influxdb_string, NULL,
-			1);
+		ft_influxdb_write(grad_descent_attr->influxdb_connection,
+			influxdb_string, NULL, 1);
+		ft_strdel((char **)&influxdb_string);
 	}
 	else
 		FT_LOG_DEBUG("Cost value is not sent to influxdb");
