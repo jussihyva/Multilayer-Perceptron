@@ -6,11 +6,16 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 10:05:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/09/06 11:17:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:48:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_addons.h"
+
+int	ft_log_add_fd(int *fd, int level)
+{
+	return (ft_log_add_callback(file_callback, (void *)fd, level));
+}
 
 static void	set_level_strings(const char **level_strings)
 {

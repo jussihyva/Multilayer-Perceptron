@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:21:58 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:28:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:25:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,6 @@ void	logging_params_2_set(t_logging_params *loging_params)
 {
 	g_logging_params = loging_params;
 	return ;
-}
-
-t_bool	is_logging_function_activated(void)
-{
-	t_bool	is_active;
-
-	if (g_logging_params->level_colors)
-		is_active = E_TRUE;
-	else
-	{
-		is_active = E_FALSE;
-		ft_printf("WARN: Logging (print) function is NOT activated!\n");
-	}
-	return (is_active);
 }
 
 void	execute_logging_extensions(t_log_event *event, const char *fmt, ...)

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:03:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:23:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ typedef struct s_log_event
 	int				level;
 }				t_log_event;
 
-typedef void				(*t_logging_function)(t_log_event *event);
-typedef void				(*t_logging_lock_function)(int lock, void *udata);
+typedef void	(*t_logging_function)(t_log_event *event);
+typedef void	(*t_logging_lock_function)(int lock, void *udata);
 
 typedef struct s_logging_extension
 {
@@ -193,7 +193,7 @@ typedef struct s_bt_node
 
 typedef void	(*t_arg_analyze)(void *const, char, void*, t_cmd_param_type);
 
-typedef void	*(*t_arg_init)(t_argc_argv *argc_argv);
+typedef void*	(*t_arg_init)(t_argc_argv *argc_argv);
 
 typedef void	(*t_usage_print)(void);
 

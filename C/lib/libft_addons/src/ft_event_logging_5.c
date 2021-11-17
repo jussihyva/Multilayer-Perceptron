@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 09:07:03 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:29:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:48:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,18 @@ void	logging_params_5_set(t_logging_params *loging_params)
 	return ;
 }
 
-int	ft_log_add_fd(int *fd, int level)
+t_bool	is_logging_function_activated(void)
 {
-	return (ft_log_add_callback(file_callback, (void *)fd, level));
+	t_bool	is_active;
+
+	if (g_logging_params->level_colors)
+		is_active = E_TRUE;
+	else
+	{
+		is_active = E_FALSE;
+		ft_printf("WARN: Logging (print) function is NOT activated!\n");
+	}
+	return (is_active);
 }
 
 void	ft_log_trace(const char *file, const int line, const char *fmt, ...)
@@ -84,5 +93,4 @@ void	ft_log_fatal(const char *file, const int line, const char *fmt, ...)
 		ft_printf("FATAL ERROR. Program is stopped!\n");
 		exit(42);
 	}
-	return ;
 }

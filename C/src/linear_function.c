@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 15:26:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:34:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	linear_function(const t_layer *const layer)
 	double		**table_z;
 
 	ml_matrix_reset(layer->z);
-	ml_matrix_print("Weight", layer->weight);
-	ml_vector_print("Bias", layer->bias);
 	table_z = (double **)layer->z->table;
 	example_id = -1;
 	while (++example_id < layer->a->size.cols)

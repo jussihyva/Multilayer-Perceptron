@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 10:22:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:26:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:24:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_logging_params_release(void)
 		if (g_logging_params->logging_extensions[i])
 			ft_memdel((void **)&g_logging_params->logging_extensions[i]);
 	}
-	// ft_memdel((void **)&g_logging_params);
+	ft_memdel((void **)&g_logging_params);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 13:52:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:34:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	logistic_regression(t_layer *const layer)
 {
+	ml_matrix_print("Weight", layer->weight);
+	ml_vector_print("Bias", layer->bias);
 	linear_function(layer);
 	ml_sigmoid(layer->z, layer->y_hat);
 	return ;

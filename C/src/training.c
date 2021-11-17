@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:39:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:34:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	main(int argc, char **argv)
 	grad_descent_attr = grad_descent_attr_initialize(cmd_args->dataset_file);
 	if (grad_descent_attr)
 	{
-		grad_descent_attr->influxdb_connection = ft_influxdb_connect("127.0.0.1",
-				"8086", E_TLS);
+		grad_descent_attr->influxdb_connection
+			= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 		grad_descent(grad_descent_attr);
 	}
 	main_remove(&arg_parser, &cmd_args, &grad_descent_attr);
