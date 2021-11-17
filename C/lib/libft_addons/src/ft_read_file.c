@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:37:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 10:01:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:37:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,23 @@ t_file_attr	*ft_read_file(
 	t_read_attr		*read_attr;
 	t_queue			*queue;
 
-	read_attr = ft_memalloc(sizeof(*read_attr));
-	file_attr = ft_memalloc(sizeof(*file_attr));
-	file_attr->file_type = file_type;
-	queue = ft_queue_init();
-	read_attr->fd = ft_open_fd(file_path);
-	if (read_attr->fd && file_type == E_CSV)
-		file_attr->read_failure = read_csv_file(read_attr, queue);
+	if (file_path)
+	{
+		read_attr = ft_memalloc(sizeof(*read_attr));
+		file_attr = ft_memalloc(sizeof(*file_attr));
+		file_attr->file_type = file_type;
+		queue = ft_queue_init();
+		read_attr->fd = ft_open_fd(file_path);
+		if (read_attr->fd && file_type == E_CSV)
+			file_attr->read_failure = read_csv_file(read_attr, queue);
+		else
+			file_attr->read_failure = E_TRUE;
+		file_attr->rows = queue->len;
+		file_attr->row_array = move_rows_from_queue_to_array(queue);
+		ft_queue_remove(&queue);
+		ft_memdel((void **)&read_attr);
+	}
 	else
-		file_attr->read_failure = E_TRUE;
-	file_attr->rows = queue->len;
-	file_attr->row_array = move_rows_from_queue_to_array(queue);
-	ft_queue_remove(&queue);
-	ft_memdel((void **)&read_attr);
+		file_attr = NULL;
 	return (file_attr);
 }

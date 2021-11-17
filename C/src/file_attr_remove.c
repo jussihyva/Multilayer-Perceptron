@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:08:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 10:03:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:43:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	file_attr_remove(t_file_attr **file_attr)
 {
 	size_t		i;
 
-	i = -1;
-	while (++i < (*file_attr)->rows)
-		ft_strarraydel(&(*file_attr)->row_array[i]);
-	ft_memdel((void **)&(*file_attr)->row_array);
-	ft_memdel((void **)file_attr);
+	if (*file_attr)
+	{
+		i = -1;
+		while (++i < (*file_attr)->rows)
+			ft_strarraydel(&(*file_attr)->row_array[i]);
+		ft_memdel((void **)&(*file_attr)->row_array);
+		ft_memdel((void **)file_attr);
+	}
 	return ;
 }

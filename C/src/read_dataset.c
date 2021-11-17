@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/14 10:02:47 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 12:02:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,6 @@ static t_matrix	*update_content_of_matrix(
 				ft_printf("Value is not valid\n");
 			((double **)matrix->table)[i.rows][i.cols] = value;
 		}
-	}
-	return (matrix);
-}
-
-static t_matrix	*update_content_of_matrix_y(
-							const char ***row_array,
-							size_t *valid_columns,
-							t_matrix *matrix)
-{
-	size_t			i;
-	const char		*value_string;
-
-	i = -1;
-	while (++i < matrix->size.cols)
-	{
-		value_string = row_array[i][valid_columns[0]];
-		if (ft_strequ(value_string, "B"))
-			((double **)matrix->table)[0][i] = 1;
-		else
-			((double **)matrix->table)[1][i] = 1;
 	}
 	return (matrix);
 }
@@ -123,6 +103,30 @@ static size_t	*get_valid_columns_and_create_matrix_y(
 	return (valid_columns);
 }
 
+static t_matrix	*update_content_of_matrix_y(
+							const char ***row_array,
+							const size_t rows,
+							t_matrix **matrix)
+{
+	size_t			i;
+	const char		*value_string;
+	size_t			*valid_columns;
+
+	valid_columns = get_valid_columns_and_create_matrix_y(rows,
+			g_dataset_file_y_columns, matrix);
+	i = -1;
+	while (++i < (*matrix)->size.cols)
+	{
+		value_string = row_array[i][valid_columns[0]];
+		if (ft_strequ(value_string, "B"))
+			((double **)(*matrix)->table)[0][i] = 1;
+		else
+			((double **)(*matrix)->table)[1][i] = 1;
+	}
+	ft_memdel((void **)&valid_columns);
+	return (*matrix);
+}
+
 static void	select_functions_print(void)
 {
 	size_t		i;
@@ -151,19 +155,24 @@ t_dataset	*read_dataset(const char *const file_path)
 	t_dataset		*dataset;
 	size_t			*valid_columns;
 
-	dataset = ft_memalloc(sizeof(*dataset));
 	file_attr = ft_read_file(file_path, E_CSV);
-	valid_columns = get_valid_columns_and_create_matrix(file_attr->rows,
-			g_dataset_file_x_columns, &dataset->x);
-	update_content_of_matrix(file_attr->row_array, valid_columns,
-		dataset->x);
-	ft_memdel((void **)&valid_columns);
-	valid_columns = get_valid_columns_and_create_matrix_y(file_attr->rows,
-			g_dataset_file_y_columns, &dataset->y);
-	update_content_of_matrix_y(file_attr->row_array, valid_columns,
-		dataset->y);
-	ft_memdel((void **)&valid_columns);
-	select_functions_print();
+	if (!file_attr || file_attr->read_failure)
+	{
+		dataset = NULL;
+		FT_LOG_ERROR("Reading of file %s failed!", file_path);
+	}
+	else
+	{
+		dataset = ft_memalloc(sizeof(*dataset));
+		valid_columns = get_valid_columns_and_create_matrix(file_attr->rows,
+				g_dataset_file_x_columns, &dataset->x);
+		update_content_of_matrix(file_attr->row_array, valid_columns,
+			dataset->x);
+		ft_memdel((void **)&valid_columns);
+		update_content_of_matrix_y(file_attr->row_array, file_attr->rows,
+			&dataset->y);
+		select_functions_print();
+	}
 	file_attr_remove(&file_attr);
 	return (dataset);
 }

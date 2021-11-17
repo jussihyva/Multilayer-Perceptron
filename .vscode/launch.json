@@ -1,35 +1,4 @@
 // LINUX
-{
-	// Use IntelliSense to learn about possible attributes.
-	// Hover to view descriptions of existing attributes.
-	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "(lldb) Launch",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${workspaceFolder}/C/training",
-			"args": [],
-			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}/C",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "gdb",
-			"setupCommands":
-			[
-				{
-					// "text": "settings set target.input-path ${workspaceFolder}/file.txt"
-					"description": "Enable pretty-printing for gdb",
-					"text": "-enable-pretty-printing",
-					"ignoreFailures": true
-				}
-			]
-		}
-	]
-}
-
-// MAC-OS
 // {
 // 	// Use IntelliSense to learn about possible attributes.
 // 	// Hover to view descriptions of existing attributes.
@@ -46,7 +15,40 @@
 // 			"cwd": "${workspaceFolder}/C",
 // 			"environment": [],
 // 			"externalConsole": false,
-// 			"MIMode": "lldb"
+// 			"MIMode": "gdb",
+// 			"setupCommands":
+// 			[
+// 				{
+// 					// "text": "settings set target.input-path ${workspaceFolder}/file.txt"
+// 					"description": "Enable pretty-printing for gdb",
+// 					"text": "-enable-pretty-printing",
+// 					"ignoreFailures": true
+// 				}
+// 			]
 // 		}
 // 	]
 // }
+
+// MAC-OS
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(lldb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/C/training",
+			// "args": [],
+			"args": ["../Data"],
+			// "args": ["../Data/data.csv"],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}/C",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb"
+		}
+	]
+}

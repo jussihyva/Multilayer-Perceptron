@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 10:32:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:24:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,8 @@ void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
 void				logistic_reg_attr_remove(
 						t_logistic_reg_attr **logistic_reg_attr);
-t_grad_descent_attr	*grad_descent_attr_initialize(void);
+t_grad_descent_attr	*grad_descent_attr_initialize(
+						const char *const dataset_file);
 void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 void				send_iteration_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);

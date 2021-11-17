@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 10:19:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:21:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	check_number_of_mandatory_variables(t_arg_parser *arg_parser)
 	{
 		num_of_mandatory_variables = *arg_parser->argc_argv.argc
 			- arg_parser->argc_argv.i;
-		if (num_of_mandatory_variables == 2)
+		if (num_of_mandatory_variables == 1)
 			is_num_of_mandatory_variables_valid = E_TRUE;
 		else
 			arg_parser->fn_usage_print();
@@ -46,16 +46,12 @@ static void	input_param_mandatory_validate(
 								t_arg_parser *arg_parser)
 {
 	const char		*arg;
-	const char		*dataset_file_path;
 
 	(void)opt;
-	(void)cmd_args;
 	check_number_of_mandatory_variables(arg_parser);
 	arg = (*arg_parser->argc_argv.argv)[arg_parser->argc_argv.i];
 	if (((*arg_parser->argc_argv.argc) - arg_parser->argc_argv.i) == 1)
-	{
-		dataset_file_path = (const char *)ft_strdup(arg);
-	}
+		cmd_args->dataset_file = (const char *)ft_strdup(arg);
 	else
 		arg_parser->fn_usage_print();
 	return ;

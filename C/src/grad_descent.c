@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:00:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:40:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,31 @@ static void	calculate_derivatives(
 	return ;
 }
 
-t_grad_descent_attr	*grad_descent_attr_initialize(void)
+t_grad_descent_attr	*grad_descent_attr_initialize(
+										const char *const dataset_file)
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	t_layer					*layer;
+	t_dataset				*dataset;
 
-	grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-	grad_descent_attr->logistic_reg_attr
-		= ft_memalloc(sizeof(*grad_descent_attr->logistic_reg_attr));
-	grad_descent_attr->dataset = read_dataset("../Data/data.csv");
-	grad_descent_attr->logistic_reg_attr->neural_network
-		= neural_network_initialize(grad_descent_attr->dataset);
-	grad_descent_attr->hyper_params
-		= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
-	grad_descent_attr->hyper_params->iters = 100;
-	grad_descent_attr->hyper_params->learning_rate = 0.2;
-	layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
-	grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
+	dataset = read_dataset(dataset_file);
+	if (dataset)
+	{
+		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
+		grad_descent_attr->logistic_reg_attr
+			= ft_memalloc(sizeof(*grad_descent_attr->logistic_reg_attr));
+		grad_descent_attr->dataset = dataset;
+		grad_descent_attr->logistic_reg_attr->neural_network
+			= neural_network_initialize(grad_descent_attr->dataset);
+		grad_descent_attr->hyper_params
+			= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
+		grad_descent_attr->hyper_params->iters = 100;
+		grad_descent_attr->hyper_params->learning_rate = 0.2;
+		layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
+		grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
+	}
+	else
+		grad_descent_attr = NULL;
 	return (grad_descent_attr);
 }
 
@@ -89,12 +97,15 @@ void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 void	grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr)
 {
-	logistic_reg_attr_remove(&(*grad_descent_attr)->logistic_reg_attr);
-	dataset_remove(&(*grad_descent_attr)->dataset);
-	ml_vector_remove(&(*grad_descent_attr)->cost);
-	ft_memdel((void **)&(*grad_descent_attr)->hyper_params);
-	if ((*grad_descent_attr)->influxdb_connection)
-		ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
-	ft_memdel((void **)grad_descent_attr);
+	if (*grad_descent_attr)
+	{
+		logistic_reg_attr_remove(&(*grad_descent_attr)->logistic_reg_attr);
+		dataset_remove(&(*grad_descent_attr)->dataset);
+		ml_vector_remove(&(*grad_descent_attr)->cost);
+		ft_memdel((void **)&(*grad_descent_attr)->hyper_params);
+		if ((*grad_descent_attr)->influxdb_connection)
+			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
+		ft_memdel((void **)grad_descent_attr);
+	}
 	return ;
 }
