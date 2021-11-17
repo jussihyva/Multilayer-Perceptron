@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 07:34:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/17 07:36:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,18 @@ static void	influxdb_element_remove(t_influxdb_elem **influxdb_elems)
 
 static const char	*elements_merge(
 						t_influxdb_elem *const influxdb_elems,
-						const size_t total_len)
+						size_t total_len)
 {
 	char		*influxdb_string;
 
-	influxdb_string = ft_strnew(sizeof(*influxdb_string) * (total_len + 2));
+	total_len += 2;
+	influxdb_string = ft_strnew(sizeof(*influxdb_string) * total_len);
 	ft_sprintf(influxdb_string, "%s%s %s %s",
 		influxdb_elems[E_MEASUREMENT].string,
 		influxdb_elems[E_TAGS].string,
 		influxdb_elems[E_FIELDS].string,
 		influxdb_elems[E_TIMESTAMP].string);
-	if (ft_strlen(influxdb_string) != (total_len + 2))
+	if (ft_strlen(influxdb_string) != total_len)
 		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(influxdb_string),
 			total_len);
 	return (influxdb_string);
