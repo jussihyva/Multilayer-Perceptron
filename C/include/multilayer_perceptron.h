@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 11:30:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 13:25:05 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void				calculate_derivative_w(const t_matrix *const x,
 						t_matrix *const derivative_w);
 void				calculate_derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
-void				logistic_regression(t_layer *const layer);
+void				logistic_regression(const t_layer *const layer);
 void				linear_function(const t_layer *const layer);
 t_neural_network	*neural_network_initialize(t_dataset *dataset);
 void				grad_descent_attr_remove(
@@ -216,11 +216,17 @@ void				send_iteration_result_to_database(
 void				*arg_init(t_argc_argv *argc_argv);
 void				arg_analyze(void *const cmd_args, char opt,
 						void *arg_parser, t_cmd_param_type cmd_param_type);
-void				arg_usage_print(void);
+void				arg_usage_training(void);
+void				arg_usage_prediction(void);
 void				arg_remove(const t_cmd_args **cmd_args);
 void				normalize(t_matrix *const matrix);
-void				save_bias_weigth_values(const t_matrix *const weight,
+void				bias_weigth_values_save(
 						const t_vector *const bias,
+						const t_matrix *const weight,
+						const char *const weight_bias_file);
+void				bias_weigth_values_set(
+						const t_vector *const bias,
+						const t_matrix *const weight,
 						const char *const weight_bias_file);
 
 #endif

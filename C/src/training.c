@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 11:23:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:35:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv)
 	argc_argv.argc = (const int *)&argc;
 	argc_argv.argv = (const char ***)&argv;
 	arg_parser = ft_arg_parser_init(&argc_argv, arg_init, arg_analyze,
-			arg_usage_print);
+			arg_usage_training);
 	cmd_args = ft_arg_parser(arg_parser);
 	grad_descent_attr = grad_descent_attr_initialize(cmd_args->dataset_file,
 			cmd_args->weight_bias_file);

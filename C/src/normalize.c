@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:13:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 16:23:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 14:01:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ void	normalize(t_matrix *const matrix)
 
 	min = ml_matrix_min(matrix);
 	max = ml_matrix_max(matrix);
-	ml_vector_print("MIN", min);
-	ml_vector_print("MAX", max);
+	if (ft_logging_level() <= LOG_INFO)
+	{
+		ml_vector_print("MIN", min);
+		ml_vector_print("MAX", max);
+	}
 	calculate(matrix, min, max);
 	ml_vector_remove((t_vector **)&min);
 	ml_vector_remove((t_vector **)&max);

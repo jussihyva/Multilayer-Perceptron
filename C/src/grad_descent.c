@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 11:10:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 13:52:34 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 			= neural_network_initialize(grad_descent_attr->dataset);
 		grad_descent_attr->hyper_params
 			= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
-		grad_descent_attr->hyper_params->iters = 10000;
+		grad_descent_attr->hyper_params->iters = 100000;
 		grad_descent_attr->hyper_params->learning_rate = 0.2;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = &grad_descent_attr->logistic_reg_attr
@@ -89,13 +89,12 @@ void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 	{
 		logistic_regression(layer);
 		ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
-		// ml_vector_print("Cost", grad_descent_attr->cost);
 		calculate_derivatives(layer, dataset);
 		weight_bias_update(layer,
 			grad_descent_attr->hyper_params->learning_rate);
 		send_iteration_result_to_database(grad_descent_attr);
 	}
-	save_bias_weigth_values(layer->weight, layer->bias,
+	bias_weigth_values_save(layer->bias, layer->weight,
 		grad_descent_attr->weight_bias_file);
 	return ;
 }

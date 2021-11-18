@@ -6,16 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 16:21:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 12:52:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-void	logistic_regression(t_layer *const layer)
+void	logistic_regression(const t_layer *const layer)
 {
-	// ml_matrix_print("Weight", layer->weight);
-	// ml_vector_print("Bias", layer->bias);
 	linear_function(layer);
 	ml_sigmoid(layer->z, layer->y_hat);
 	return ;

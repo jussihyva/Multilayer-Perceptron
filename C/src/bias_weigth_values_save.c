@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   save_bias_weigth_values.c                          :+:      :+:    :+:   */
+/*   bias_weigth_values_save.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 11:21:38 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 13:24:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static size_t	weight_values_add(
 	i = -1;
 	while (++i < columns)
 	{
-		ft_enqueue(queue, (void *)ft_strdup(":"));
+		ft_enqueue(queue, (void *)ft_strdup(","));
 		string_length++;
 		substring = ft_strnew(SUB_STRING_MAX_LENGTH);
 		ft_sprintf(substring, "%f", weight_row[i]);
@@ -76,9 +76,9 @@ static const char	*yaml_string_create(
 	return (str);
 }
 
-void	save_bias_weigth_values(
-						const t_matrix *const weight,
+void	bias_weigth_values_save(
 						const t_vector *const bias,
+						const t_matrix *const weight,
 						const char *const weight_bias_file)
 {
 	const char		*write_buf;
