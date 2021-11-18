@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 12:35:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 16:12:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	arg_parser_remove(t_arg_parser **arg_parser)
 static void	main_remove(
 					t_arg_parser **arg_parser,
 					const t_cmd_args **const cmd_args,
-					t_grad_descent_attr **grad_descent_attr)
+					t_grad_descent_attr **grad_descent_attr,
+					const char *const prog_name)
 {
 	t_bool			print_leaks;
 
@@ -33,7 +34,7 @@ static void	main_remove(
 	arg_remove(cmd_args);
 	arg_parser_remove(arg_parser);
 	if (print_leaks)
-		ft_print_leaks("training");
+		ft_print_leaks(prog_name);
 	return ;
 }
 
@@ -57,6 +58,6 @@ int	main(int argc, char **argv)
 			= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 		grad_descent(grad_descent_attr);
 	}
-	main_remove(&arg_parser, &cmd_args, &grad_descent_attr);
+	main_remove(&arg_parser, &cmd_args, &grad_descent_attr, "training");
 	return (0);
 }

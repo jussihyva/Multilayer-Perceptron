@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 12:43:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 16:15:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,38 +70,6 @@ static size_t	*get_valid_columns_and_create_matrix(
 		*matrix = ml_matrix_create(num_of_columns, rows);
 	return (valid_columns);
 }
-
-// static size_t	*get_valid_columns_and_create_matrix_y(
-// 							const size_t rows,
-// 							const t_bool *const array_of_valid_columns,
-// 							t_matrix **matrix)
-// {
-// 	size_t		num_of_columns;
-// 	size_t		*valid_columns;
-// 	size_t		i;
-// 	size_t		j;
-
-// 	num_of_columns = 0;
-// 	i = -1;
-// 	while (++i < NUMBER_OF_COLUMNS)
-// 	{
-// 		if (array_of_valid_columns[i])
-// 			num_of_columns++;
-// 	}
-// 	valid_columns = ft_memalloc(sizeof(*valid_columns) * num_of_columns);
-// 	i = -1;
-// 	j = 0;
-// 	while (++i < NUMBER_OF_COLUMNS)
-// 	{
-// 		if (array_of_valid_columns[i])
-// 		{
-// 			valid_columns[j] = i;
-// 			j++;
-// 		}
-// 	}
-// 	*matrix = ml_matrix_create(num_of_columns + 1, rows);
-// 	return (valid_columns);
-// }
 
 static t_matrix	*update_content_of_matrix_y(
 							const char ***row_array,
