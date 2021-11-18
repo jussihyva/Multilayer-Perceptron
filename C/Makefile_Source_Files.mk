@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/17 15:12:38 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/18 10:42:07 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC_C_FILES				=	read_dataset.c file_attr_remove.c \
 							linear_function.c grad_descent.c \
 							send_iteration_result_to_database.c arg_init.c \
 							arg_analyze.c arg_usage_print.c arg_remove.c \
-							normalize.c
+							normalize.c save_bias_weigth_values.c
 SRC_H_FILES				=	multilayer_perceptron.h
 LOCAL_LIBS				=	libml.a libft_addons.a libftprintf.a libft.a
 GLOBAL_LIBS				=	libssl.a libcrypto.a

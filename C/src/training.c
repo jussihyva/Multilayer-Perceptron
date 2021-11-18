@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 12:34:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:23:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	main(int argc, char **argv)
 	arg_parser = ft_arg_parser_init(&argc_argv, arg_init, arg_analyze,
 			arg_usage_print);
 	cmd_args = ft_arg_parser(arg_parser);
-	grad_descent_attr = grad_descent_attr_initialize(cmd_args->dataset_file);
+	grad_descent_attr = grad_descent_attr_initialize(cmd_args->dataset_file,
+			cmd_args->weight_bias_file);
 	if (grad_descent_attr)
 	{
 		grad_descent_attr->influxdb_connection

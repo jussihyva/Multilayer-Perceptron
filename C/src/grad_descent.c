@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 17:13:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:10:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	calculate_derivatives(
 }
 
 t_grad_descent_attr	*grad_descent_attr_initialize(
-										const char *const dataset_file)
+										const char *const dataset_file,
+										const char *const weight_bias_file)
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	t_layer					*layer;
@@ -65,6 +66,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 			= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
 		grad_descent_attr->hyper_params->iters = 10000;
 		grad_descent_attr->hyper_params->learning_rate = 0.2;
+		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = &grad_descent_attr->logistic_reg_attr
 			->neural_network->layers[0];
 		grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
@@ -93,6 +95,8 @@ void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 			grad_descent_attr->hyper_params->learning_rate);
 		send_iteration_result_to_database(grad_descent_attr);
 	}
+	save_bias_weigth_values(layer->weight, layer->bias,
+		grad_descent_attr->weight_bias_file);
 	return ;
 }
 

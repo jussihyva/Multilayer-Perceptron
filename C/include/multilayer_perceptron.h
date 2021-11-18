@@ -6,13 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 17:06:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:30:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MULTILAYER_PERCEPTRON_H
 # define MULTILAYER_PERCEPTRON_H
 # include "libml.h"
+# include <libgen.h>
 
 # define NEURAL_NETWORK_NUM_OF_LAYERS			1
 # define NUMBER_OF_COLUMNS						32
@@ -22,6 +23,8 @@
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
 # define LEARNING_RATE							0.2
 # define ITERATION_LOOP							5000
+# define BIAS_WEIGTH_FILE						"/../Data/BiasWeigth.yml"
+# define SUB_STRING_MAX_LENGTH					100
 
 static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 		= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
@@ -149,6 +152,7 @@ typedef struct s_grad_descent_attr
 	t_dataset					*dataset;
 	t_logistic_reg_attr			*logistic_reg_attr;
 	t_hyper_params				*hyper_params;
+	const char					*weight_bias_file;
 	t_vector					*cost;
 	size_t						iter_cnt;
 	const t_tcp_connection		*influxdb_connection;
@@ -182,6 +186,7 @@ typedef struct s_cmd_args
 	t_bool					print_leaks;
 	t_bool					is_influxdb;
 	const char				*dataset_file;
+	const char				*weight_bias_file;
 	t_hyper_parameters		hyper_parameters;
 }				t_cmd_args;
 
@@ -203,7 +208,8 @@ void				grad_descent_attr_remove(
 void				logistic_reg_attr_remove(
 						t_logistic_reg_attr **logistic_reg_attr);
 t_grad_descent_attr	*grad_descent_attr_initialize(
-						const char *const dataset_file);
+						const char *const dataset_file,
+						const char *const weight_bias_file);
 void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 void				send_iteration_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
@@ -213,5 +219,8 @@ void				arg_analyze(void *const cmd_args, char opt,
 void				arg_usage_print(void);
 void				arg_remove(const t_cmd_args **cmd_args);
 void				normalize(t_matrix *const matrix);
+void				save_bias_weigth_values(const t_matrix *const weight,
+						const t_vector *const bias,
+						const char *const weight_bias_file);
 
 #endif

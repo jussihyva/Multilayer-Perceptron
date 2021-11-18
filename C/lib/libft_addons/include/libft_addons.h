@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 12:23:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:21:44 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ void					ft_log_set_lock(
 							t_logging_lock_function fn,
 							void *udata);
 void					ft_log_set_level(int level);
-t_logging_level			ft_log_get_level(void);
+t_logging_level			ft_logging_level(void);
 int						ft_log_add_fd(int *fd, int level);
 void					ft_logging_params_set(const char **level_strings,
 							const char **level_colors);

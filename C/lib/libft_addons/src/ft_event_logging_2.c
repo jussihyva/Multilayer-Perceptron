@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 08:21:58 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 12:25:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/18 11:21:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_logging_level	ft_logging_level_param_validate(const char *level_str)
 	return (event_logging_level);
 }
 
-t_logging_level	ft_log_get_level(void)
+t_logging_level	ft_logging_level(void)
 {
 	return (g_logging_params->level);
 }
