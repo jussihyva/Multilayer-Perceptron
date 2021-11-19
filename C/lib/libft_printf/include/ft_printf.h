@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 11:23:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/08/26 23:55:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 10:41:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,5 +167,7 @@ void		ft_putlstr_fd(char *s, size_t string_len, int fd);
 void		del_substring(void *content, size_t size);
 void		del_formatter(void *content, size_t size);
 int			count_num_of_fillers(t_substring *substring, int min_len);
+void		width_and_prediction_variable(t_substring *substring, va_list *ap,
+				int *attrs);
 
 #endif

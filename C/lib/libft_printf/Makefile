@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/04 11:34:07 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/11 19:31:05 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/19 10:33:44 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRC_C_FILES		=	ft_printf.c split_input_string.c create_converters.c \
 					formatters.c ft_dtoa_base.c ft_numlen.c ft_round.c \
 					set_substring_common_1.c set_substring_common_2.c \
 					set_substring_zero.c \
-					print_output_string.c ft_putlstr_fd.c release_memory_1.c
+					print_output_string.c ft_putlstr_fd.c release_memory_1.c \
+					width_and_prediction_variable.c
 SRC_H_FILES		=	ft_printf.h
 
 # Path folders for H, C, O and APP files
