@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:29:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 13:35:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 14:21:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ static void	print_columns(const t_name_array *const names, const size_t len)
 	return ;
 }
 
+static void	print_value(
+					const double value,
+					const size_t *const lengths,
+					const size_t i,
+					const size_t total)
+{
+	if (total < 30 || (i < 15 || i > (total - 15)))
+	{
+		if (lengths)
+			ft_printf("%*f", lengths[i] + 2, value);
+		else
+			ft_printf("%10f", value);
+	}
+	else if (i == ((size_t)(total / 2)))
+		ft_printf(" ...  ");
+	return ;
+}
+
 void	ml_matrix_print(
 					const char *const name,
 					const t_matrix *const matrix)
@@ -34,6 +52,7 @@ void	ml_matrix_print(
 	t_size_2d		i;
 	size_t			cnt;
 	const double	**values;
+	double			value;
 
 	values = (const double **)matrix->table;
 	cnt = -1;
@@ -47,11 +66,9 @@ void	ml_matrix_print(
 		i.cols = -1;
 		while (++i.cols < matrix->size.cols)
 		{
-			if (matrix->column_names.lengths)
-				ft_printf("%*f", matrix->column_names.lengths[i.cols] + 2,
-					((double **)matrix->table)[i.rows][i.cols]);
-			else
-				ft_printf("%10f", ((double **)matrix->table)[i.rows][i.cols]);
+			value = ((double **)matrix->table)[i.rows][i.cols];
+			print_value(value, matrix->column_names.lengths, i.cols,
+				matrix->size.cols);
 		}
 		ft_printf("\n");
 	}
