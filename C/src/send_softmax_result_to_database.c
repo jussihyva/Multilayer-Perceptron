@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   send_iteration_result_to_database.c                :+:      :+:    :+:   */
+/*   send_softmax_result_to_database.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 14:46:58 by jkauppi          ###   ########.fr       */
+/*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
+/*   Updated: 2021/11/19 15:21:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,22 @@ static const char	*elements_merge(
 }
 
 static size_t	influxdb_tags_add(
-							t_influxdb_elem *const tags_elem)
+							t_influxdb_elem *const tags_elem,
+							const char *const example_id)
 {
 	t_queue				*string_queue;
 	const char			*tag_value_pair;
 
-	tag_value_pair = ft_strdup("Record_type=Cost");
 	string_queue = ft_queue_init();
 	tags_elem->length = 0;
 	tags_elem->length++;
 	ft_enqueue(string_queue, ft_strdup(","));
+	tag_value_pair = ft_strdup("Record_type=Softmax");
+	tags_elem->length += ft_strlen(tag_value_pair);
+	ft_enqueue(string_queue, (void *)tag_value_pair);
+	tags_elem->length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	tag_value_pair = ft_strjoin("ExampleId=", example_id);
 	tags_elem->length += ft_strlen(tag_value_pair);
 	ft_enqueue(string_queue, (void *)tag_value_pair);
 	tags_elem->string = ft_strcat_queue(string_queue, tags_elem->length);
@@ -124,8 +130,8 @@ static size_t	influxdb_tags_add(
 
 static size_t	influxdb_fields_add(
 							t_influxdb_elem *const fields_elem,
-							const size_t iter_cnt,
-							const t_vector *vector)
+							const t_matrix *matrix,
+							const size_t col)
 {
 	char				*string;
 	t_queue				*string_queue;
@@ -134,11 +140,11 @@ static size_t	influxdb_fields_add(
 
 	fields_elem->length = 0;
 	string_queue = ft_queue_init();
-	ft_sprintf(string_for_values, "iter=%u", iter_cnt);
+	ft_sprintf(string_for_values, "ExampleId=%u", col);
 	fields_elem->length += ft_strlen(string_for_values);
 	ft_enqueue(string_queue, ft_strdup(string_for_values));
 	i = -1;
-	while (++i < vector->size)
+	while (++i < matrix->size.rows)
 	{
 		fields_elem->length++;
 		ft_enqueue(string_queue, ft_strdup(","));
@@ -147,7 +153,7 @@ static size_t	influxdb_fields_add(
 		ft_enqueue(string_queue, ft_strdup(string_for_values));
 		fields_elem->length++;
 		ft_enqueue(string_queue, ft_strdup("="));
-		ft_sprintf(string_for_values, "%f", ((double *)vector->data)[i]);
+		ft_sprintf(string_for_values, "%f", ((double **)matrix->table)[i][col]);
 		string = backslash_chars_add(SPECIAL_CHARS_INFLUXDB_FIELDS,
 				string_for_values);
 		fields_elem->length += ft_strlen(string);
@@ -158,29 +164,36 @@ static size_t	influxdb_fields_add(
 	return (fields_elem->length);
 }
 
-void	send_iteration_result_to_database(
+void	send_softmax_result_to_database(
 							const t_grad_descent_attr *const grad_descent_attr)
 {
 	t_influxdb_elem		*influxdb_elems;
 	const char			*influxdb_string;
+	const char			*example_id;
 	size_t				total_len;
+	t_size_2d			i;
 
 	if (grad_descent_attr->influxdb_connection)
 	{
-		influxdb_elems = ft_memalloc(sizeof(*influxdb_elems)
-				* NUM_INFLUXDB_ELEMENTS);
-		total_len = 0;
-		total_len += influxdb_measurement_add(&influxdb_elems[E_MEASUREMENT],
-				"dataset_train");
-		total_len += influxdb_tags_add(&influxdb_elems[E_TAGS]);
-		total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS],
-				grad_descent_attr->iter_cnt, grad_descent_attr->cost);
-		total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
-		influxdb_string = elements_merge(influxdb_elems, total_len);
-		influxdb_element_remove(&influxdb_elems);
-		ft_influxdb_write(grad_descent_attr->influxdb_connection,
-			influxdb_string, NULL, 1);
-		ft_strdel((char **)&influxdb_string);
+		i.cols = -1;
+		while (++i.cols < grad_descent_attr->softmax->size.cols)
+		{
+			influxdb_elems = ft_memalloc(sizeof(*influxdb_elems)
+					* NUM_INFLUXDB_ELEMENTS);
+			total_len = 0;
+			total_len += influxdb_measurement_add(
+					&influxdb_elems[E_MEASUREMENT], "dataset_train");
+			example_id = ft_itoa(i.cols);
+			total_len += influxdb_tags_add(&influxdb_elems[E_TAGS], example_id);
+			total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS],
+					grad_descent_attr->softmax, i.cols);
+			total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
+			influxdb_string = elements_merge(influxdb_elems, total_len);
+			influxdb_element_remove(&influxdb_elems);
+			ft_influxdb_write(grad_descent_attr->influxdb_connection,
+				influxdb_string, NULL, 1);
+			ft_strdel((char **)&influxdb_string);
+		}
 	}
 	else
 		FT_LOG_DEBUG("Cost value is not sent to influxdb");

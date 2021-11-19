@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 13:15:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 14:35:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ typedef struct s_grad_descent_attr
 	t_hyper_params				*hyper_params;
 	const char					*weight_bias_file;
 	t_vector					*cost;
+	t_matrix					*softmax;
 	size_t						iter_cnt;
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
@@ -248,5 +249,7 @@ void				bias_weigth_values_set(
 						const t_vector *const bias,
 						const t_matrix *const weight,
 						const char *const weight_bias_file);
+void				send_softmax_result_to_database(
+						const t_grad_descent_attr *const grad_descent_attr);
 
 #endif
