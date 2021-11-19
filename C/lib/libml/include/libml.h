@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 16:20:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 12:35:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,26 @@ typedef struct s_size_2d
 	size_t	cols;
 }				t_size_2d;
 
+typedef struct s_name_array
+{
+	const char		**names;
+	size_t			*lengths;
+}				t_name_array;
+
 typedef struct s_matrix
 {
-	t_size_2d	size;
-	void		*data;
-	void		**table;
+	t_size_2d			size;
+	void				*data;
+	void				**table;
+	t_name_array		row_names;
+	t_name_array		column_names;
 }				t_matrix;
 
 typedef struct s_vector
 {
-	size_t		size;
-	void		*data;
+	size_t				size;
+	void				*data;
+	const t_name_array	column_names;
 }				t_vector;
 
 void			ml_sigmoid(const t_matrix *const z, t_matrix *const y);

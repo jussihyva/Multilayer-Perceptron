@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 13:51:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 12:55:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_neural_network	*neural_network_initialize(t_dataset *dataset)
 	layer->z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->y_hat = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->weight = ml_matrix_create(layer->num_of_nodes, num_of_functions);
+	layer->weight->column_names.lengths = dataset->x->row_names.lengths;
+	layer->weight->column_names.names = dataset->x->row_names.names;
 	layer->bias = ml_vector_create(layer->num_of_nodes);
 	layer->derivative_b = ml_vector_create(layer->num_of_nodes);
 	layer->derivative_w = ml_matrix_create(layer->num_of_nodes,

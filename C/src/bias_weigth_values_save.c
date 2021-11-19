@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 13:24:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 13:26:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	bias_weigth_values_save(
 		ml_matrix_print("WEIGHT", weight);
 		ml_vector_print("BIAS", bias);
 	}
+	remove(weight_bias_file);
 	fd = open(weight_bias_file, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
 	i = -1;
 	while (++i < weight->size.rows)

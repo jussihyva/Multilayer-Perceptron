@@ -6,11 +6,35 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 16:15:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/19 12:39:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static void	x_matrix_row_names(t_name_array *row_names)
+{
+	size_t			i;
+	t_queue			*queue;
+
+	queue = ft_queue_init();
+	i = -1;
+	while (++i < NUMBER_OF_COLUMNS)
+	{
+		if (g_dataset_file_x_columns[i])
+			ft_enqueue(queue, (void *)g_dataset_file_column_names[i]);
+	}
+	row_names->names = ft_memalloc(sizeof(*row_names->names) * queue->len);
+	row_names->lengths = ft_memalloc(sizeof(*row_names->lengths) * queue->len);
+	i = 0;
+	while (!ft_is_queue_empty(queue))
+	{
+		row_names->names[i] = (const char *)ft_dequeue(queue);
+		row_names->lengths[i] = ft_strlen(row_names->names[i]);
+		i++;
+	}
+	return ;
+}
 
 static t_matrix	*update_content_of_matrix(
 							const char ***row_array,
@@ -136,6 +160,7 @@ t_dataset	*read_dataset(const char *const file_path)
 				g_dataset_file_x_columns, &dataset->x);
 		update_content_of_matrix(file_attr->row_array, valid_columns,
 			dataset->x);
+		x_matrix_row_names(&dataset->x->row_names);
 		ft_memdel((void **)&valid_columns);
 		update_content_of_matrix_y(file_attr->row_array, file_attr->rows,
 			&dataset->y);
