@@ -9,7 +9,8 @@
 			"iosfwd": "c",
 			"iterator": "c",
 			"multilayer_perceptron.h": "c",
-			"__locale": "c"
+			"__locale": "c",
+			"libft_addons.h": "c"
 		}
 	}
  }

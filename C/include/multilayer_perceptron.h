@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 14:35:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 11:27:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,14 @@ typedef struct s_cmd_args
 	t_hyper_parameters		hyper_parameters;
 }				t_cmd_args;
 
+typedef struct s_prediction
+{
+	t_argc_argv				argc_argv;
+	t_arg_parser			*arg_parser;
+	const t_cmd_args		*cmd_args;
+	t_grad_descent_attr		*grad_descent_attr;
+}				t_prediction;
+
 t_dataset			*read_dataset(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(t_dataset **dataset);
@@ -251,5 +259,7 @@ void				bias_weigth_values_set(
 						const char *const weight_bias_file);
 void				send_softmax_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
+t_prediction		*prediction_init(const int argc,
+						const char *const *const argv);
 
 #endif

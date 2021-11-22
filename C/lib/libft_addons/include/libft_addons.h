@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 11:21:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:44:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ typedef struct s_file_attr
 
 typedef struct s_argc_argv
 {
-	const int	*argc;
-	const char	***argv;
+	int			argc;
+	const char	*const *argv;
 	int			i;
 }				t_argc_argv;
 
@@ -293,7 +293,8 @@ int						ft_open_fd(const char *const file_path);
 const void				*ft_arg_parser(t_arg_parser *arg_parser);
 t_logging_level			ft_logging_level_param_validate(const char *level_str);
 void					ft_print_leaks(const char *prog_name);
-void					ft_strarraydel(const char ***const array);
+void					ft_strarraydel(const char ***const array,
+							const size_t len);
 t_tcp_connection		*ft_influxdb_connect(
 							const char *const host_name,
 							const char *const port_number,

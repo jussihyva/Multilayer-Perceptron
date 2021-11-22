@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 16:07:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:56:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	grad_descent_attr_remove(
 		logistic_reg_attr_remove(&(*grad_descent_attr)->logistic_reg_attr);
 		dataset_remove(&(*grad_descent_attr)->dataset);
 		ml_vector_remove(&(*grad_descent_attr)->cost);
+		ml_matrix_remove(&(*grad_descent_attr)->softmax);
 		ft_memdel((void **)&(*grad_descent_attr)->hyper_params);
 		if ((*grad_descent_attr)->influxdb_connection)
 			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);

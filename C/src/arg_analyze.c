@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:21:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 11:09:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_logging_level	set_logging_level(const t_argc_argv *const argc_argv)
 	const char			*arg;
 	t_logging_level		logging_level;
 
-	arg = (*argc_argv->argv)[argc_argv->i];
+	arg = argc_argv->argv[argc_argv->i];
 	logging_level = ft_logging_level_param_validate(arg);
 	ft_log_set_level(logging_level);
 	return (logging_level);
@@ -30,7 +30,7 @@ static void	check_number_of_mandatory_variables(t_arg_parser *arg_parser)
 
 	if (!is_num_of_mandatory_variables_valid)
 	{
-		num_of_mandatory_variables = *arg_parser->argc_argv.argc
+		num_of_mandatory_variables = arg_parser->argc_argv.argc
 			- arg_parser->argc_argv.i;
 		if (num_of_mandatory_variables == 1)
 			is_num_of_mandatory_variables_valid = E_TRUE;
@@ -49,8 +49,8 @@ static void	input_param_mandatory_validate(
 
 	(void)opt;
 	check_number_of_mandatory_variables(arg_parser);
-	arg = (*arg_parser->argc_argv.argv)[arg_parser->argc_argv.i];
-	if (((*arg_parser->argc_argv.argc) - arg_parser->argc_argv.i) == 1)
+	arg = arg_parser->argc_argv.argv[arg_parser->argc_argv.i];
+	if ((arg_parser->argc_argv.argc - arg_parser->argc_argv.i) == 1)
 		cmd_args->dataset_file = (const char *)ft_strdup(arg);
 	else
 		arg_parser->fn_usage_print();

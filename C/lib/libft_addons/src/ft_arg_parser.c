@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 17:42:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 10:02:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 11:06:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	pre_analyse_argument(char *options, char arg,
 	{
 		if (*(opt_ptr + 1) == ':')
 		{
-			if ((*argc_argv->argc - argc_argv->i) < 2)
+			if ((argc_argv->argc - argc_argv->i) < 2)
 				param_error("Missing argument for parameter: -%c", arg);
 			argc_argv->i++;
 		}
@@ -53,7 +53,7 @@ static void	split_cmd_argument(
 
 	argc_argv = &arg_parser->argc_argv;
 	fn_arg_analyze = arg_parser->fn_arg_analyze;
-	arg = (*argc_argv->argv)[argc_argv->i];
+	arg = argc_argv->argv[argc_argv->i];
 	if (cmd_param_type == E_OPTIONAL_SHORT)
 	{
 		while (*(++arg))
@@ -79,9 +79,9 @@ const void	*ft_arg_parser(t_arg_parser *arg_parser)
 
 	argc_argv = &arg_parser->argc_argv;
 	cmd_args = (void *)arg_parser->fn_arg_init(argc_argv);
-	while (++argc_argv->i < *argc_argv->argc)
+	while (++argc_argv->i < argc_argv->argc)
 	{
-		arg = (*argc_argv->argv)[argc_argv->i];
+		arg = argc_argv->argv[argc_argv->i];
 		if (ft_strlen(arg) > 2 && arg[0] == '-' && arg[1] == '-')
 			cmd_param_type = E_OPTIONAL_LONG;
 		else if (ft_strlen(arg) > 1 && arg[0] == '-')

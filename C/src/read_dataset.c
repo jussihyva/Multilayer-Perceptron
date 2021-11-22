@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 12:39:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:33:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	x_matrix_row_names(t_name_array *row_names)
 	while (++i < NUMBER_OF_COLUMNS)
 	{
 		if (g_dataset_file_x_columns[i])
-			ft_enqueue(queue, (void *)g_dataset_file_column_names[i]);
+			ft_enqueue(queue,
+				(void *)ft_strdup(g_dataset_file_column_names[i]));
 	}
 	row_names->names = ft_memalloc(sizeof(*row_names->names) * queue->len);
 	row_names->lengths = ft_memalloc(sizeof(*row_names->lengths) * queue->len);
@@ -33,6 +34,7 @@ static void	x_matrix_row_names(t_name_array *row_names)
 		row_names->lengths[i] = ft_strlen(row_names->names[i]);
 		i++;
 	}
+	ft_queue_remove(&queue);
 	return ;
 }
 

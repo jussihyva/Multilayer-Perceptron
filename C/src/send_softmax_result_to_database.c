@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 15:21:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:00:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void	send_softmax_result_to_database(
 					&influxdb_elems[E_MEASUREMENT], "dataset_train");
 			example_id = ft_itoa(i.cols);
 			total_len += influxdb_tags_add(&influxdb_elems[E_TAGS], example_id);
+			ft_strdel((char **)&example_id);
 			total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS],
 					grad_descent_attr->softmax, i.cols);
 			total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);

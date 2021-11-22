@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 16:12:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:50:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	main(int argc, char **argv)
 	t_argc_argv				argc_argv;
 	const t_cmd_args		*cmd_args;
 
-	argc_argv.argc = (const int *)&argc;
-	argc_argv.argv = (const char ***)&argv;
+	argc_argv.argc = argc;
+	argc_argv.argv = (const char *const *)argv;
 	arg_parser = ft_arg_parser_init(&argc_argv, arg_init, arg_analyze,
 			arg_usage_training);
 	cmd_args = ft_arg_parser(arg_parser);
