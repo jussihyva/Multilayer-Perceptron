@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 11:27:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 14:15:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,8 @@ typedef struct s_grad_descent_attr
 	const char					*weight_bias_file;
 	t_vector					*cost;
 	t_matrix					*softmax;
+	const t_vector				*argmax;
+	const t_vector				*argmax_values;
 	size_t						iter_cnt;
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;

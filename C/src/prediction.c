@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 13:10:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 14:51:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 static void	print_result(
 				const t_matrix *const y_hat,
 				const t_matrix *const y,
-				const t_matrix *const softmax)
+				const t_matrix *const softmax,
+				const t_vector *const argmax_values)
 {
 	ml_matrix_print("Prediction", y_hat);
 	ml_matrix_print("Observed", y);
 	ml_matrix_print("Softmax", softmax);
+	ml_vector_print("ARGMAX VALUES", argmax_values);
 	return ;
 }
 
@@ -71,9 +73,15 @@ int	main(int argc, char **argv)
 				layer->y_hat->size.cols);
 		ml_softmax(layer->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
+		grad_descent_attr->argmax
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
+		grad_descent_attr->argmax_values
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
+		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
+			grad_descent_attr->argmax_values);
 		if (ft_logging_level() <= LOG_INFO)
 			print_result(layer->y_hat, grad_descent_attr->dataset->y,
-				grad_descent_attr->softmax);
+				grad_descent_attr->softmax, grad_descent_attr->argmax_values);
 	}
 	main_remove(&prediction, "prediction");
 	return (0);

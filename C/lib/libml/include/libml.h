@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 12:35:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/22 14:54:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,10 @@ const t_vector	*ml_matrix_max(const t_matrix *const matrix);
 void			ml_vector_set(const t_vector *const vector, const double value);
 void			ml_softmax(const t_matrix *const matrix,
 					const t_matrix *const softmax);
+void			ml_argmax(const t_matrix *const matrix,
+					const t_vector *const argmax,
+					const t_vector *argmax_values);
+void			ml_transpose(const t_matrix *const matrix,
+					const t_matrix *const transposed);
 
 #endif
