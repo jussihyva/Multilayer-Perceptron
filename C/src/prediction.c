@@ -69,14 +69,8 @@ int	main(int argc, char **argv)
 		bias_weigth_values_set(layer->bias, layer->weight,
 			prediction->cmd_args->weight_bias_file);
 		logistic_regression(layer);
-		grad_descent_attr->softmax = ml_matrix_create(layer->y_hat->size.rows,
-				layer->y_hat->size.cols);
 		ml_softmax(layer->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
-		grad_descent_attr->argmax
-			= ml_vector_create(grad_descent_attr->softmax->size.cols);
-		grad_descent_attr->argmax_values
-			= ml_vector_create(grad_descent_attr->softmax->size.cols);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);
 		if (ft_logging_level() <= LOG_INFO)

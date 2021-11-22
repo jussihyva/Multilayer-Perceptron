@@ -64,12 +64,18 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 			= neural_network_initialize(grad_descent_attr->dataset);
 		grad_descent_attr->hyper_params
 			= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
-		grad_descent_attr->hyper_params->iters = 10000;
+		grad_descent_attr->hyper_params->iters = 100;
 		grad_descent_attr->hyper_params->learning_rate = 0.2;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = &grad_descent_attr->logistic_reg_attr
 			->neural_network->layers[0];
 		grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
+		grad_descent_attr->softmax = ml_matrix_create(layer->y_hat->size.rows,
+				layer->y_hat->size.cols);
+		grad_descent_attr->argmax
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
+		grad_descent_attr->argmax_values
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
 	}
 	else
 		grad_descent_attr = NULL;

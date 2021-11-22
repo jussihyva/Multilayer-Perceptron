@@ -47,6 +47,7 @@ int	main(int argc, char **argv)
 
 	argc_argv.argc = argc;
 	argc_argv.argv = (const char *const *)argv;
+	argc_argv.i = 0;
 	arg_parser = ft_arg_parser_init(&argc_argv, arg_init, arg_analyze,
 			arg_usage_training);
 	cmd_args = ft_arg_parser(arg_parser);

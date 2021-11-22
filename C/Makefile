@@ -105,18 +105,18 @@ libraries_norm:
 .PHONY: run
 run: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
 else
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
 endif
 
 .PHONY: run_leaks
 run_leaks: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) -l $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) -l $(DATASET)
 else
 	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all \
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(MODE) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
 endif
 
 .PHONY: clean

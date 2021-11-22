@@ -11,7 +11,15 @@
 # **************************************************************************** #
 
 .PHONY: required_apps
-required_apps: check_pip3 check_docker check_jupyter
+required_apps: install_ubuntu install_python check_pip3 check_docker check_jupyter
+
+.PHONY: install_ubuntu
+install_ubuntu:
+	@xargs sudo apt install -y < requirements_ubuntu.txt
+
+.PHONY: install_python
+install_python:
+	@pip3 install -r requirements_python.txt
 
 .PHONY: check_pip3
 check_pip3:
@@ -29,19 +37,19 @@ endif
 
 .PHONY: check_jupyter
 check_jupyter:
-ifeq (, $(JUPYTER_NAME))
-	$(error $(JUPYTER_NOT_INSTALLED_ERROR))
-	# pip3 install notebook
-endif
-ifeq (, $(PYTHON_NUMPY_VER))
-	pip3 install numpy
-endif
-ifeq (, $(PYTHON_MATPLOTLIB_VER))
-	pip3 install matplotlib
-endif
-ifeq (, $(PYTHON_PANDAS_VER))
-	pip3 install pandas
-endif
+# ifeq (, $(JUPYTER_NAME))
+# 	$(error $(JUPYTER_NOT_INSTALLED_ERROR))
+# 	# pip3 install notebook
+# endif
+# ifeq (, $(PYTHON_NUMPY_VER))
+# 	pip3 install numpy
+# endif
+# ifeq (, $(PYTHON_MATPLOTLIB_VER))
+# 	pip3 install matplotlib
+# endif
+# ifeq (, $(PYTHON_PANDAS_VER))
+# 	pip3 install pandas
+# endif
 
 define DOCKER_NOT_INSTALLED_ERROR
 
