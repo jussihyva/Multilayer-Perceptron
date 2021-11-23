@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 12:41:47 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 13:43:03 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,5 +269,7 @@ t_prediction		*prediction_init(const int argc,
 t_training			*training_init(const int argc,
 						const char *const *const argv);
 size_t				set_number_of_epochs(const t_argc_argv *const argc_argv);
+void				prediction_validate(const t_matrix *const observed,
+						const t_vector *const argmax);
 
 #endif

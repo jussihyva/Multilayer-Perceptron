@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:01:33 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 13:44:58 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	main(int argc, char **argv)
 		if (ft_logging_level() <= LOG_INFO)
 			print_result(layer->y_hat, grad_descent_attr->dataset->y,
 				grad_descent_attr->softmax, grad_descent_attr->argmax_values);
+		prediction_validate(grad_descent_attr->dataset->y, grad_descent_attr->argmax);
 	}
 	main_remove(&prediction, "prediction");
 	return (0);
