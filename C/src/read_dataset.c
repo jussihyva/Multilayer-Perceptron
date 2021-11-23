@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   read_dataset.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 12:33:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 15:05:30 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static void	y_matrix_row_names(t_name_array *row_names)
+{
+
+	row_names->names = ft_memalloc(sizeof(*row_names->names) * 2);
+	row_names->lengths = ft_memalloc(sizeof(*row_names->lengths) * 2);
+	row_names->names[0] = ft_strdup("M");
+	row_names->lengths[0] = ft_strlen(row_names->names[0]);
+	row_names->names[1] = ft_strdup("B");
+	row_names->lengths[1] = ft_strlen(row_names->names[1]);
+	return ;
+}
 
 static void	x_matrix_row_names(t_name_array *row_names)
 {
@@ -125,21 +137,24 @@ static void	select_functions_print(void)
 {
 	size_t		i;
 
-	i = -1;
-	while (++i < NUMBER_OF_COLUMNS)
+	if (ft_logging_level() <= LOG_DEBUG)
 	{
-		if (g_dataset_file_x_columns[i])
-			ft_printf(" %s", g_dataset_file_column_names[i]);
+		i = -1;
+		while (++i < NUMBER_OF_COLUMNS)
+		{
+			if (g_dataset_file_x_columns[i])
+				ft_printf(" %s", g_dataset_file_column_names[i]);
+		}
+		ft_printf("\n");
+		ft_printf("\n");
+		i = -1;
+		while (++i < NUMBER_OF_COLUMNS)
+		{
+			if (g_dataset_file_y_columns[i])
+				ft_printf(" %s", g_dataset_file_column_names[i]);
+		}
+		ft_printf("\n");
 	}
-	ft_printf("\n");
-	ft_printf("\n");
-	i = -1;
-	while (++i < NUMBER_OF_COLUMNS)
-	{
-		if (g_dataset_file_y_columns[i])
-			ft_printf(" %s", g_dataset_file_column_names[i]);
-	}
-	ft_printf("\n");
 	return ;
 }
 
@@ -149,12 +164,10 @@ t_dataset	*read_dataset(const char *const file_path)
 	t_dataset		*dataset;
 	size_t			*valid_columns;
 
+	dataset = NULL;
 	file_attr = ft_read_file(file_path, E_CSV);
 	if (!file_attr || file_attr->read_failure)
-	{
-		dataset = NULL;
 		FT_LOG_ERROR("Reading of file %s failed!", file_path);
-	}
 	else
 	{
 		dataset = ft_memalloc(sizeof(*dataset));
@@ -166,6 +179,7 @@ t_dataset	*read_dataset(const char *const file_path)
 		ft_memdel((void **)&valid_columns);
 		update_content_of_matrix_y(file_attr->row_array, file_attr->rows,
 			&dataset->y);
+		y_matrix_row_names(&dataset->y->row_names);
 		select_functions_print();
 	}
 	file_attr_remove(&file_attr);

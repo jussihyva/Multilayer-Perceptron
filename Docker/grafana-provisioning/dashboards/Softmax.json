@@ -78,8 +78,8 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 23,
-		  "w": 19,
+		  "h": 14,
+		  "w": 22,
 		  "x": 0,
 		  "y": 0
 		},
@@ -113,7 +113,7 @@
 				},
 				{
 				  "params": [
-					"Node 1"
+					"Malignant"
 				  ],
 				  "type": "alias"
 				}
@@ -127,7 +127,7 @@
 				},
 				{
 				  "params": [
-					"Node 1"
+					"Benign"
 				  ],
 				  "type": "alias"
 				}
@@ -144,6 +144,144 @@
 		],
 		"title": "Softmax",
 		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "continuous-BlYlRd"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "left",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "normal"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"max": 1,
+			"min": 0,
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			},
+			"unit": "short"
+		  },
+		  "overrides": [
+			{
+			  "__systemRef": "hideSeriesFrom",
+			  "matcher": {
+				"id": "byNames",
+				"options": {
+				  "mode": "exclude",
+				  "names": [
+					"Bigger value"
+				  ],
+				  "prefix": "All except:",
+				  "readOnly": true
+				}
+			  },
+			  "properties": [
+				{
+				  "id": "custom.hideFrom",
+				  "value": {
+					"legend": false,
+					"tooltip": false,
+					"viz": true
+				  }
+				}
+			  ]
+			}
+		  ]
+		},
+		"gridPos": {
+		  "h": 15,
+		  "w": 22,
+		  "x": 0,
+		  "y": 14
+		},
+		"id": 3,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "multi"
+		  }
+		},
+		"pluginVersion": "8.1.1",
+		"targets": [
+		  {
+			"groupBy": [],
+			"hide": false,
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "table",
+			"select": [
+			  [
+				{
+				  "params": [
+					"BiggerValue"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [
+					"Bigger value"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Softmax"
+			  }
+			]
+		  }
+		],
+		"title": "Bigger value",
+		"type": "timeseries"
 	  }
 	],
 	"refresh": "5s",
@@ -154,7 +292,7 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-1m",
+	  "from": "now-2m",
 	  "to": "now"
 	},
 	"timepicker": {},
@@ -163,3 +301,4 @@
 	"uid": "Softmax",
 	"version": 1
   }
+  

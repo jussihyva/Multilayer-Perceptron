@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_softmax_result_to_database.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 13:00:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 14:18:57 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,32 +133,39 @@ static size_t	influxdb_fields_add(
 							const t_matrix *matrix,
 							const size_t col)
 {
-	char				*string;
 	t_queue				*string_queue;
 	size_t				i;
-	char				string_for_values[100];
+	char				string[100];
+	double				value;
+	double				bigger_value;
 
 	fields_elem->length = 0;
 	string_queue = ft_queue_init();
-	ft_sprintf(string_for_values, "ExampleId=%u", col);
-	fields_elem->length += ft_strlen(string_for_values);
-	ft_enqueue(string_queue, ft_strdup(string_for_values));
+	ft_sprintf(string, "ExampleId=%u", col);
+	fields_elem->length += ft_strlen(string);
+	ft_enqueue(string_queue, ft_strdup(string));
+	bigger_value = DBL_MIN;
 	i = -1;
 	while (++i < matrix->size.rows)
 	{
 		fields_elem->length++;
 		ft_enqueue(string_queue, ft_strdup(","));
-		ft_sprintf(string_for_values, "%d", i);
-		fields_elem->length += ft_strlen(string_for_values);
-		ft_enqueue(string_queue, ft_strdup(string_for_values));
+		ft_sprintf(string, "%d", i);
+		fields_elem->length += ft_strlen(string);
+		ft_enqueue(string_queue, ft_strdup(string));
 		fields_elem->length++;
 		ft_enqueue(string_queue, ft_strdup("="));
-		ft_sprintf(string_for_values, "%f", ((double **)matrix->table)[i][col]);
-		string = backslash_chars_add(SPECIAL_CHARS_INFLUXDB_FIELDS,
-				string_for_values);
+		value = ((double **)matrix->table)[i][col];
+		bigger_value = ft_max_double(bigger_value, value);
+		ft_sprintf(string, "%f", value);
 		fields_elem->length += ft_strlen(string);
-		ft_enqueue(string_queue, string);
+		ft_enqueue(string_queue, ft_strdup(string));
 	}
+	fields_elem->length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	ft_sprintf(string, "BiggerValue=%f", bigger_value);
+	fields_elem->length += ft_strlen(string);
+	ft_enqueue(string_queue, ft_strdup(string));
 	fields_elem->string = ft_strcat_queue(string_queue, fields_elem->length);
 	ft_queue_remove(&string_queue);
 	return (fields_elem->length);

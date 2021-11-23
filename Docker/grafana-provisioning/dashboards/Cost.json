@@ -85,7 +85,9 @@
 		"id": 2,
 		"options": {
 		  "legend": {
-			"calcs": [],
+			"calcs": [
+			  "lastNotNull"
+			],
 			"displayMode": "list",
 			"placement": "right"
 		  },
@@ -173,12 +175,13 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-1m",
+	  "from": "now-5m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Cost",
 	"uid": "Cost",
-	"version": 2
+	"version": 1
   }
+  
