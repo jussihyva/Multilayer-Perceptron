@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grad_descent.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 14:19:41 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 12:32:49 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void	calculate_derivatives(
 
 t_grad_descent_attr	*grad_descent_attr_initialize(
 										const char *const dataset_file,
-										const char *const weight_bias_file)
+										const char *const weight_bias_file,
+										const t_hyper_params *const hyper_params)
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	t_layer					*layer;
@@ -62,10 +63,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		grad_descent_attr->dataset = dataset;
 		grad_descent_attr->logistic_reg_attr->neural_network
 			= neural_network_initialize(grad_descent_attr->dataset);
-		grad_descent_attr->hyper_params
-			= ft_memalloc(sizeof(*grad_descent_attr->hyper_params));
-		grad_descent_attr->hyper_params->iters = 100;
-		grad_descent_attr->hyper_params->learning_rate = 0.2;
+		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = &grad_descent_attr->logistic_reg_attr
 			->neural_network->layers[0];
@@ -91,7 +89,7 @@ void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 	dataset = grad_descent_attr->dataset;
 	grad_descent_attr->iter_cnt = -1;
 	while (++grad_descent_attr->iter_cnt
-		< grad_descent_attr->hyper_params->iters)
+		< grad_descent_attr->hyper_params->epochs)
 	{
 		logistic_regression(layer);
 		ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
@@ -116,7 +114,6 @@ void	grad_descent_attr_remove(
 		ml_matrix_remove(&(*grad_descent_attr)->softmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax_values);
-		ft_memdel((void **)&(*grad_descent_attr)->hyper_params);
 		if ((*grad_descent_attr)->influxdb_connection)
 			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
 		ft_memdel((void **)grad_descent_attr);

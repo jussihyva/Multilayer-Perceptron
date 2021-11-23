@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arg_parser.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 17:42:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 11:06:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 13:15:38 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ static void	param_error(const char *error_string, const char s)
 	return ;
 }
 
-static int	pre_analyse_argument(char *options, char arg,
-														t_argc_argv *argc_argv)
+static int	pre_analyse_argument(char arg, t_argc_argv *argc_argv)
 {
 	char					*opt_ptr;
 	int						result;
 
-	opt_ptr = ft_strchr(options, arg);
+	opt_ptr = ft_strchr(argc_argv->opt_pars, arg);
 	if (opt_ptr && arg != ':')
 	{
 		if (*(opt_ptr + 1) == ':')
@@ -42,23 +41,25 @@ static int	pre_analyse_argument(char *options, char arg,
 	return (result);
 }
 
-static void	split_cmd_argument(
+static size_t	split_cmd_argument(
 							void *const cmd_args,
 							t_arg_parser *arg_parser,
 							t_cmd_param_type cmd_param_type)
 {
-	t_arg_analyze			fn_arg_analyze;
-	t_argc_argv				*argc_argv;
-	const char				*arg;
+	t_arg_analyze				fn_arg_analyze;
+	t_argc_argv					*argc_argv;
+	const char					*arg;
+	size_t						num_of_mandatory_params;
 
-	argc_argv = &arg_parser->argc_argv;
+	num_of_mandatory_params = 0;
+	argc_argv = arg_parser->argc_argv;
 	fn_arg_analyze = arg_parser->fn_arg_analyze;
 	arg = argc_argv->argv[argc_argv->i];
 	if (cmd_param_type == E_OPTIONAL_SHORT)
 	{
 		while (*(++arg))
 		{
-			if (!pre_analyse_argument(arg_parser->options, *arg, argc_argv))
+			if (!pre_analyse_argument(*arg, argc_argv))
 				cmd_param_type = E_MANDATORY;
 			fn_arg_analyze(cmd_args, *arg, arg_parser, cmd_param_type);
 			if (cmd_param_type == E_MANDATORY)
@@ -67,17 +68,21 @@ static void	split_cmd_argument(
 	}
 	else if (cmd_param_type == E_MANDATORY || cmd_param_type == E_OPTIONAL_LONG)
 		fn_arg_analyze(cmd_args, *arg, arg_parser, cmd_param_type);
-	return ;
+	if (cmd_param_type == E_MANDATORY)
+		num_of_mandatory_params++;
+	return (num_of_mandatory_params);
 }
 
 const void	*ft_arg_parser(t_arg_parser *arg_parser)
 {
-	t_cmd_param_type		cmd_param_type;
-	t_argc_argv				*argc_argv;
-	const char				*arg;
-	void					*cmd_args;
+	t_cmd_param_type	cmd_param_type;
+	t_argc_argv			*argc_argv;
+	const char			*arg;
+	void				*cmd_args;
+	size_t				num_of_mandatory_params;
 
-	argc_argv = &arg_parser->argc_argv;
+	num_of_mandatory_params = 0;
+	argc_argv = arg_parser->argc_argv;
 	cmd_args = (void *)arg_parser->fn_arg_init(argc_argv);
 	while (++argc_argv->i < argc_argv->argc)
 	{
@@ -88,7 +93,10 @@ const void	*ft_arg_parser(t_arg_parser *arg_parser)
 			cmd_param_type = E_OPTIONAL_SHORT;
 		else
 			cmd_param_type = E_MANDATORY;
-		split_cmd_argument(cmd_args, arg_parser, cmd_param_type);
+		num_of_mandatory_params += split_cmd_argument(cmd_args, arg_parser,
+				cmd_param_type);
 	}
+	if (num_of_mandatory_params != argc_argv->mandatory_params)
+		arg_parser->fn_usage_print();
 	return (cmd_args);
 }

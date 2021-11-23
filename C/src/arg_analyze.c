@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_analyze.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 11:09:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 13:00:58 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static void	check_number_of_mandatory_variables(t_arg_parser *arg_parser)
 
 	if (!is_num_of_mandatory_variables_valid)
 	{
-		num_of_mandatory_variables = arg_parser->argc_argv.argc
-			- arg_parser->argc_argv.i;
+		num_of_mandatory_variables = arg_parser->argc_argv->argc
+			- arg_parser->argc_argv->i;
 		if (num_of_mandatory_variables == 1)
 			is_num_of_mandatory_variables_valid = E_TRUE;
 		else
@@ -49,8 +49,8 @@ static void	input_param_mandatory_validate(
 
 	(void)opt;
 	check_number_of_mandatory_variables(arg_parser);
-	arg = arg_parser->argc_argv.argv[arg_parser->argc_argv.i];
-	if ((arg_parser->argc_argv.argc - arg_parser->argc_argv.i) == 1)
+	arg = arg_parser->argc_argv->argv[arg_parser->argc_argv->i];
+	if ((arg_parser->argc_argv->argc - arg_parser->argc_argv->i) == 1)
 		cmd_args->dataset_file = (const char *)ft_strdup(arg);
 	else
 		arg_parser->fn_usage_print();
@@ -62,17 +62,17 @@ static void	input_param_save_short(
 								char opt,
 								t_arg_parser *arg_parser)
 {
-	t_hyper_parameters	*hyper_parameters;
+	t_hyper_params		*hyper_params;
 
-	hyper_parameters = &cmd_args->hyper_parameters;
+	hyper_params = &cmd_args->hyper_params;
 	if (opt == 'L')
-		cmd_args->logging_level = set_logging_level(&arg_parser->argc_argv);
+		cmd_args->logging_level = set_logging_level(arg_parser->argc_argv);
 	else if (opt == 'S')
 		cmd_args->is_influxdb = E_TRUE;
 	// else if (opt == 'A')
-	// 	hyper_parameters->learning_rate = set_learning_rate(argc_argv);
-	// else if (opt == 'I')
-	// 	hyper_parameters->iterations = set_number_of_iteration_loops(argc_argv);
+	// 	hyper_params->learning_rate = set_learning_rate(argc_argv);
+	else if (opt == 'E')
+		hyper_params->epochs = set_number_of_epochs(arg_parser->argc_argv);
 	else if (opt == 'l')
 		cmd_args->print_leaks = E_TRUE;
 	else if (opt == 'h')

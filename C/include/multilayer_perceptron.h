@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 10:20:29 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 12:41:47 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
 # define LEARNING_RATE							0.2
-# define ITERATION_LOOP							5000
+# define NUM_OF_EPOCH							5000
 # define BIAS_WEIGTH_FILE						"/../Data/BiasWeigth.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
@@ -153,8 +153,8 @@ typedef struct s_layer
 
 typedef struct s_hyper_params
 {
+	size_t		epochs;
 	double		learning_rate;
-	size_t		iters;
 }				t_hyper_params;
 
 typedef struct s_neural_network
@@ -171,7 +171,7 @@ typedef struct s_grad_descent_attr
 {
 	t_dataset					*dataset;
 	t_logistic_reg_attr			*logistic_reg_attr;
-	t_hyper_params				*hyper_params;
+	const t_hyper_params		*hyper_params;
 	const char					*weight_bias_file;
 	t_vector					*cost;
 	t_matrix					*softmax;
@@ -195,12 +195,6 @@ typedef struct s_influxdb_elem
 	size_t		length;
 }				t_influxdb_elem;
 
-typedef struct s_hyper_parameters
-{
-	size_t					iterations;
-	double					learning_rate;
-}				t_hyper_parameters;
-
 typedef struct s_cmd_args
 {
 	const t_argc_argv		*argc_argv;
@@ -210,8 +204,16 @@ typedef struct s_cmd_args
 	t_bool					is_influxdb;
 	const char				*dataset_file;
 	const char				*weight_bias_file;
-	t_hyper_parameters		hyper_parameters;
+	t_hyper_params			hyper_params;
 }				t_cmd_args;
+
+typedef struct s_training
+{
+	t_argc_argv				argc_argv;
+	t_arg_parser			*arg_parser;
+	const t_cmd_args		*cmd_args;
+	t_grad_descent_attr		*grad_descent_attr;
+}				t_training;
 
 typedef struct s_prediction
 {
@@ -240,7 +242,8 @@ void				logistic_reg_attr_remove(
 						t_logistic_reg_attr **logistic_reg_attr);
 t_grad_descent_attr	*grad_descent_attr_initialize(
 						const char *const dataset_file,
-						const char *const weight_bias_file);
+						const char *const weight_bias_file,
+						const t_hyper_params *const hyper_params);
 void				grad_descent(t_grad_descent_attr *grad_descent_attr);
 void				send_iteration_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
@@ -263,7 +266,8 @@ void				send_softmax_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
 t_prediction		*prediction_init(const int argc,
 						const char *const *const argv);
-void				main_remove(t_prediction **prediction,
-						const char *const prog_name);
+t_training			*training_init(const int argc,
+						const char *const *const argv);
+size_t				set_number_of_epochs(const t_argc_argv *const argc_argv);
 
 #endif

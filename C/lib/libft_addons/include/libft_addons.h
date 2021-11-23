@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_addons.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 12:44:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 13:04:46 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ typedef struct s_argc_argv
 {
 	int			argc;
 	const char	*const *argv;
+	const char	*opt_pars;
 	int			i;
+	size_t		mandatory_params;
 }				t_argc_argv;
 
 typedef struct s_logging_data
@@ -199,11 +201,10 @@ typedef void	(*t_usage_print)(void);
 
 typedef struct s_arg_parser
 {
-	t_argc_argv					argc_argv;
-	t_arg_init					fn_arg_init;
-	t_arg_analyze				fn_arg_analyze;
-	t_usage_print				fn_usage_print;
-	char						*options;
+	t_argc_argv			*argc_argv;
+	t_arg_init			fn_arg_init;
+	t_arg_analyze		fn_arg_analyze;
+	t_usage_print		fn_usage_print;
 }				t_arg_parser;
 
 void					ft_log_trace(const char *file, const int line,
@@ -321,7 +322,7 @@ const char				*ft_strcat_queue(t_queue *const queue,
 							const size_t string_length);
 time_t					ft_gettime(void);
 t_arg_parser			*ft_arg_parser_init(
-							const t_argc_argv *const argc_argv,
+							t_argc_argv *const argc_argv,
 							t_arg_init fn_arg_init,
 							t_arg_analyze fn_arg_analyze,
 							t_usage_print fn_usage_print);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile_Cmd_Attributes.mk                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
+#    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:03:48 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/03 11:05:32 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/23 12:44:16 by juhani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,8 @@ else
 	LEVEL			=
 endif
 
-ifdef M
-	MODE			=	$(M)
+ifdef E
+	EPOCS		=	-E $(E)
 else
-	MODE			=	TRAIN
-endif
-
-ifdef I
-	ITERATIONS		=	-I $(I)
-else
-	ITERATIONS		=	-I 10000
+	EPOCS		=	-E 1000
 endif

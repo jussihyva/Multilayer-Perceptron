@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
+#    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/13 14:18:09 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/23 12:06:18 by juhani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,18 +105,18 @@ libraries_norm:
 .PHONY: run
 run: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
 else
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
 endif
 
 .PHONY: run_leaks
 run_leaks: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) -l $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) -l $(DATASET)
 else
 	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all \
-	$(CUR_DIR)/$(BIN)/$(NAME1) -S $(ITERATIONS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
 endif
 
 .PHONY: clean
