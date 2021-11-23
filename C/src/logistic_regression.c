@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   logistic_regression.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 12:52:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 20:52:32 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+t_logistic_reg_attr	*logistic_reg_init(const t_dataset *const dataset)
+{
+	t_logistic_reg_attr		*logistic_reg_attr;
+
+	logistic_reg_attr = ft_memalloc(sizeof(*logistic_reg_attr));
+	logistic_reg_attr->neural_network = neural_network_init(dataset);
+	return (logistic_reg_attr);
+}
 
 void	logistic_regression(const t_layer *const layer)
 {

@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:01:26 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:53:02 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,7 @@ int	main(int argc, char **argv)
 	training = training_init(argc, (const char *const *)argv);
 	grad_descent_attr = training->grad_descent_attr;
 	if (grad_descent_attr)
-	{
-		grad_descent_attr->influxdb_connection
-			= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 		grad_descent(grad_descent_attr);
-	}
 	main_remove(&training, "training");
 	return (0);
 }

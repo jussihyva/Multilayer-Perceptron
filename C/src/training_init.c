@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 12:34:10 by juhani            #+#    #+#             */
-/*   Updated: 2021/11/23 13:04:04 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:53:45 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_training	*training_init(const int argc, const char *const *const argv)
 {
-	t_training	    	*training;
+	t_training			*training;
 	const t_cmd_args	*cmd_args;
 
 	training = ft_memalloc(sizeof(*training));
@@ -29,5 +29,7 @@ t_training	*training_init(const int argc, const char *const *const argv)
 	training->grad_descent_attr
 		= grad_descent_attr_initialize(cmd_args->dataset_file,
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);
+	training->grad_descent_attr->influxdb_connection
+		= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 	return (training);
 }

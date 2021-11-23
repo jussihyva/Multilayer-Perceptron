@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:44:58 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:51:56 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,13 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 	return ;
 }
 
-static void	print_result(
-				const t_matrix *const y_hat,
-				const t_matrix *const y,
-				const t_matrix *const softmax,
-				const t_vector *const argmax_values)
+static void	print_result(t_grad_descent_attr *grad_descent_attr)
 {
-	ml_matrix_print("Prediction", y_hat);
-	ml_matrix_print("Observed", y);
-	ml_matrix_print("Softmax", softmax);
-	ml_vector_print("ARGMAX VALUES", argmax_values);
+	ml_matrix_print("Prediction", grad_descent_attr->logistic_reg_attr
+		->neural_network->layers->y_hat);
+	ml_matrix_print("Observed", grad_descent_attr->dataset->y);
+	ml_matrix_print("Softmax", grad_descent_attr->softmax);
+	ml_vector_print("ARGMAX VALUES", grad_descent_attr->argmax_values);
 	return ;
 }
 
@@ -64,8 +61,6 @@ int	main(int argc, char **argv)
 	{
 		layer = &grad_descent_attr->logistic_reg_attr->neural_network
 			->layers[0];
-		grad_descent_attr->influxdb_connection
-			= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 		bias_weigth_values_set(layer->bias, layer->weight,
 			prediction->cmd_args->weight_bias_file);
 		logistic_regression(layer);
@@ -74,9 +69,9 @@ int	main(int argc, char **argv)
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);
 		if (ft_logging_level() <= LOG_INFO)
-			print_result(layer->y_hat, grad_descent_attr->dataset->y,
-				grad_descent_attr->softmax, grad_descent_attr->argmax_values);
-		prediction_validate(grad_descent_attr->dataset->y, grad_descent_attr->argmax);
+			print_result(grad_descent_attr);
+		prediction_validate(grad_descent_attr->dataset->y,
+			grad_descent_attr->argmax);
 	}
 	main_remove(&prediction, "prediction");
 	return (0);

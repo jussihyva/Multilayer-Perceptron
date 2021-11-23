@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   neural_network_initialize.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 12:55:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 20:50:40 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-t_neural_network	*neural_network_initialize(t_dataset *dataset)
+t_neural_network	*neural_network_init(const t_dataset *const dataset)
 {
 	t_neural_network	*neural_network;
 	size_t				num_of_examples;

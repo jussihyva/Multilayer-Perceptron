@@ -12,7 +12,8 @@
 			"__locale": "c",
 			"libft_addons.h": "c",
 			"libml.h": "c"
-		}
+		},
+		"editor.insertSpaces": false
 	}
  }
 

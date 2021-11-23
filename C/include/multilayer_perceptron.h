@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 14:56:16 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 20:51:09 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ typedef struct s_prediction
 	t_grad_descent_attr		*grad_descent_attr;
 }				t_prediction;
 
-t_dataset			*read_dataset(const char *const file_path);
+t_dataset			*dataset_init(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(t_dataset **dataset);
 void				calculate_derivative_z(const t_matrix *const y_hat,
@@ -235,7 +235,7 @@ void				calculate_derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
 void				logistic_regression(const t_layer *const layer);
 void				linear_function(const t_layer *const layer);
-t_neural_network	*neural_network_initialize(t_dataset *dataset);
+t_neural_network	*neural_network_init(const t_dataset *const dataset);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
 void				logistic_reg_attr_remove(
@@ -269,7 +269,17 @@ t_prediction		*prediction_init(const int argc,
 t_training			*training_init(const int argc,
 						const char *const *const argv);
 size_t				set_number_of_epochs(const t_argc_argv *const argc_argv);
+double				set_learning_rate(const t_argc_argv *const argc_argv);
 void				prediction_validate(const t_matrix *const observed,
 						const t_vector *const argmax);
+void				update_content_of_matrix_y(const char ***row_array,
+						const size_t rows, t_matrix **matrix);
+t_matrix			*update_content_of_matrix(const char ***row_array,
+						size_t *valid_columns, t_matrix *matrix);
+size_t				*get_valid_columns_and_create_matrix(
+						const size_t rows,
+						const t_bool *const array_of_valid_columns,
+						t_matrix **matrix);
+t_logistic_reg_attr	*logistic_reg_init(const t_dataset *const dataset);
 
 #endif

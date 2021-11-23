@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:00:58 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 15:16:30 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static void	input_param_save_short(
 		cmd_args->logging_level = set_logging_level(arg_parser->argc_argv);
 	else if (opt == 'S')
 		cmd_args->is_influxdb = E_TRUE;
-	// else if (opt == 'A')
-	// 	hyper_params->learning_rate = set_learning_rate(argc_argv);
+	else if (opt == 'A')
+		hyper_params->learning_rate = set_learning_rate(arg_parser->argc_argv);
 	else if (opt == 'E')
 		hyper_params->epochs = set_number_of_epochs(arg_parser->argc_argv);
 	else if (opt == 'l')

@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 10:44:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:21:31 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:52:24 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ t_prediction	*prediction_init(const int argc, const char *const *const argv)
 	prediction->grad_descent_attr
 		= grad_descent_attr_initialize(cmd_args->dataset_file,
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);
+	prediction->grad_descent_attr->influxdb_connection
+		= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 	return (prediction);
 }

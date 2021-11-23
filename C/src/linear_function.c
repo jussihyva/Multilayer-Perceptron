@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linear_function.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 16:22:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 19:54:10 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,5 @@ void	linear_function(const t_layer *const layer)
 		}
 		add_bias_value(example_id, layer->z, layer->bias);
 	}
-	// ml_matrix_print("Z", layer->z);
 	return ;
 }

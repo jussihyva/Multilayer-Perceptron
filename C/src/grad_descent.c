@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 12:32:49 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/23 20:49:14 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,31 @@ static void	calculate_derivatives(
 							t_dataset *dataset)
 {
 	calculate_derivative_z(layer->y_hat, dataset->y, layer->derivative_z);
-	// ml_matrix_print("dz", layer->derivative_z);
 	calculate_derivative_w(dataset->x, layer->derivative_z,
 		layer->derivative_w);
 	calculate_derivative_b(layer->derivative_z, layer->derivative_b);
-	// ml_matrix_print("dw", layer->derivative_w);
-	// ml_vector_print("db", layer->derivative_b);
 	return ;
 }
 
 t_grad_descent_attr	*grad_descent_attr_initialize(
-										const char *const dataset_file,
-										const char *const weight_bias_file,
-										const t_hyper_params *const hyper_params)
+									const char *const dataset_file,
+									const char *const weight_bias_file,
+									const t_hyper_params *const hyper_params)
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	t_layer					*layer;
 	t_dataset				*dataset;
 
-	dataset = read_dataset(dataset_file);
+	dataset = dataset_init(dataset_file);
 	if (dataset)
 	{
-		normalize(dataset->x);
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-		grad_descent_attr->logistic_reg_attr
-			= ft_memalloc(sizeof(*grad_descent_attr->logistic_reg_attr));
+		grad_descent_attr->logistic_reg_attr = logistic_reg_init(dataset);
 		grad_descent_attr->dataset = dataset;
-		grad_descent_attr->logistic_reg_attr->neural_network
-			= neural_network_initialize(grad_descent_attr->dataset);
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
-		layer = &grad_descent_attr->logistic_reg_attr
-			->neural_network->layers[0];
+		layer = &grad_descent_attr->logistic_reg_attr->neural_network
+			->layers[0];
 		grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
 		grad_descent_attr->softmax = ml_matrix_create(layer->y_hat->size.rows,
 				layer->y_hat->size.cols);
