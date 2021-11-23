@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
+#    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 16:31:11 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/15 17:00:08 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/23 10:23:47 by juhani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ build: $(SELF_SIGNED_CRT)
 
 start: build
 	$(DOCKER_COMPOSE) up -d
-	@echo "$(GREEN)Docker for influxdb/grafana started!$(PURPLE) Login to grafana: https://localhost:8086 (UserID/PW = admin/admin)$(END)"
+	@echo "$(GREEN)Docker for influxdb/grafana started!$(PURPLE) \
+	Login to grafana: https://localhost:3000 (UserID/PW = admin/admin)$(END)"
 
 login_influxdb:
 	docker exec -it influxdb bash

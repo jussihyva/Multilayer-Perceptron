@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multilayer_perceptron.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 14:15:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/23 10:20:29 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,5 +263,7 @@ void				send_softmax_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
 t_prediction		*prediction_init(const int argc,
 						const char *const *const argv);
+void				main_remove(t_prediction **prediction,
+						const char *const prog_name);
 
 #endif

@@ -25,6 +25,5 @@ void	*arg_init(t_argc_argv *argc_argv)
 	cmd_args->hyper_parameters.learning_rate = LEARNING_RATE;
 	program_folder = dirname(((char **)argc_argv->argv)[0]);
 	cmd_args->weight_bias_file = ft_strjoin(program_folder, BIAS_WEIGTH_FILE);
-	// ft_strdel((char **)&program_folder);
 	return (cmd_args);
 }
