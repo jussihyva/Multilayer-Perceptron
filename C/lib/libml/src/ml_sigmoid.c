@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:30:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/12 16:23:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:38:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	ml_sigmoid(const t_matrix *const z, t_matrix *const y)
 	while (y_ptr < y_end_ptr)
 	{
 		*y_ptr = 1 / (1 + exp(-(*z_ptr)) + EPSILON);
-		if (*y_ptr == 1)
-			*y_ptr = *y_ptr - EPSILON;
-		else if (*y_ptr == 0)
-			*y_ptr = *y_ptr + EPSILON;
+		// if (*y_ptr == 1)
+		// 	*y_ptr = *y_ptr - EPSILON;
+		// else if (*y_ptr == 0)
+		// 	*y_ptr = *y_ptr + EPSILON;
 		z_ptr++;
 		y_ptr++;
 	}
