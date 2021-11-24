@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/20 10:35:04 by ubuntu            #+#    #+#              #
-#    Updated: 2021/11/16 11:26:56 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/24 11:09:32 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ define OPENSSL_ERROR
 endef
 
 .PHONY: all
-all: required_apps help
+all: help
 
 include Makefile_Help.mk
 

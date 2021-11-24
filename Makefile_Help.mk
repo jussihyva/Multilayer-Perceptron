@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 12:26:25 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/01 12:33:03 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/24 11:23:24 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,5 +35,16 @@ help:
 	@echo ""
 	@echo "4. Readme"
 	@echo "  README.rd file includes implemantation realted information"
+	@echo "$(YELLOW)"
+ifneq (Darwin, $(OS))
+	@echo "Required ubuntu programs:"
+	@for module in `cat requirements_ubuntu.txt` ; do \
+		echo "  $$module" ; \
+	done
+endif
+	@echo "Required python3 modules:"
+	@for module in `cat requirements_python.txt` ; do \
+		echo "  $$module" ; \
+	done
 	@echo "$(END)"
 	@echo ""

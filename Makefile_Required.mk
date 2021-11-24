@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/31 16:27:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/10/31 18:03:01 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/11/24 11:13:24 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ required_apps: install_ubuntu install_python check_pip3 check_docker check_jupyt
 
 .PHONY: install_ubuntu
 install_ubuntu:
+ifneq (Darwin, $(OS))
 	@xargs sudo apt install -y < requirements_ubuntu.txt
+endif
 
 .PHONY: install_python
 install_python:
