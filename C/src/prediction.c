@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prediction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 19:51:56 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/24 12:59:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 static void	print_result(t_grad_descent_attr *grad_descent_attr)
 {
 	ml_matrix_print("Prediction", grad_descent_attr->logistic_reg_attr
-		->neural_network->layers->y_hat);
+		->neural_network->layers[NUM_OF_HIDDEN_LAYERS]->y_hat);
 	ml_matrix_print("Observed", grad_descent_attr->dataset->y);
 	ml_matrix_print("Softmax", grad_descent_attr->softmax);
 	ml_vector_print("ARGMAX VALUES", grad_descent_attr->argmax_values);
@@ -59,8 +59,8 @@ int	main(int argc, char **argv)
 	grad_descent_attr = prediction->grad_descent_attr;
 	if (grad_descent_attr)
 	{
-		layer = &grad_descent_attr->logistic_reg_attr->neural_network
-			->layers[0];
+		layer = grad_descent_attr->logistic_reg_attr->neural_network
+			->layers[NUM_OF_HIDDEN_LAYERS];
 		bias_weigth_values_set(layer->bias, layer->weight,
 			prediction->cmd_args->weight_bias_file);
 		logistic_regression(layer);

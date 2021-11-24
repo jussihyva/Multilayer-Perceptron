@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multilayer_perceptron.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 20:51:09 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/24 13:37:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "libml.h"
 # include <libgen.h>
 
-# define NEURAL_NETWORK_NUM_OF_LAYERS			1
+# define NUM_OF_HIDDEN_LAYERS					0
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -26,7 +26,7 @@
 # define BIAS_WEIGTH_FILE						"/../Data/BiasWeigth.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
-static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
+static const char				*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 		= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
 			"Mean Perimeter", "Mean Area", "Mean Smoothness",
 			"Mean Compactness", "Mean Concavity", "Mean Concave points",
@@ -38,7 +38,7 @@ static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 			"Worst Smoothness", "Worst Compactness", "Worst Concavity",
 			"Worst Concave points", "Worst Symmetry",
 			"Worst Fractal dimension"};
-static const t_bool	g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
+static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 													= {E_FALSE,
 														E_FALSE,
 														E_TRUE,
@@ -91,7 +91,7 @@ static const t_bool	g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 														E_TRUE,
 														E_TRUE,
 														E_TRUE};
-static const t_bool	g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
+static const t_bool				g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
 													= {E_FALSE,
 														E_TRUE,
 														E_FALSE,
@@ -139,16 +139,16 @@ typedef struct s_dataset
 
 typedef struct s_layer
 {
-	size_t		num_of_nodes;
-	t_matrix	*a;
-	t_matrix	*weight;
-	t_vector	*bias;
-	t_matrix	*z;
-	t_matrix	*y_hat;
-	t_vector	*derivative_y_hat;
-	t_matrix	*derivative_z;
-	t_matrix	*derivative_w;
-	t_vector	*derivative_b;
+	size_t			num_of_nodes;
+	const t_matrix	*a;
+	t_matrix		*weight;
+	t_vector		*bias;
+	t_matrix		*z;
+	t_matrix		*y_hat;
+	t_vector		*derivative_y_hat;
+	t_matrix		*derivative_z;
+	t_matrix		*derivative_w;
+	t_vector		*derivative_b;
 }				t_layer;
 
 typedef struct s_hyper_params
@@ -159,8 +159,17 @@ typedef struct s_hyper_params
 
 typedef struct s_neural_network
 {
-	t_layer		*layers;
+	t_layer		**layers;
 }				t_neural_network;
+
+typedef struct s_layer_profile
+{
+	size_t		nodes;
+}				t_layer_profile;
+
+static const t_layer_profile	g_layer_attrs[NUM_OF_HIDDEN_LAYERS + 1]
+		// = {{4}, {2}};
+		= {{2}};
 
 typedef struct s_logistic_reg_attr
 {

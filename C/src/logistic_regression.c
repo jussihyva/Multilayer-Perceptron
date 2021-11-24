@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   logistic_regression.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 20:52:32 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/24 13:05:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,22 @@ void	logistic_reg_attr_remove(
 {
 	t_layer				*layer;
 	t_neural_network	*neural_network;
+	size_t				i;
 
 	neural_network = (*logistic_reg_attr)->neural_network;
-	layer = &neural_network->layers[0];
-	ml_matrix_remove(&layer->z);
-	ml_matrix_remove(&layer->y_hat);
-	ml_matrix_remove(&layer->weight);
-	ml_vector_remove(&layer->bias);
-	ml_vector_remove(&layer->derivative_b);
-	ml_matrix_remove(&layer->derivative_w);
-	ml_matrix_remove(&layer->derivative_z);
+	i = -1;
+	while (++i <= NUM_OF_HIDDEN_LAYERS)
+	{
+		layer = neural_network->layers[i];
+		ml_matrix_remove(&layer->z);
+		ml_matrix_remove(&layer->y_hat);
+		ml_matrix_remove(&layer->weight);
+		ml_vector_remove(&layer->bias);
+		ml_vector_remove(&layer->derivative_b);
+		ml_matrix_remove(&layer->derivative_w);
+		ml_matrix_remove(&layer->derivative_z);
+		ft_memdel((void **)&layer);
+	}
 	ft_memdel((void **)&neural_network->layers);
 	ft_memdel((void **)&(*logistic_reg_attr)->neural_network);
 	ft_memdel((void **)logistic_reg_attr);

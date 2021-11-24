@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grad_descent.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 20:49:14 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/24 13:17:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		grad_descent_attr->dataset = dataset;
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
-		layer = &grad_descent_attr->logistic_reg_attr->neural_network
-			->layers[0];
+		layer = grad_descent_attr->logistic_reg_attr->neural_network
+			->layers[NUM_OF_HIDDEN_LAYERS];
 		grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
 		grad_descent_attr->softmax = ml_matrix_create(layer->y_hat->size.rows,
 				layer->y_hat->size.cols);
@@ -75,16 +75,21 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 
 void	grad_descent(t_grad_descent_attr *grad_descent_attr)
 {
+	t_layer			**layers;
 	t_layer			*layer;
 	t_dataset		*dataset;
+	size_t			i;
 
-	layer = &grad_descent_attr->logistic_reg_attr->neural_network->layers[0];
+	layers = grad_descent_attr->logistic_reg_attr->neural_network->layers;
 	dataset = grad_descent_attr->dataset;
 	grad_descent_attr->iter_cnt = -1;
-	while (++grad_descent_attr->iter_cnt
-		< grad_descent_attr->hyper_params->epochs)
+	while (++grad_descent_attr->iter_cnt < grad_descent_attr->hyper_params
+		->epochs)
 	{
-		logistic_regression(layer);
+		i = -1;
+		while (++i <= NUM_OF_HIDDEN_LAYERS)
+			logistic_regression(layers[i]);
+		layer = layers[NUM_OF_HIDDEN_LAYERS];
 		ml_matrix_cost(dataset->y, layer->y_hat, grad_descent_attr->cost);
 		calculate_derivatives(layer, dataset);
 		weight_bias_update(layer,
