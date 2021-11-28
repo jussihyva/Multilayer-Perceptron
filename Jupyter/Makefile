@@ -37,7 +37,7 @@ build: $(SELF_SIGNED_CRT)
 
 start: build
 	$(DOCKER_COMPOSE) up -d
-	@echo "$(GREEN)Docker for jupyter/grafana started!$(PURPLE) Login to grafana: http://localhost:9000$(END)"
+	@echo "$(GREEN)Docker for jupyter/grafana started!$(PURPLE) Login to grafana: http://localhost:8000$(END)"
 
 login_jupyter:
 	docker exec -it jupyter bash

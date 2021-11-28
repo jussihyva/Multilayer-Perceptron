@@ -170,7 +170,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 ###### 3.2.3.3.4 bias
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b}=\delta{z})
-
+@id:ms-vscode.cpptools-extension-pack
 ##### 3.2.3.4 Update weight
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;w=\alpha*\delta{w})
@@ -178,3 +178,30 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 ##### 3.2.3.5 Update bias
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;b=\alpha*\delta{b})
+
+### 3.3 Neural network models
+
+#### 3.3.1 One layer model
+
+One layer model is the first model I implemented. A purpose of the model is to implement basic functiolnaity like normalization, gradien descent, linear, sigmoid, cost, argmax functions (Based on my previous DSLR project) and additional logistics function (softmax). Based on my learnings from previous projects I restrudctured C-code to support multi layer implementation with several hidden layers. The picture below highlights the key functions in the model.
+
+<img src="Documentation/NeuralNetworkStep01.drawio.png" alt="drawing" width="700"/>
+
+##### 3.3.1.1 Naming rules and equations
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;Normalization=(max(X)-min(X))*\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;weigth(W)=w_{i}^{[l](j)})
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;bias(B)=b_{i}^{[l]})
+
+[l] = The superscript value inside squared brackets is the layer number. Input layer is always number 0.
+(i) = The superscript value inside round brackets is the example number. The first example is number 1.
+ j  = The subscript value is the node number. In this model I have two nodes.
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;X=ToBeDefined)
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;Z=WA+B)
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;g(z)=-\frac{1}{1+e^{-z}}=sigmoid=\sigma)
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;A=g(z)=\hat{y})

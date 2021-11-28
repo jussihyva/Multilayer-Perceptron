@@ -8,6 +8,6 @@ services:
       - ../Python:/home/jovyan/work/Python:rw
       - ../Data:/home/jovyan/work/Data:rw
     ports:
-      - '9000:8888'
+      - '8000:8888'
     working_dir: /home/jovyan
     command: start-notebook.sh --NotebookApp.password="sha1:68e5657a8b69:ba3e64627f1499b5dceefbc3ba8e727bbc2c0e74"
