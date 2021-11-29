@@ -205,3 +205,7 @@ One layer model is the first model I implemented. A purpose of the model is to i
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;g(z)=-\frac{1}{1+e^{-z}}=sigmoid=\sigma)
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;A=g(z)=\hat{y})
+
+#### 3.3.2 Three layers model
+
+<img src="Documentation/NeuralNetwork_3_Layers.drawio.png" alt="drawing" width="700"/>
