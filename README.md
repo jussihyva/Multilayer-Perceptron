@@ -129,11 +129,11 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;z=wx+b)
 
-#### 3.2.2 Sigmoid function
+##### 3.2.1.2 Non-linear functions
+
+###### 3.2.1.2.1 Sigmoid function
 
 [sigmoid function](https://en.m.wikipedia.org/wiki/Sigmoid_function) is used in last layer to get results (0 or 1) from a model. Why did I decide to use sigmoid? To be honest I don't know (maybe in the future, I will) any other possible functionality to get a logistic result (0 < x < 1) than sigmoid. And it seems that sigmoid is widely used in machine learning models.
-
-##### 3.2.2.1 Sigmoid Equation
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=-\frac{1}{1+e^{-z}}=\sigma)
 
@@ -209,3 +209,15 @@ One layer model is the first model I implemented. A purpose of the model is to i
 #### 3.3.2 Three layers model
 
 <img src="Documentation/NeuralNetwork_3_Layers.drawio.png" alt="drawing" width="700"/>
+
+##### 3.3.2.1 Layer 2
+
+Layer 2 is hidden layer which includes three nodes (Units). Non-linear function could be either Sigmoid or ReLU.
+
+<img src="Documentation/NeuralNetwork_Layer_2.drawio.png" alt="drawing" width="600"/>
+
+##### 3.3.2.2 Layer 3
+
+Layer 3 is hidden layer which includes three nodes (Units). Non-linear function could be either Sigmoid or ReLU.
+
+<img src="Documentation/NeuralNetwork_Layer_3.drawio.png" alt="drawing" width="400"/>
