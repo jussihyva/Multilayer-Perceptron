@@ -6,7 +6,7 @@
 #    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/30 15:38:50 by juhani           ###   ########.fr        #
+#    Updated: 2021/11/30 20:29:46 by juhani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
 							bias_weigth_values_set.c \
 							send_softmax_result_to_database.c \
 							prediction_init.c training_init.c \
-							hyper_params.c prediction_validate.c dataset_init.c
+							hyper_params.c prediction_validate.c \
+							dataset_init.c layer.c
 SRC_H_FILES				=	multilayer_perceptron.h
 LOCAL_LIBS				=	libml.a libft_addons.a libftprintf.a libft.a
 GLOBAL_LIBS				=	libssl.a libcrypto.a

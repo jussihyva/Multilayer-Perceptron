@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 15:35:59 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/30 23:18:07 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "libml.h"
 # include <libgen.h>
 
-# define NUM_OF_LAYERS							3
+# define NUM_OF_LAYERS							4
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -26,104 +26,93 @@
 # define BIAS_WEIGTH_FILE						"/../Data/BiasWeigth.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
-static const char				*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
-		= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
-			"Mean Perimeter", "Mean Area", "Mean Smoothness",
-			"Mean Compactness", "Mean Concavity", "Mean Concave points",
-			"Mean Symmetry", "Mean Fractal dimension", "Radius SE",
-			"Texture SE", "Perimeter SE", "Area SE", "Smoothness SE",
-			"Compactness SE", "Concavity SE", "Concave points SE",
-			"Symmetry SE", "Fractal dimension SE", "Worst Radius",
-			"Worst Texture", "Worst Perimeter", "Worst Area",
-			"Worst Smoothness", "Worst Compactness", "Worst Concavity",
-			"Worst Concave points", "Worst Symmetry",
-			"Worst Fractal dimension"};
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
-													= {E_FALSE,
-														E_FALSE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE,
-														// E_FALSE};
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE,
-														E_TRUE};
-static const t_bool				g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
-													= {E_FALSE,
-														E_TRUE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE,
-														E_FALSE};
+	= {E_FALSE,
+	E_FALSE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE,
+	// E_FALSE};
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE,
+	E_TRUE};
+
+static const t_bool	g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
+	= {E_FALSE,
+	E_TRUE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE,
+	E_FALSE};
 
 typedef enum e_dataset_type
 {
@@ -137,7 +126,34 @@ typedef struct s_dataset
 	t_matrix	*y;
 }			t_dataset;
 
-typedef struct s_layer
+typedef enum e_layer_type
+{
+	E_LAYER_INPUT,
+	E_LAYER_HIDDEN,
+	E_LAYER_OUTPUT
+}				t_layer_type;
+
+typedef void					(*t_fn_normalize)(const t_matrix *const,
+									const t_matrix *const);
+typedef void					(*t_fn_linear)(const t_matrix *const,
+									const t_matrix *const,
+									const t_vector *const,
+									const t_matrix *const);
+typedef void					(*t_fn_non_linear)(const t_matrix *const,
+									const t_matrix *const);
+typedef void					(*t_fn_layer_forward_propagation)(const void *const);
+typedef void					(*t_fn_layer_backward_propagation)(const void *const);
+
+typedef struct s_layer_input
+{
+	size_t				id;
+	size_t				num_of_nodes;
+	const t_matrix		*x_input;
+	t_fn_normalize		fn_normalize;
+	t_matrix			*x_output;
+}				t_layer_input;
+
+typedef struct s_layer_hidden
 {
 	size_t			num_of_nodes;
 	const t_matrix	*a_input;
@@ -148,7 +164,15 @@ typedef struct s_layer
 	t_matrix		*d_weight;
 	t_vector		*d_bias;
 	t_matrix		*d_z;
-}				t_layer;
+}				t_layer_hidden;
+
+typedef struct s_layer_output
+{
+	size_t					num_of_nodes;
+	const t_matrix *const	y_hat;
+	const t_matrix *const	y;
+	t_vector				*cost;
+}				t_layer_output;
 
 typedef struct s_hyper_params
 {
@@ -158,17 +182,15 @@ typedef struct s_hyper_params
 
 typedef struct s_neural_network
 {
-	const t_layer		**layers;
+	const void						**layers;
+	t_fn_layer_forward_propagation	*fn_layer_forward_propagation;
+	t_fn_layer_backward_propagation	*fn_layer_backward_propagation;
 }				t_neural_network;
 
 typedef struct s_layer_profile
 {
 	size_t		nodes;
 }				t_layer_profile;
-
-static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
-		= {{3}, {3}, {2}};
-		// = {{2}};
 
 typedef struct s_logistic_reg_attr
 {
@@ -240,8 +262,8 @@ void				calculate_derivative_w(const t_matrix *const x,
 						t_matrix *const derivative_w);
 void				calculate_derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
-void				logistic_regression(const t_layer *const layer);
-void				linear_function(const t_layer *const layer);
+// void				logistic_regression(const t_layer *const layer);
+// void				linear_function(const t_layer *const layer);
 t_neural_network	*neural_network_init(const t_dataset *const dataset);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
@@ -252,7 +274,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 						const char *const weight_bias_file,
 						const t_hyper_params *const hyper_params);
 const t_vector		*grad_descent(
-						const t_layer *const *const layers,
+						const t_neural_network *const neural_network,
 						const t_dataset *const dataset,
 						const t_hyper_params *const hyper_params,
 						const t_tcp_connection *const influxdb_connection);
@@ -266,7 +288,8 @@ void				arg_analyze(void *const cmd_args, char opt,
 void				arg_usage_training(void);
 void				arg_usage_prediction(void);
 void				arg_remove(const t_cmd_args **cmd_args);
-void				normalize(t_matrix *const matrix);
+void				normalize(const t_matrix *const input,
+						const t_matrix *const output);
 void				bias_weigth_values_save(
 						const t_vector *const bias,
 						const t_matrix *const weight,
@@ -294,5 +317,6 @@ size_t				*get_valid_columns_and_create_matrix(
 						const t_bool *const array_of_valid_columns,
 						t_matrix **matrix);
 t_logistic_reg_attr	*logistic_reg_init(const t_dataset *const dataset);
+void				layer_input_calculation(const void *const layer);
 
 #endif

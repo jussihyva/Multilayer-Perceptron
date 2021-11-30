@@ -3,56 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   normalize.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:13:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/18 14:01:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/30 22:50:27 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
 static void	calculate(
-				t_matrix *const matrix,
-				const t_vector *const min,
-				const t_vector *const max)
+				const t_matrix *const input,
+				const t_matrix *const output,
+				const double *const min,
+				const double *const max)
 {
 	t_size_2d	i;
-	double		**table;
-	double		*data_min;
-	double		*data_max;
+	double		**input_table;
+	double		**output_table;
 	double		range;
 
-	table = (double **)matrix->table;
-	data_min = (double *)min->data;
-	data_max = (double *)max->data;
+	input_table = (double **)input->table;
+	output_table = (double **)output->table;
 	i.rows = -1;
-	while (++i.rows < matrix->size.rows)
+	while (++i.rows < input->size.rows)
 	{
 		i.cols = -1;
-		range = data_max[i.rows] - data_min[i.rows];
-		while (++i.cols < matrix->size.cols)
+		range = max[i.rows] - min[i.rows];
+		while (++i.cols < input->size.cols)
 		{
-			table[i.rows][i.cols] -= data_min[i.rows];
-			table[i.rows][i.cols] /= range;
+			output_table[i.rows][i.cols]
+				= input_table[i.rows][i.cols] - min[i.rows];
+			output_table[i.rows][i.cols] /= range;
 		}
 	}
 	return ;
 }
 
-void	normalize(t_matrix *const matrix)
+void	normalize(const t_matrix *const input, const t_matrix *const output)
 {
 	const t_vector		*min;
 	const t_vector		*max;
 
-	min = ml_matrix_min(matrix);
-	max = ml_matrix_max(matrix);
-	if (ft_logging_level() <= LOG_INFO)
+	min = ml_matrix_min(input);
+	max = ml_matrix_max(input);
+	if (ft_logging_level() <= LOG_TRACE)
 	{
 		ml_vector_print("MIN", min);
 		ml_vector_print("MAX", max);
 	}
-	calculate(matrix, min, max);
+	calculate(input, output, min->data, max->data);
 	ml_vector_remove((t_vector **)&min);
 	ml_vector_remove((t_vector **)&max);
 	return ;

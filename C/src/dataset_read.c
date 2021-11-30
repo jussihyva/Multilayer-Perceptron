@@ -6,11 +6,49 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 20:29:39 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/30 23:06:54 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
+	= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
+	"Mean Perimeter", "Mean Area", "Mean Smoothness",
+	"Mean Compactness", "Mean Concavity", "Mean Concave points",
+	"Mean Symmetry", "Mean Fractal dimension", "Radius SE",
+	"Texture SE", "Perimeter SE", "Area SE", "Smoothness SE",
+	"Compactness SE", "Concavity SE", "Concave points SE",
+	"Symmetry SE", "Fractal dimension SE", "Worst Radius",
+	"Worst Texture", "Worst Perimeter", "Worst Area",
+	"Worst Smoothness", "Worst Compactness", "Worst Concavity",
+	"Worst Concave points", "Worst Symmetry",
+	"Worst Fractal dimension"};
+
+static void	select_functions_print(void)
+{
+	size_t		i;
+
+	if (ft_logging_level() <= LOG_DEBUG)
+	{
+		i = -1;
+		while (++i < NUMBER_OF_COLUMNS)
+		{
+			if (g_dataset_file_x_columns[i])
+				ft_printf(" %s", g_dataset_file_column_names[i]);
+		}
+		ft_printf("\n");
+		ft_printf("\n");
+		i = -1;
+		while (++i < NUMBER_OF_COLUMNS)
+		{
+			if (g_dataset_file_y_columns[i])
+				ft_printf(" %s", g_dataset_file_column_names[i]);
+		}
+		ft_printf("\n");
+	}
+	return ;
+}
 
 static void	y_matrix_row_names(t_name_array *row_names)
 {
@@ -74,6 +112,7 @@ t_matrix	*update_content_of_matrix(
 		}
 	}
 	x_matrix_row_names(&matrix->row_names);
+	select_functions_print();
 	return (matrix);
 }
 

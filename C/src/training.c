@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 15:18:55 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/30 22:16:25 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,23 @@ static void	main_remove(t_training **training, const char *const prog_name)
 
 int	main(int argc, char **argv)
 {
-	t_training				*training;
-	t_grad_descent_attr		*grad_descent_attr;
-	const t_layer			**layers;
+	t_training						*training;
+	t_grad_descent_attr				*grad_descent_attr;
+	const t_neural_network			*neural_network;
+	const void *const				*layers;
 
 	training = training_init(argc, (const char *const *)argv);
 	grad_descent_attr = training->grad_descent_attr;
 	if (grad_descent_attr)
 	{
-		layers = grad_descent_attr->logistic_reg_attr->neural_network
-			->layers;
-		grad_descent_attr->cost = grad_descent(layers,
-			grad_descent_attr->dataset, grad_descent_attr->hyper_params,
-			grad_descent_attr->influxdb_connection);
-		bias_weigth_values_save(layers[NUM_OF_LAYERS - 1]->bias,
-			layers[NUM_OF_LAYERS - 1]->weight,
-			grad_descent_attr->weight_bias_file);
+		neural_network = grad_descent_attr->logistic_reg_attr->neural_network;
+		layers = neural_network->layers;
+		grad_descent_attr->cost = grad_descent(neural_network,
+				grad_descent_attr->dataset, grad_descent_attr->hyper_params,
+				grad_descent_attr->influxdb_connection);
+		// bias_weigth_values_save(layers[NUM_OF_LAYERS - 1]->bias,
+		// 	layers[NUM_OF_LAYERS - 1]->weight,
+		// 	grad_descent_attr->weight_bias_file);
 	}
 	main_remove(&training, "training");
 	return (0);
