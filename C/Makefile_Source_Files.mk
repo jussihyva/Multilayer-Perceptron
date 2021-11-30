@@ -6,13 +6,13 @@
 #    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/23 20:17:30 by juhani           ###   ########.fr        #
+#    Updated: 2021/11/30 15:38:50 by juhani           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
 							dataset_remove.c derivative.c \
-							logistic_regression.c neural_network_initialize.c \
+							logistic_regression.c neural_network_init.c \
 							linear_function.c grad_descent.c \
 							send_iteration_result_to_database.c arg_init.c \
 							arg_analyze.c arg_usage_print.c arg_remove.c \

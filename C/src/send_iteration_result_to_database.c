@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_iteration_result_to_database.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 14:46:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/30 14:55:56 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,13 +159,15 @@ static size_t	influxdb_fields_add(
 }
 
 void	send_iteration_result_to_database(
-							const t_grad_descent_attr *const grad_descent_attr)
+							const t_tcp_connection *const influxdb_connection,
+							const t_vector *const cost,
+							const size_t iter_cnt)
 {
 	t_influxdb_elem		*influxdb_elems;
 	const char			*influxdb_string;
 	size_t				total_len;
 
-	if (grad_descent_attr->influxdb_connection)
+	if (influxdb_connection)
 	{
 		influxdb_elems = ft_memalloc(sizeof(*influxdb_elems)
 				* NUM_INFLUXDB_ELEMENTS);
@@ -173,13 +175,12 @@ void	send_iteration_result_to_database(
 		total_len += influxdb_measurement_add(&influxdb_elems[E_MEASUREMENT],
 				"dataset_train");
 		total_len += influxdb_tags_add(&influxdb_elems[E_TAGS]);
-		total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS],
-				grad_descent_attr->iter_cnt, grad_descent_attr->cost);
+		total_len += influxdb_fields_add(&influxdb_elems[E_FIELDS], iter_cnt,
+				cost);
 		total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
 		influxdb_string = elements_merge(influxdb_elems, total_len);
 		influxdb_element_remove(&influxdb_elems);
-		ft_influxdb_write(grad_descent_attr->influxdb_connection,
-			influxdb_string, NULL, 1);
+		ft_influxdb_write(influxdb_connection, influxdb_string, NULL, 1);
 		ft_strdel((char **)&influxdb_string);
 	}
 	else

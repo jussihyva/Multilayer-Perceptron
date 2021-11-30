@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prediction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/24 12:59:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/30 15:57:05 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 static void	print_result(t_grad_descent_attr *grad_descent_attr)
 {
 	ml_matrix_print("Prediction", grad_descent_attr->logistic_reg_attr
-		->neural_network->layers[NUM_OF_HIDDEN_LAYERS]->y_hat);
+		->neural_network->layers[NUM_OF_LAYERS - 1]->a_output);
 	ml_matrix_print("Observed", grad_descent_attr->dataset->y);
 	ml_matrix_print("Softmax", grad_descent_attr->softmax);
 	ml_vector_print("ARGMAX VALUES", grad_descent_attr->argmax_values);
@@ -60,11 +60,11 @@ int	main(int argc, char **argv)
 	if (grad_descent_attr)
 	{
 		layer = grad_descent_attr->logistic_reg_attr->neural_network
-			->layers[NUM_OF_HIDDEN_LAYERS];
+			->layers[NUM_OF_LAYERS - 1];
 		bias_weigth_values_set(layer->bias, layer->weight,
 			prediction->cmd_args->weight_bias_file);
 		logistic_regression(layer);
-		ml_softmax(layer->y_hat, grad_descent_attr->softmax);
+		ml_softmax(layer->a_output, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);

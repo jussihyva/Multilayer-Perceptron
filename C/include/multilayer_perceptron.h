@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multilayer_perceptron.h                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/24 13:37:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/11/30 15:35:59 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "libml.h"
 # include <libgen.h>
 
-# define NUM_OF_HIDDEN_LAYERS					0
+# define NUM_OF_LAYERS							3
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -140,15 +140,14 @@ typedef struct s_dataset
 typedef struct s_layer
 {
 	size_t			num_of_nodes;
-	const t_matrix	*a;
+	const t_matrix	*a_input;
 	t_matrix		*weight;
 	t_vector		*bias;
 	t_matrix		*z;
-	t_matrix		*y_hat;
-	t_vector		*derivative_y_hat;
-	t_matrix		*derivative_z;
-	t_matrix		*derivative_w;
-	t_vector		*derivative_b;
+	t_matrix		*a_output;
+	t_matrix		*d_weight;
+	t_vector		*d_bias;
+	t_matrix		*d_z;
 }				t_layer;
 
 typedef struct s_hyper_params
@@ -159,7 +158,7 @@ typedef struct s_hyper_params
 
 typedef struct s_neural_network
 {
-	t_layer		**layers;
+	const t_layer		**layers;
 }				t_neural_network;
 
 typedef struct s_layer_profile
@@ -167,9 +166,9 @@ typedef struct s_layer_profile
 	size_t		nodes;
 }				t_layer_profile;
 
-static const t_layer_profile	g_layer_attrs[NUM_OF_HIDDEN_LAYERS + 1]
-		// = {{4}, {2}};
-		= {{2}};
+static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
+		= {{3}, {3}, {2}};
+		// = {{2}};
 
 typedef struct s_logistic_reg_attr
 {
@@ -182,11 +181,10 @@ typedef struct s_grad_descent_attr
 	t_logistic_reg_attr			*logistic_reg_attr;
 	const t_hyper_params		*hyper_params;
 	const char					*weight_bias_file;
-	t_vector					*cost;
+	const t_vector				*cost;
 	t_matrix					*softmax;
 	const t_vector				*argmax;
 	const t_vector				*argmax_values;
-	size_t						iter_cnt;
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
@@ -253,9 +251,15 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 						const char *const dataset_file,
 						const char *const weight_bias_file,
 						const t_hyper_params *const hyper_params);
-void				grad_descent(t_grad_descent_attr *grad_descent_attr);
+const t_vector		*grad_descent(
+						const t_layer *const *const layers,
+						const t_dataset *const dataset,
+						const t_hyper_params *const hyper_params,
+						const t_tcp_connection *const influxdb_connection);
 void				send_iteration_result_to_database(
-						const t_grad_descent_attr *const grad_descent_attr);
+						const t_tcp_connection *const influxdb_connection,
+						const t_vector *const cost,
+						const size_t iter_cnt);
 void				*arg_init(t_argc_argv *argc_argv);
 void				arg_analyze(void *const cmd_args, char opt,
 						void *arg_parser, t_cmd_param_type cmd_param_type);

@@ -6,7 +6,7 @@
 /*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 19:54:10 by juhani           ###   ########.fr       */
+/*   Updated: 2021/11/30 15:41:14 by juhani           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ void	linear_function(const t_layer *const layer)
 	ml_matrix_reset(layer->z);
 	table_z = (double **)layer->z->table;
 	example_id = -1;
-	while (++example_id < layer->a->size.cols)
+	while (++example_id < layer->a_input->size.cols)
 	{
 		node_id = -1;
 		while (++node_id < layer->z->size.rows)
 		{
 			function_id = -1;
-			while (++function_id < layer->a->size.rows)
+			while (++function_id < layer->a_input->size.rows)
 			{
 				table_z[node_id][example_id]
 					+= ((double **)layer->weight->table)[node_id][function_id]
-					* ((double **)layer->a->table)[function_id][example_id];
+					* ((double **)layer->a_input
+						->table)[function_id][example_id];
 			}
 		}
 		add_bias_value(example_id, layer->z, layer->bias);
