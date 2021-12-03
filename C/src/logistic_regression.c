@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   logistic_regression.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 11:55:45 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 22:18:40 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/02 17:59:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 // 		ml_vector_remove((t_vector **)&layer->bias);
 // 		ml_matrix_remove((t_matrix **)&layer->z);
 // 		ml_matrix_remove((t_matrix **)&layer->a_output);
+		// ml_vector_remove((t_vector **)&(*layer)->cost);
 // 		ml_matrix_remove((t_matrix **)&layer->d_weight);
 // 		ml_vector_remove((t_vector **)&layer->d_bias);
 // 		ml_matrix_remove((t_matrix **)&layer->d_z);

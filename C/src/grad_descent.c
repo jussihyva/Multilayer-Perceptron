@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grad_descent.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 23:21:34 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/03 10:56:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,21 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 									const t_hyper_params *const hyper_params)
 {
 	t_grad_descent_attr		*grad_descent_attr;
-	// const t_layer			*layer;
+	const t_layer_output	*layer;
 	t_dataset				*dataset;
 
 	dataset = dataset_init(dataset_file);
 	if (dataset)
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
+		grad_descent_attr->neural_network = neural_network_init(dataset);
 		// grad_descent_attr->logistic_reg_attr = logistic_reg_init(dataset);
 		grad_descent_attr->dataset = dataset;
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
-		// layer = grad_descent_attr->logistic_reg_attr->neural_network
-		// 	->layers[NUM_OF_LAYERS - 1];
-		// grad_descent_attr->cost = ml_vector_create(layer->num_of_nodes);
-		// grad_descent_attr->softmax = ml_matrix_create(
-		// 		layer->a_output->size.rows, layer->a_output->size.cols);
+		layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
+		grad_descent_attr->softmax = ml_matrix_create(
+				layer->y_hat->size.rows, layer->y_hat->size.cols);
 		grad_descent_attr->argmax
 			= ml_vector_create(grad_descent_attr->softmax->size.cols);
 		grad_descent_attr->argmax_values
@@ -74,43 +73,75 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	return (grad_descent_attr);
 }
 
-const t_vector	*grad_descent(
+static void	get_previous_weigth_and_d_z(
+								const size_t i,
+								const t_neural_network *const neural_network,
+								const t_matrix **const weigth,
+								const t_matrix **const d_z)
+{
+	size_t						next_layer_id;
+	t_layer_type				next_layer_type;
+	const void *const			*layers;
+	const void 					*next_layer;
+
+	next_layer_id = i + 1;
+	if (next_layer_id == NUM_OF_LAYERS)
+	{
+		*weigth = NULL;
+		*d_z = NULL;
+	}
+	else
+	{
+		layers = neural_network->layers;
+		next_layer_type = neural_network->layer_types[next_layer_id];
+		next_layer = layers[next_layer_id];
+		if (next_layer_type == E_LAYER_HIDDEN)
+		{
+			*weigth = ((t_layer_hidden *)next_layer)->weight;
+			*d_z = ((t_layer_hidden *)next_layer)->d_z;
+		}
+		else if (next_layer_type == E_LAYER_OUTPUT)
+		{
+			*weigth = ((t_layer_output *)next_layer)->weight;
+			*d_z = ((t_layer_output *)next_layer)->d_z;
+		}
+		else
+			FT_LOG_FATAL("Unknown layer type (%d). "
+				"Type should be either HIDDEN or OUTPUT.", next_layer_type);
+	}
+	return ;
+}
+
+void	grad_descent(
 				const t_neural_network *const neural_network,
-				const t_dataset *const dataset,
 				const t_hyper_params *const hyper_params,
 				const t_tcp_connection *const influxdb_connection)
 {
-	const void		*layer;
+	const void		*const *layers;
 	size_t			i;
 	size_t			iter_cnt;
-	t_vector		*cost;
+	const t_matrix	*weigth;
+	const t_matrix	*d_z;
 
-	(void)dataset;
-	cost = NULL;
-	// layer = layers[NUM_OF_LAYERS - 1];
-	// cost = ml_vector_create(layer->num_of_nodes);
+	layers = neural_network->layers;
 	iter_cnt = -1;
 	while (++iter_cnt < hyper_params->epochs)
 	{
 		i = 0;
 		while (++i < NUM_OF_LAYERS)
-		{
-			layer = neural_network->layers[i];
-			neural_network->fn_layer_forward_propagation[i](layer);
-		}
-		// layer = layers[NUM_OF_LAYERS - 1];
-		// ml_matrix_cost(dataset->y, layer->a_output, cost);
+			neural_network->fn_propagation_forward[i](layers[i]);
 		i = NUM_OF_LAYERS;
 		while (--i)
 		{
-			layer = neural_network->layers[i];
-			neural_network->fn_layer_backward_propagation[i](layer);
+			get_previous_weigth_and_d_z(i, neural_network, &weigth, &d_z);
+			neural_network->fn_propagation_backward[i](layers[i], weigth, d_z);
 			// calculate_derivatives(layers[i], dataset);
 			// weight_bias_update(layer, hyper_params->learning_rate);
 		}
-		send_iteration_result_to_database(influxdb_connection, cost, iter_cnt);
+		send_iteration_result_to_database(influxdb_connection, layers,
+			iter_cnt);
 	}
-	return (cost);
+	return ;
 }
 
 void	grad_descent_attr_remove(
@@ -118,10 +149,8 @@ void	grad_descent_attr_remove(
 {
 	if (*grad_descent_attr)
 	{
-		// logistic_reg_attr_remove(&(*grad_descent_attr)->logistic_reg_attr);
 		dataset_remove(&(*grad_descent_attr)->dataset);
-		ml_vector_remove((t_vector **)&(*grad_descent_attr)->cost);
-		ml_matrix_remove(&(*grad_descent_attr)->softmax);
+		ml_matrix_remove((t_matrix **)&(*grad_descent_attr)->softmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax_values);
 		if ((*grad_descent_attr)->influxdb_connection)

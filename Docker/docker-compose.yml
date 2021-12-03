@@ -12,15 +12,6 @@ services:
       - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
       - ./influxdb-selfsigned.key:/etc/ssl/influxdb-selfsigned.key:ro
       - ./influxdb-selfsigned.crt:/etc/ssl/influxdb-selfsigned.crt:ro
-  chronograf:
-    image: chronograf:1.9.0
-    container_name: chronograf
-    ports:
-      - '127.0.0.1:8888:8888'
-    volumes:
-      - chronograf-storage:/var/lib/chronograf:rw
-    depends_on:
-      - influxdb
   grafana:
     image: grafana/grafana:8.1.1
     container_name: grafana
@@ -37,5 +28,4 @@ services:
       - influxdb
 volumes:
   influxdb-storage:
-  chronograf-storage:
   grafana-storage:

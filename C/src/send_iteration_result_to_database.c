@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   send_iteration_result_to_database.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 14:55:56 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/03 11:00:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,15 +160,17 @@ static size_t	influxdb_fields_add(
 
 void	send_iteration_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
-							const t_vector *const cost,
+							const void *const *const layers,
 							const size_t iter_cnt)
 {
-	t_influxdb_elem		*influxdb_elems;
-	const char			*influxdb_string;
-	size_t				total_len;
+	t_influxdb_elem			*influxdb_elems;
+	const char				*influxdb_string;
+	size_t					total_len;
+	const t_vector			*cost;
 
 	if (influxdb_connection)
 	{
+		cost = ((t_layer_output *)layers[NUM_OF_LAYERS - 1])->cost;
 		influxdb_elems = ft_memalloc(sizeof(*influxdb_elems)
 				* NUM_INFLUXDB_ELEMENTS);
 		total_len = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   training.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 22:16:25 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/03 09:19:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,10 @@ int	main(int argc, char **argv)
 	grad_descent_attr = training->grad_descent_attr;
 	if (grad_descent_attr)
 	{
-		neural_network = grad_descent_attr->logistic_reg_attr->neural_network;
+		neural_network = grad_descent_attr->neural_network;
 		layers = neural_network->layers;
-		grad_descent_attr->cost = grad_descent(neural_network,
-				grad_descent_attr->dataset, grad_descent_attr->hyper_params,
-				grad_descent_attr->influxdb_connection);
+		grad_descent(neural_network, grad_descent_attr->hyper_params,
+			grad_descent_attr->influxdb_connection);
 		// bias_weigth_values_save(layers[NUM_OF_LAYERS - 1]->bias,
 		// 	layers[NUM_OF_LAYERS - 1]->weight,
 		// 	grad_descent_attr->weight_bias_file);
