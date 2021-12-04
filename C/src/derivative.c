@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/15 15:30:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/04 11:15:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-void	calculate_derivative_z(
+void	derivative_z_cost(
 					const t_matrix *const y_hat,
 					const t_matrix *const y,
 					t_matrix *const derivative_z)
@@ -39,10 +39,10 @@ void	calculate_derivative_z(
 	return ;
 }
 
-void	calculate_derivative_w(
-						const t_matrix *const x,
-						const t_matrix *const derivative_z,
-						t_matrix *const derivative_w)
+void	derivative_w(
+				const t_matrix *const x,
+				const t_matrix *const derivative_z,
+				t_matrix *const derivative_w)
 {
 	size_t		node_id;
 	size_t		function_id;
@@ -70,9 +70,9 @@ void	calculate_derivative_w(
 	return ;
 }
 
-void	calculate_derivative_b(
-					const t_matrix *const derivative_z,
-					t_vector *const derivative_b)
+void	derivative_b(
+				const t_matrix *const derivative_z,
+				t_vector *const derivative_b)
 {
 	double		*data_b;
 	double		**table_z;

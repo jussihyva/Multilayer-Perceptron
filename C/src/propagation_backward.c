@@ -6,11 +6,31 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/03 11:04:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/04 11:28:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static void	weight_bias_update(
+						const t_layer_output *const layer,
+						const double learning_rate)
+{
+	size_t		i;
+	size_t		total_size;
+
+	total_size = layer->weight->size.rows * layer->weight->size.cols;
+	i = -1;
+	while (++i < total_size)
+		((double *)layer->weight->data)[i] -= learning_rate
+			* ((double *)layer->d_weight->data)[i];
+	total_size = layer->bias->size;
+	i = -1;
+	while (++i < total_size)
+		((double *)layer->bias->data)[i] -= learning_rate
+			* ((double *)layer->d_bias->data)[i];
+	return ;
+}
 
 static void	propagation_backward_input(
 								const void *const layer,
@@ -45,13 +65,17 @@ static void	propagation_backward_output(
 								const t_matrix *const weight,
 								const t_matrix *const d_z)
 {
-	t_layer_hidden	*layer_input;
+	t_layer_output	*layer_output;
 
-	layer_input = (t_layer_hidden *)layer;
-	// layer_input->z * (1 - layer_input->z);
-	(void)layer_input->d_z;
+	layer_output = (t_layer_output *)layer;
 	(void)weight;
 	(void)d_z;
+	derivative_z_cost(layer_output->y_hat, layer_output->y, layer_output->d_z);
+	derivative_w(layer_output->a_input, layer_output->d_z,
+		layer_output->d_weight);
+	derivative_b(layer_output->d_z, layer_output->d_bias);
+	// weight_bias_update(layer_output, layer_output->hyper_params->learning_rate);
+	weight_bias_update(layer_output, 1.0);
 	return ;
 }
 

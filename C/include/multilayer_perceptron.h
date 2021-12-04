@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/03 11:07:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/04 11:27:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,12 @@ typedef void					(*t_fn_propagation_backward)(const void *const,
 									const t_matrix *const,
 									const t_matrix *const);
 
+typedef struct s_hyper_params
+{
+	size_t		epochs;
+	double		learning_rate;
+}				t_hyper_params;
+
 typedef struct s_layer_input
 {
 	t_layer_type		layer_type;
@@ -164,43 +170,40 @@ typedef struct s_layer_input
 	const t_matrix		*x_input;
 	t_fn_normalize		fn_normalize;
 	t_matrix			*a_output;
+	t_hyper_params		*hyper_params;
 }				t_layer_input;
 
 typedef struct s_layer_hidden
 {
-	t_layer_type	layer_type;
-	size_t			num_of_nodes;
-	const t_matrix	*a_input;
-	t_matrix		*weight;
-	t_vector		*bias;
-	t_matrix		*z;
-	t_matrix		*a_output;
-	t_matrix		*d_weight;
-	t_vector		*d_bias;
-	t_matrix		*d_z;
+	t_layer_type		layer_type;
+	size_t				num_of_nodes;
+	const t_matrix		*a_input;
+	t_matrix			*weight;
+	t_vector			*bias;
+	t_matrix			*z;
+	t_matrix			*a_output;
+	t_matrix			*d_weight;
+	t_vector			*d_bias;
+	t_matrix			*d_z;
+	t_hyper_params		*hyper_params;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
 {
-	t_layer_type	layer_type;
-	size_t			num_of_nodes;
-	const t_matrix	*a_input;
-	t_matrix		*weight;
-	t_vector		*bias;
-	t_matrix		*z;
-	t_matrix		*y_hat;
-	const t_matrix	*y;
-	t_vector		*cost;
-	t_matrix		*d_weight;
-	t_vector		*d_bias;
-	t_matrix		*d_z;
+	t_layer_type		layer_type;
+	size_t				num_of_nodes;
+	const t_matrix		*a_input;
+	t_matrix			*weight;
+	t_vector			*bias;
+	t_matrix			*z;
+	t_matrix			*y_hat;
+	const t_matrix		*y;
+	t_vector			*cost;
+	t_matrix			*d_weight;
+	t_vector			*d_bias;
+	t_matrix			*d_z;
+	t_hyper_params		*hyper_params;
 }				t_layer_output;
-
-typedef struct s_hyper_params
-{
-	size_t		epochs;
-	double		learning_rate;
-}				t_hyper_params;
 
 typedef struct s_neural_network
 {
@@ -267,15 +270,16 @@ typedef struct s_prediction
 t_dataset			*dataset_init(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(const t_dataset **dataset);
-void				calculate_derivative_z(const t_matrix *const y_hat,
+void				derivative_z_cost(const t_matrix *const y_hat,
 						const t_matrix *const y, t_matrix *const derivative_z);
-void				calculate_derivative_w(const t_matrix *const x,
+void				derivative_w(const t_matrix *const x,
 						const t_matrix *const derivative_z,
 						t_matrix *const derivative_w);
-void				calculate_derivative_b(const t_matrix *const derivative_z,
+void				derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
 // void				logistic_regression(const t_layer *const layer);
-void				linear_function(const t_layer_hidden *const layer);
+void				linear_function_hidden(const t_layer_hidden *const layer);
+void				linear_function_output(const t_layer_output *const layer);
 t_neural_network	*neural_network_init(const t_dataset *const dataset);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
