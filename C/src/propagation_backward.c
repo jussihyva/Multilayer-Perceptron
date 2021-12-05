@@ -6,11 +6,19 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:34:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 01:24:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static void	weight_bias_print(const t_weight_bias *const weight_bias)
+{
+	// ft_printf("LAYER: %d\n", layer->layer_type);
+	ml_matrix_print(" (W) Weight", weight_bias->weight);
+	ml_vector_print(" (B) Bias", weight_bias->bias);
+	return ;
+}
 
 static void	weight_bias_update(
 						const t_weight_bias *const weight_bias,
@@ -52,13 +60,41 @@ static void	propagation_backward_hidden(
 								const t_matrix *const weight,
 								const t_matrix *const d_z)
 {
-	t_layer_hidden	*layer_input;
+	t_layer_hidden		*layer_hidden;
+	size_t				example_id;
+	size_t				node_id;
+	size_t				function_id;
 
-	layer_input = (t_layer_hidden *)layer;
-	// layer_input->z * (1 - layer_input->z);
-	(void)layer_input->d_z;
-	(void)weight;
-	(void)d_z;
+	layer_hidden = (t_layer_hidden *)layer;
+	ml_matrix_reset(layer_hidden->d_z);
+	g_prime_sigmoid(layer_hidden->a_output, layer_hidden->g_prime);
+	ml_transpose(weight, layer_hidden->weight_transposed);
+	example_id = -1;
+	while (++example_id < d_z->size.cols)
+	{
+		node_id = -1;
+		while (++node_id < d_z->size.rows)
+		{
+			function_id = -1;
+			while (++function_id < layer_hidden->weight_transposed->size.cols)
+			{
+				((double **)layer_hidden->d_z->table)[node_id][example_id]
+					+= ((double **)layer_hidden->weight_transposed
+					->table)[node_id][function_id]
+					* ((double **)d_z->table)[function_id][example_id];
+			}
+			((double **)layer_hidden->d_z->table)[node_id][example_id]
+				*= ((double **)layer_hidden->g_prime->table)[node_id]
+				[example_id];
+		}
+	}
+	derivative_w(layer_hidden->a_input, layer_hidden->d_z,
+		layer_hidden->d_weight_bias.weight);
+	derivative_b(layer_hidden->d_z, layer_hidden->d_weight_bias.bias);
+	weight_bias_update(&layer_hidden->weight_bias, &layer_hidden->d_weight_bias,
+		layer_hidden->hyper_params.learning_rate);
+	if (ft_logging_level() <= LOG_DEBUG)
+		weight_bias_print(&layer_hidden->weight_bias);
 	return ;
 }
 

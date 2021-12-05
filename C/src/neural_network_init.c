@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 15:28:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 00:46:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ static t_layer_hidden	*layer_hidden_init(
 	num_of_activation_functions = layer->a_input->size.rows;
 	layer->z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->a_output = ml_matrix_create(layer->num_of_nodes, num_of_examples);
+	layer->weight_transposed = ml_matrix_create(num_of_nodes,
+			g_layer_attrs[id + 1].nodes);
 	weight_bias_init(layer->id, &layer->weight_bias, &layer->d_weight_bias,
 		&layer->a_input->row_names);
-	layer->d_z = ml_matrix_create(layer->num_of_nodes,
-			num_of_examples);
+	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
+	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->layer_type = E_LAYER_HIDDEN;
 	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
 	return (layer);

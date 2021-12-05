@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 15:02:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 17:13:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,8 @@ typedef struct s_layer_hidden
 	t_weight_bias		d_weight_bias;
 	t_matrix			*d_z;
 	t_hyper_params		hyper_params;
+	const t_matrix		*g_prime;
+	const t_matrix		*weight_transposed;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
@@ -341,5 +343,7 @@ void				layer_output_calculation(const void *const layer);
 void				set_propagation_backward_functions(
 						t_fn_propagation_backward
 							*const fn_propagation_backward);
+void				g_prime_sigmoid(const t_matrix *const a,
+						const t_matrix *const g_prime);
 
 #endif
