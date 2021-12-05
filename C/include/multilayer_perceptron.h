@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/04 11:27:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 08:14:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@
 typedef struct s_layer_profile
 {
 	size_t		nodes;
+	double		learning_rate;
 }				t_layer_profile;
 
 static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
-	= {{NUMBER_OF_COLUMNS}, {3}, {3}, {2}};
-		// = {{2}};
+	= {{NUMBER_OF_COLUMNS, LEARNING_RATE}, {3, LEARNING_RATE}, {3, LEARNING_RATE}, {2, LEARNING_RATE}};
+		// = {{2, LEARNING_RATE}};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 	= {E_FALSE,
@@ -170,7 +171,7 @@ typedef struct s_layer_input
 	const t_matrix		*x_input;
 	t_fn_normalize		fn_normalize;
 	t_matrix			*a_output;
-	t_hyper_params		*hyper_params;
+	t_hyper_params		hyper_params;
 }				t_layer_input;
 
 typedef struct s_layer_hidden
@@ -185,7 +186,7 @@ typedef struct s_layer_hidden
 	t_matrix			*d_weight;
 	t_vector			*d_bias;
 	t_matrix			*d_z;
-	t_hyper_params		*hyper_params;
+	t_hyper_params		hyper_params;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
@@ -202,7 +203,7 @@ typedef struct s_layer_output
 	t_matrix			*d_weight;
 	t_vector			*d_bias;
 	t_matrix			*d_z;
-	t_hyper_params		*hyper_params;
+	t_hyper_params		hyper_params;
 }				t_layer_output;
 
 typedef struct s_neural_network

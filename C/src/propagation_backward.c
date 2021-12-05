@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/04 11:28:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 08:20:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,14 @@ static void	propagation_backward_output(
 {
 	t_layer_output	*layer_output;
 
-	layer_output = (t_layer_output *)layer;
 	(void)weight;
 	(void)d_z;
+	layer_output = (t_layer_output *)layer;
 	derivative_z_cost(layer_output->y_hat, layer_output->y, layer_output->d_z);
 	derivative_w(layer_output->a_input, layer_output->d_z,
 		layer_output->d_weight);
 	derivative_b(layer_output->d_z, layer_output->d_bias);
-	// weight_bias_update(layer_output, layer_output->hyper_params->learning_rate);
-	weight_bias_update(layer_output, 1.0);
+	weight_bias_update(layer_output, layer_output->hyper_params.learning_rate);
 	return ;
 }
 

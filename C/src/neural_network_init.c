@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/03 11:07:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 08:15:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static t_layer_input	*layer_input_init(
 	layer->a_output = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->fn_normalize = normalize;
 	layer->layer_type = E_LAYER_INPUT;
+	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
 	return (layer);
 }
 
@@ -61,6 +62,7 @@ static t_layer_hidden	*layer_hidden_init(
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples);
 	layer->layer_type = E_LAYER_HIDDEN;
+	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
 	return (layer);
 }
 
@@ -95,6 +97,7 @@ static t_layer_output	*layer_output_init(
 			num_of_examples);
 	layer->cost = ml_vector_create(layer->num_of_nodes);
 	layer->layer_type = E_LAYER_OUTPUT;
+	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
 	return (layer);
 }
 

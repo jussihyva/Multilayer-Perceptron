@@ -6,41 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/03 10:56:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 08:26:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-// static void	weight_bias_update(
-// 						const t_layer *const layer,
-// 						const double learning_rate)
-// {
-// 	size_t		i;
-// 	size_t		total_size;
-
-// 	total_size = layer->weight->size.rows * layer->weight->size.cols;
-// 	i = -1;
-// 	while (++i < total_size)
-// 		((double *)layer->weight->data)[i] -= learning_rate
-// 			* ((double *)layer->d_weight->data)[i];
-// 	total_size = layer->bias->size;
-// 	i = -1;
-// 	while (++i < total_size)
-// 		((double *)layer->bias->data)[i] -= learning_rate
-// 			* ((double *)layer->d_bias->data)[i];
-// 	return ;
-// }
-
-// static void	calculate_derivatives(
-// 							const t_layer *const layer,
-// 							const t_dataset *const dataset)
-// {
-// 	calculate_derivative_z(layer->a_output, dataset->y, layer->d_z);
-// 	calculate_derivative_w(dataset->x, layer->d_z, layer->d_weight);
-// 	calculate_derivative_b(layer->d_z, layer->d_bias);
-// 	return ;
-// }
 
 t_grad_descent_attr	*grad_descent_attr_initialize(
 									const char *const dataset_file,
@@ -56,7 +26,6 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
 		grad_descent_attr->neural_network = neural_network_init(dataset);
-		// grad_descent_attr->logistic_reg_attr = logistic_reg_init(dataset);
 		grad_descent_attr->dataset = dataset;
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
@@ -82,15 +51,12 @@ static void	get_previous_weigth_and_d_z(
 	size_t						next_layer_id;
 	t_layer_type				next_layer_type;
 	const void *const			*layers;
-	const void 					*next_layer;
+	const void					*next_layer;
 
 	next_layer_id = i + 1;
-	if (next_layer_id == NUM_OF_LAYERS)
-	{
-		*weigth = NULL;
-		*d_z = NULL;
-	}
-	else
+	*weigth = NULL;
+	*d_z = NULL;
+	if (next_layer_id != NUM_OF_LAYERS)
 	{
 		layers = neural_network->layers;
 		next_layer_type = neural_network->layer_types[next_layer_id];
@@ -117,11 +83,11 @@ void	grad_descent(
 				const t_hyper_params *const hyper_params,
 				const t_tcp_connection *const influxdb_connection)
 {
-	const void		*const *layers;
-	size_t			i;
-	size_t			iter_cnt;
-	const t_matrix	*weigth;
-	const t_matrix	*d_z;
+	const void *const	*layers;
+	size_t				i;
+	size_t				iter_cnt;
+	const t_matrix		*weigth;
+	const t_matrix		*d_z;
 
 	layers = neural_network->layers;
 	iter_cnt = -1;
@@ -135,8 +101,6 @@ void	grad_descent(
 		{
 			get_previous_weigth_and_d_z(i, neural_network, &weigth, &d_z);
 			neural_network->fn_propagation_backward[i](layers[i], weigth, d_z);
-			// calculate_derivatives(layers[i], dataset);
-			// weight_bias_update(layer, hyper_params->learning_rate);
 		}
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);
