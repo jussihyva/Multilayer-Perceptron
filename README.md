@@ -190,7 +190,7 @@ One layer model is the first model I implemented. A purpose of the model is to i
 ##### 3.3.1.1 Naming rules and equations
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;Normalization=(max(X)-min(X))*\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
-![g](https://latex.codecogs.com/svg.latex?\Large&space;weigth(W)=w_{i}^{[l](j)})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;weight(W)=w_{i}^{[l](j)})
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;bias(B)=b_{i}^{[l]})
 

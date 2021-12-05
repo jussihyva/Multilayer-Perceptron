@@ -8,4 +8,4 @@ jupyter-selfsigned.key
 jupyter-selfsigned.crt
 influxdb-selfsigned.key
 influxdb-selfsigned.crt
-Data/BiasWeigth.yml
+Data/BiasWeight.yml

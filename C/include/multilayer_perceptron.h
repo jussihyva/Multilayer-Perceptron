@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 08:14:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 15:02:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
 # define LEARNING_RATE							0.2
 # define NUM_OF_EPOCH							5000
-# define BIAS_WEIGTH_FILE						"/../Data/BiasWeigth.yml"
+# define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
 typedef struct s_layer_profile
@@ -164,8 +164,15 @@ typedef struct s_hyper_params
 	double		learning_rate;
 }				t_hyper_params;
 
+typedef struct s_weight_bias
+{
+	t_matrix		*weight;
+	t_vector		*bias;
+}				t_weight_bias;
+
 typedef struct s_layer_input
 {
+	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
 	const t_matrix		*x_input;
@@ -176,32 +183,30 @@ typedef struct s_layer_input
 
 typedef struct s_layer_hidden
 {
+	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
 	const t_matrix		*a_input;
-	t_matrix			*weight;
-	t_vector			*bias;
+	t_weight_bias		weight_bias;
 	t_matrix			*z;
 	t_matrix			*a_output;
-	t_matrix			*d_weight;
-	t_vector			*d_bias;
+	t_weight_bias		d_weight_bias;
 	t_matrix			*d_z;
 	t_hyper_params		hyper_params;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
 {
+	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
 	const t_matrix		*a_input;
-	t_matrix			*weight;
-	t_vector			*bias;
+	t_weight_bias		weight_bias;
 	t_matrix			*z;
 	t_matrix			*y_hat;
 	const t_matrix		*y;
 	t_vector			*cost;
-	t_matrix			*d_weight;
-	t_vector			*d_bias;
+	t_weight_bias		d_weight_bias;
 	t_matrix			*d_z;
 	t_hyper_params		hyper_params;
 }				t_layer_output;
@@ -304,11 +309,11 @@ void				arg_usage_prediction(void);
 void				arg_remove(const t_cmd_args **cmd_args);
 void				normalize(const t_matrix *const input,
 						const t_matrix *const output);
-void				bias_weigth_values_save(
+void				bias_weight_values_save(
 						const t_vector *const bias,
 						const t_matrix *const weight,
 						const char *const weight_bias_file);
-void				bias_weigth_values_set(
+void				bias_weight_values_set(
 						const t_vector *const bias,
 						const t_matrix *const weight,
 						const char *const weight_bias_file);

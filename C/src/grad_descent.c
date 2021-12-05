@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 08:26:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 14:35:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	return (grad_descent_attr);
 }
 
-static void	get_previous_weigth_and_d_z(
+static void	get_previous_weight_and_d_z(
 								const size_t i,
 								const t_neural_network *const neural_network,
-								const t_matrix **const weigth,
+								const t_matrix **const weight,
 								const t_matrix **const d_z)
 {
 	size_t						next_layer_id;
@@ -54,7 +54,7 @@ static void	get_previous_weigth_and_d_z(
 	const void					*next_layer;
 
 	next_layer_id = i + 1;
-	*weigth = NULL;
+	*weight = NULL;
 	*d_z = NULL;
 	if (next_layer_id != NUM_OF_LAYERS)
 	{
@@ -63,12 +63,12 @@ static void	get_previous_weigth_and_d_z(
 		next_layer = layers[next_layer_id];
 		if (next_layer_type == E_LAYER_HIDDEN)
 		{
-			*weigth = ((t_layer_hidden *)next_layer)->weight;
+			*weight = ((t_layer_hidden *)next_layer)->d_weight_bias.weight;
 			*d_z = ((t_layer_hidden *)next_layer)->d_z;
 		}
 		else if (next_layer_type == E_LAYER_OUTPUT)
 		{
-			*weigth = ((t_layer_output *)next_layer)->weight;
+			*weight = ((t_layer_output *)next_layer)->weight_bias.weight;
 			*d_z = ((t_layer_output *)next_layer)->d_z;
 		}
 		else
@@ -86,7 +86,7 @@ void	grad_descent(
 	const void *const	*layers;
 	size_t				i;
 	size_t				iter_cnt;
-	const t_matrix		*weigth;
+	const t_matrix		*weight;
 	const t_matrix		*d_z;
 
 	layers = neural_network->layers;
@@ -99,8 +99,8 @@ void	grad_descent(
 		i = NUM_OF_LAYERS;
 		while (--i)
 		{
-			get_previous_weigth_and_d_z(i, neural_network, &weigth, &d_z);
-			neural_network->fn_propagation_backward[i](layers[i], weigth, d_z);
+			get_previous_weight_and_d_z(i, neural_network, &weight, &d_z);
+			neural_network->fn_propagation_backward[i](layers[i], weight, d_z);
 		}
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);

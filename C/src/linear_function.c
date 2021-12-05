@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/04 10:56:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 15:19:54 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static void	add_bias_value(
 
 static void	linear_function(
 					const t_matrix *const a_input,
-					const t_matrix *const weight,
-					const t_vector *const bias,
+					const t_weight_bias *const weight_bias,
 					t_matrix *const z)
 {
 	size_t		function_id;
@@ -51,22 +50,23 @@ static void	linear_function(
 			while (++function_id < a_input->size.rows)
 			{
 				table_z[node_id][example_id]
-					+= ((double **)weight->table)[node_id][function_id]
+					+= ((double **)weight_bias->weight
+					->table)[node_id][function_id]
 					* ((double **)a_input
 						->table)[function_id][example_id];
 			}
 		}
-		add_bias_value(example_id, z, bias);
+		add_bias_value(example_id, z, weight_bias->bias);
 	}
 	return ;
 }
 
 void	linear_function_hidden(const t_layer_hidden *const layer)
 {
-	linear_function(layer->a_input, layer->weight, layer->bias, layer->z);
+	linear_function(layer->a_input, &layer->weight_bias, layer->z);
 }
 
 void	linear_function_output(const t_layer_output *const layer)
 {
-	linear_function(layer->a_input, layer->weight, layer->bias, layer->z);
+	linear_function(layer->a_input, &layer->weight_bias, layer->z);
 }

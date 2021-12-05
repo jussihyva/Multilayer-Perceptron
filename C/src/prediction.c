@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prediction.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/30 23:23:16 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/05 14:25:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 	{
 		// layer = grad_descent_attr->logistic_reg_attr->neural_network
 		// 	->layers[NUM_OF_LAYERS - 1];
-		// bias_weigth_values_set(layer->bias, layer->weight,
+		// bias_weight_values_set(layer->bias, layer->weight,
 		// 	prediction->cmd_args->weight_bias_file);
 		// logistic_regression(layer);
 		// ml_softmax(layer->a_output, grad_descent_attr->softmax);

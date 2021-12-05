@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bias_weigth_values_save.c                          :+:      :+:    :+:   */
+/*   bias_weight_values_save.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 13:26:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 14:27:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static const char	*yaml_string_create(
 	return (str);
 }
 
-void	bias_weigth_values_save(
+void	bias_weight_values_save(
 						const t_vector *const bias,
 						const t_matrix *const weight,
 						const char *const weight_bias_file)

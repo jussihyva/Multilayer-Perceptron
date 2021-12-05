@@ -6,29 +6,31 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 08:20:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 14:34:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
 static void	weight_bias_update(
-						const t_layer_output *const layer,
+						const t_weight_bias *const weight_bias,
+						const t_weight_bias *const d_weight_bias,
 						const double learning_rate)
 {
 	size_t		i;
 	size_t		total_size;
 
-	total_size = layer->weight->size.rows * layer->weight->size.cols;
+	total_size = weight_bias->weight->size.rows
+		* weight_bias->weight->size.cols;
 	i = -1;
 	while (++i < total_size)
-		((double *)layer->weight->data)[i] -= learning_rate
-			* ((double *)layer->d_weight->data)[i];
-	total_size = layer->bias->size;
+		((double *)weight_bias->weight->data)[i] -= learning_rate
+			* ((double *)d_weight_bias->weight->data)[i];
+	total_size = weight_bias->bias->size;
 	i = -1;
 	while (++i < total_size)
-		((double *)layer->bias->data)[i] -= learning_rate
-			* ((double *)layer->d_bias->data)[i];
+		((double *)weight_bias->bias->data)[i] -= learning_rate
+			* ((double *)d_weight_bias->bias->data)[i];
 	return ;
 }
 
@@ -72,9 +74,10 @@ static void	propagation_backward_output(
 	layer_output = (t_layer_output *)layer;
 	derivative_z_cost(layer_output->y_hat, layer_output->y, layer_output->d_z);
 	derivative_w(layer_output->a_input, layer_output->d_z,
-		layer_output->d_weight);
-	derivative_b(layer_output->d_z, layer_output->d_bias);
-	weight_bias_update(layer_output, layer_output->hyper_params.learning_rate);
+		layer_output->d_weight_bias.weight);
+	derivative_b(layer_output->d_z, layer_output->d_weight_bias.bias);
+	weight_bias_update(&layer_output->weight_bias, &layer_output->d_weight_bias,
+		layer_output->hyper_params.learning_rate);
 	return ;
 }
 

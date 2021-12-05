@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bias_weigth_values_set.c                           :+:      :+:    :+:   */
+/*   bias_weight_values_set.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 12:58:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 13:02:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/05 14:27:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	print_values(
 	return ;
 }
 
-void	bias_weigth_values_set(
+void	bias_weight_values_set(
 						const t_vector *const bias,
 						const t_matrix *const weight,
 						const char *const weight_bias_file)

@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/12/03 09:04:01 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/12/05 14:22:51 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
 							linear_function.c grad_descent.c \
 							send_iteration_result_to_database.c arg_init.c \
 							arg_analyze.c arg_usage_print.c arg_remove.c \
-							normalize.c bias_weigth_values_save.c \
-							bias_weigth_values_set.c \
+							normalize.c bias_weight_values_save.c \
+							bias_weight_values_set.c \
 							send_softmax_result_to_database.c \
 							prediction_init.c training_init.c \
 							hyper_params.c prediction_validate.c \
