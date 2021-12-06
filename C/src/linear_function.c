@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 15:19:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 12:19:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,16 @@ static void	linear_function(
 	return ;
 }
 
-void	linear_function_hidden(const t_layer_hidden *const layer)
+void	linear_function_hidden(
+						const t_layer_hidden *const layer,
+						const t_matrix *const activation_input)
 {
-	linear_function(layer->a_input, &layer->weight_bias, layer->z);
+	linear_function(activation_input, &layer->weight_bias, layer->z);
 }
 
-void	linear_function_output(const t_layer_output *const layer)
+void	linear_function_output(
+						const t_layer_output *const layer,
+						const t_matrix *const activation_input)
 {
-	linear_function(layer->a_input, &layer->weight_bias, layer->z);
+	linear_function(activation_input, &layer->weight_bias, layer->z);
 }

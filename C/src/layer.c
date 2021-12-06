@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:29:55 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/04 10:57:56 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 12:36:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,47 @@
 
 static void	layer_input_print(const t_layer_input *const layer)
 {
-	ft_printf("LAYER: %d\n", layer->layer_type);
-	ml_matrix_print(" (A) Output", layer->a_output);
-	ft_printf("LAYER: %d\n", layer->layer_type);
-	ml_matrix_print(" (X) Input", layer->x_input);
-	ml_matrix_print(" (X) Output", layer->a_output);
+	ft_printf("LAYER: %lu\n", layer->id);
+	ml_matrix_print(" X ", layer->x);
+	ml_matrix_print(" A ", layer->a);
 	return ;
 }
 
 static void	layer_output_print(const t_layer_output *const layer)
 {
-	ft_printf("LAYER: %d\n", layer->layer_type);
+	ft_printf("LAYER: %lu\n", layer->id);
 	ml_matrix_print(" (Y_hat) Prediction", layer->y_hat);
-	ft_printf("LAYER: %d\n", layer->layer_type);
 	ml_matrix_print(" (Y) Observation", layer->y);
 	ml_vector_print(" Cost", layer->cost);
 	return ;
 }
 
-void	layer_input_calculation(const void *const layer)
+void	propagation_forward_input(const t_layer_input *const layer)
 {
-	const t_layer_input	*layer_input;
-
-	layer_input = (t_layer_input *)layer;
-	normalize(layer_input->x_input, layer_input->a_output);
+	normalize(layer->x, layer->a);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_input_print(layer_input);
+		layer_input_print(layer);
 	return ;
 }
 
-void	layer_hidden_calculation(const void *const layer)
+void	propagation_forward_hidden(
+						const t_layer_hidden *const layer,
+						const t_matrix *const activation_input)
 {
-	const t_layer_hidden	*layer_hidden;
-
-	layer_hidden = (t_layer_hidden *)layer;
-	linear_function_hidden(layer);
-	ml_sigmoid(layer_hidden->z, layer_hidden->a_output);
+	linear_function_hidden(layer, activation_input);
+	ml_sigmoid(layer->z, layer->a);
 	return ;
 }
 
-void	layer_output_calculation(const void *const layer)
+void	propagation_forward_output(
+						const t_layer_output *const layer,
+						const t_matrix *const activation_input)
 {
-	const t_layer_output	*layer_output;
-
-	layer_output = (t_layer_output *)layer;
-	linear_function_output(layer);
-	ml_sigmoid(layer_output->z, layer_output->y_hat);
-	ml_matrix_cost(layer_output->y, layer_output->y_hat, layer_output->cost);
+	linear_function_output(layer, activation_input);
+	ml_sigmoid(layer->z, layer->y_hat);
+	ml_matrix_cost(layer->y, layer->y_hat, layer->cost);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_output_print(layer_output);
+		layer_output_print(layer);
 	return ;
 }
 

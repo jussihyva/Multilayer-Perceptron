@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 17:13:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 12:46:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,6 @@ typedef void					(*t_fn_linear)(const t_matrix *const,
 									const t_matrix *const);
 typedef void					(*t_fn_non_linear)(const t_matrix *const,
 									const t_matrix *const);
-typedef void					(*t_fn_propagation_forward)(const void *const);
-typedef void					(*t_fn_propagation_backward)(const void *const,
-									const t_matrix *const,
-									const t_matrix *const);
 
 typedef struct s_hyper_params
 {
@@ -175,9 +171,9 @@ typedef struct s_layer_input
 	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
-	const t_matrix		*x_input;
+	const t_matrix		*x;
 	t_fn_normalize		fn_normalize;
-	t_matrix			*a_output;
+	t_matrix			*a;
 	t_hyper_params		hyper_params;
 }				t_layer_input;
 
@@ -186,10 +182,9 @@ typedef struct s_layer_hidden
 	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
-	const t_matrix		*a_input;
 	t_weight_bias		weight_bias;
 	t_matrix			*z;
-	t_matrix			*a_output;
+	t_matrix			*a;
 	t_weight_bias		d_weight_bias;
 	t_matrix			*d_z;
 	t_hyper_params		hyper_params;
@@ -202,7 +197,6 @@ typedef struct s_layer_output
 	size_t				id;
 	t_layer_type		layer_type;
 	size_t				num_of_nodes;
-	const t_matrix		*a_input;
 	t_weight_bias		weight_bias;
 	t_matrix			*z;
 	t_matrix			*y_hat;
@@ -215,10 +209,8 @@ typedef struct s_layer_output
 
 typedef struct s_neural_network
 {
-	const void					*layers[NUM_OF_LAYERS];
-	t_layer_type				layer_types[NUM_OF_LAYERS];
-	t_fn_propagation_forward	fn_propagation_forward[NUM_OF_LAYERS];
-	t_fn_propagation_backward	fn_propagation_backward[NUM_OF_LAYERS];
+	const void					**layers;
+	t_layer_type				*layer_types;
 }				t_neural_network;
 
 typedef struct s_grad_descent_attr
@@ -286,8 +278,10 @@ void				derivative_w(const t_matrix *const x,
 void				derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
 // void				logistic_regression(const t_layer *const layer);
-void				linear_function_hidden(const t_layer_hidden *const layer);
-void				linear_function_output(const t_layer_output *const layer);
+void				linear_function_hidden(const t_layer_hidden *const layer,
+						const t_matrix *const activation_input);
+void				linear_function_output(const t_layer_output *const layer,
+						const t_matrix *const activation_input);
 t_neural_network	*neural_network_init(const t_dataset *const dataset);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
@@ -337,13 +331,22 @@ size_t				*get_valid_columns_and_create_matrix(
 						const size_t rows,
 						const t_bool *const array_of_valid_columns,
 						t_matrix **matrix);
-void				layer_input_calculation(const void *const layer);
-void				layer_hidden_calculation(const void *const layer);
-void				layer_output_calculation(const void *const layer);
-void				set_propagation_backward_functions(
-						t_fn_propagation_backward
-							*const fn_propagation_backward);
+void				propagation_forward_input(
+						const t_layer_input *const layer);
+void				propagation_forward_hidden(
+						const t_layer_hidden *const layer,
+						const t_matrix *const activation_input);
+void				propagation_forward_output(
+						const t_layer_output *const layer,
+						const t_matrix *const activation_input);
 void				g_prime_sigmoid(const t_matrix *const a,
 						const t_matrix *const g_prime);
+const t_matrix		*get_activation_input(
+						const t_neural_network *const neural_network,
+						const size_t layer_id);
+void				propagation_forward(const t_neural_network
+						*const neural_network);
+void				propagation_backward(const t_neural_network
+						*const neural_network);
 
 #endif

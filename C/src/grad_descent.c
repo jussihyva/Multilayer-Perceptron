@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:35:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 12:27:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,66 +42,20 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	return (grad_descent_attr);
 }
 
-static void	get_previous_weight_and_d_z(
-								const size_t i,
-								const t_neural_network *const neural_network,
-								const t_matrix **const weight,
-								const t_matrix **const d_z)
-{
-	size_t						next_layer_id;
-	t_layer_type				next_layer_type;
-	const void *const			*layers;
-	const void					*next_layer;
-
-	next_layer_id = i + 1;
-	*weight = NULL;
-	*d_z = NULL;
-	if (next_layer_id != NUM_OF_LAYERS)
-	{
-		layers = neural_network->layers;
-		next_layer_type = neural_network->layer_types[next_layer_id];
-		next_layer = layers[next_layer_id];
-		if (next_layer_type == E_LAYER_HIDDEN)
-		{
-			*weight = ((t_layer_hidden *)next_layer)->d_weight_bias.weight;
-			*d_z = ((t_layer_hidden *)next_layer)->d_z;
-		}
-		else if (next_layer_type == E_LAYER_OUTPUT)
-		{
-			*weight = ((t_layer_output *)next_layer)->weight_bias.weight;
-			*d_z = ((t_layer_output *)next_layer)->d_z;
-		}
-		else
-			FT_LOG_FATAL("Unknown layer type (%d). "
-				"Type should be either HIDDEN or OUTPUT.", next_layer_type);
-	}
-	return ;
-}
-
 void	grad_descent(
 				const t_neural_network *const neural_network,
 				const t_hyper_params *const hyper_params,
 				const t_tcp_connection *const influxdb_connection)
 {
 	const void *const	*layers;
-	size_t				i;
 	size_t				iter_cnt;
-	const t_matrix		*weight;
-	const t_matrix		*d_z;
 
 	layers = neural_network->layers;
 	iter_cnt = -1;
 	while (++iter_cnt < hyper_params->epochs)
 	{
-		i = 0;
-		while (++i < NUM_OF_LAYERS)
-			neural_network->fn_propagation_forward[i](layers[i]);
-		i = NUM_OF_LAYERS;
-		while (--i)
-		{
-			get_previous_weight_and_d_z(i, neural_network, &weight, &d_z);
-			neural_network->fn_propagation_backward[i](layers[i], weight, d_z);
-		}
+		propagation_forward(neural_network);
+		propagation_backward(neural_network);
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);
 	}
