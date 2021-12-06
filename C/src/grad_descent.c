@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 12:27:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:56:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	if (dataset)
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-		grad_descent_attr->neural_network = neural_network_init(dataset);
+		grad_descent_attr->neural_network = neural_network_init(dataset,
+				hyper_params);
 		grad_descent_attr->dataset = dataset;
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;

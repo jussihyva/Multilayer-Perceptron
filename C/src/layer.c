@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:29:55 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/06 12:36:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:30:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,15 @@ static void	layer_output_print(const t_layer_output *const layer)
 
 void	propagation_forward_input(const t_layer_input *const layer)
 {
-	normalize(layer->x, layer->a);
-	if (ft_logging_level() <= LOG_DEBUG)
-		layer_input_print(layer);
+	static t_bool	is_normalized = E_FALSE;
+
+	if (!is_normalized)
+	{
+		normalize(layer->x, layer->a);
+		is_normalized = E_TRUE;
+		if (ft_logging_level() <= LOG_DEBUG)
+			layer_input_print(layer);
+	}
 	return ;
 }
 

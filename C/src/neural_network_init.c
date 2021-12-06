@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 12:48:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 16:06:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static t_layer_input	*layer_input_init(
 					const size_t id,
 					const size_t num_of_examples,
-					const t_matrix *const x)
+					const t_matrix *const x,
+					const t_hyper_params *const hyper_params)
 {
 	t_layer_input		*layer;
 	size_t				num_of_nodes;
@@ -28,7 +29,7 @@ static t_layer_input	*layer_input_init(
 	layer->a = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->fn_normalize = normalize;
 	layer->layer_type = E_LAYER_INPUT;
-	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
+	layer->hyper_params = hyper_params;
 	return (layer);
 }
 
@@ -56,7 +57,8 @@ static void	weight_bias_init(
 
 static t_layer_hidden	*layer_hidden_init(
 								const size_t id,
-								const size_t num_of_examples)
+								const size_t num_of_examples,
+								const t_hyper_params *const hyper_params)
 {
 	t_layer_hidden		*layer;
 	size_t				num_of_activation_functions;
@@ -76,14 +78,15 @@ static t_layer_hidden	*layer_hidden_init(
 	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->layer_type = E_LAYER_HIDDEN;
-	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
+	layer->hyper_params = hyper_params;
 	return (layer);
 }
 
 static t_layer_output	*layer_output_init(
 								const size_t id,
 								const t_matrix *const y,
-								const size_t num_of_examples)
+								const size_t num_of_examples,
+								const t_hyper_params *const hyper_params)
 {
 	t_layer_output		*layer;
 	size_t				num_of_activation_functions;
@@ -103,7 +106,7 @@ static t_layer_output	*layer_output_init(
 			num_of_examples);
 	layer->cost = ml_vector_create(layer->num_of_nodes);
 	layer->layer_type = E_LAYER_OUTPUT;
-	layer->hyper_params.learning_rate = g_layer_attrs[id].learning_rate;
+	layer->hyper_params = hyper_params;
 	return (layer);
 }
 
@@ -123,22 +126,25 @@ static t_layer_type	set_layer_type(const size_t layer_id)
 static const void	*layer_init(
 						const size_t i,
 						const t_layer_type layer_type,
-						const t_dataset *const dataset)
+						const t_dataset *const dataset,
+						const t_hyper_params *const hyper_params)
 {
 	const void	*layer;
 	size_t		num_of_examples;
 
 	num_of_examples = dataset->y->size.cols;
 	if (layer_type == E_LAYER_INPUT)
-		layer = layer_input_init(i, num_of_examples, dataset->x);
+		layer = layer_input_init(i, num_of_examples, dataset->x, hyper_params);
 	else if (i == (NUM_OF_LAYERS - 1))
-		layer = layer_output_init(i, dataset->y, num_of_examples);
+		layer = layer_output_init(i, dataset->y, num_of_examples, hyper_params);
 	else
-		layer = layer_hidden_init(i, num_of_examples);
+		layer = layer_hidden_init(i, num_of_examples, hyper_params);
 	return (layer);
 }
 
-t_neural_network	*neural_network_init(const t_dataset *const dataset)
+t_neural_network	*neural_network_init(
+								const t_dataset *const dataset,
+								const t_hyper_params *const hyper_params)
 {
 	t_neural_network	*neural_network;
 	size_t				i;
@@ -152,8 +158,8 @@ t_neural_network	*neural_network_init(const t_dataset *const dataset)
 	while (++i < NUM_OF_LAYERS)
 	{
 		neural_network->layer_types[i] = set_layer_type(i);
-		neural_network->layers[i]
-			= layer_init(i, neural_network->layer_types[i], dataset);
+		neural_network->layers[i] = layer_init(i, neural_network
+				->layer_types[i], dataset, hyper_params);
 	}
 	return (neural_network);
 }

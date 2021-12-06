@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 12:46:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/06 16:09:23 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
 # define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
-# define LEARNING_RATE							0.2
+# define LEARNING_RATE							1.0
 # define NUM_OF_EPOCH							5000
 # define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
@@ -31,11 +31,10 @@
 typedef struct s_layer_profile
 {
 	size_t		nodes;
-	double		learning_rate;
 }				t_layer_profile;
 
 static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
-	= {{NUMBER_OF_COLUMNS, LEARNING_RATE}, {3, LEARNING_RATE}, {3, LEARNING_RATE}, {2, LEARNING_RATE}};
+	= {{NUMBER_OF_COLUMNS}, {3}, {3}, {2}};
 		// = {{2, LEARNING_RATE}};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
@@ -168,43 +167,43 @@ typedef struct s_weight_bias
 
 typedef struct s_layer_input
 {
-	size_t				id;
-	t_layer_type		layer_type;
-	size_t				num_of_nodes;
-	const t_matrix		*x;
-	t_fn_normalize		fn_normalize;
-	t_matrix			*a;
-	t_hyper_params		hyper_params;
+	size_t					id;
+	t_layer_type			layer_type;
+	size_t					num_of_nodes;
+	const t_matrix			*x;
+	t_fn_normalize			fn_normalize;
+	t_matrix				*a;
+	const t_hyper_params	*hyper_params;
 }				t_layer_input;
 
 typedef struct s_layer_hidden
 {
-	size_t				id;
-	t_layer_type		layer_type;
-	size_t				num_of_nodes;
-	t_weight_bias		weight_bias;
-	t_matrix			*z;
-	t_matrix			*a;
-	t_weight_bias		d_weight_bias;
-	t_matrix			*d_z;
-	t_hyper_params		hyper_params;
-	const t_matrix		*g_prime;
-	const t_matrix		*weight_transposed;
+	size_t					id;
+	t_layer_type			layer_type;
+	size_t					num_of_nodes;
+	t_weight_bias			weight_bias;
+	t_matrix				*z;
+	t_matrix				*a;
+	t_weight_bias			d_weight_bias;
+	t_matrix				*d_z;
+	const t_hyper_params	*hyper_params;
+	const t_matrix			*g_prime;
+	const t_matrix			*weight_transposed;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
 {
-	size_t				id;
-	t_layer_type		layer_type;
-	size_t				num_of_nodes;
-	t_weight_bias		weight_bias;
-	t_matrix			*z;
-	t_matrix			*y_hat;
-	const t_matrix		*y;
-	t_vector			*cost;
-	t_weight_bias		d_weight_bias;
-	t_matrix			*d_z;
-	t_hyper_params		hyper_params;
+	size_t					id;
+	t_layer_type			layer_type;
+	size_t					num_of_nodes;
+	t_weight_bias			weight_bias;
+	t_matrix				*z;
+	t_matrix				*y_hat;
+	const t_matrix			*y;
+	t_vector				*cost;
+	t_weight_bias			d_weight_bias;
+	t_matrix				*d_z;
+	const t_hyper_params	*hyper_params;
 }				t_layer_output;
 
 typedef struct s_neural_network
@@ -282,7 +281,8 @@ void				linear_function_hidden(const t_layer_hidden *const layer,
 						const t_matrix *const activation_input);
 void				linear_function_output(const t_layer_output *const layer,
 						const t_matrix *const activation_input);
-t_neural_network	*neural_network_init(const t_dataset *const dataset);
+t_neural_network	*neural_network_init(const t_dataset *const dataset,
+						const t_hyper_params *const hyper_params);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
 t_grad_descent_attr	*grad_descent_attr_initialize(
