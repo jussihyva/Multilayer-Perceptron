@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 16:09:23 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/07 13:07:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,22 @@
 # define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
+typedef enum e_layer_type
+{
+	E_LAYER_INPUT,
+	E_LAYER_HIDDEN,
+	E_LAYER_OUTPUT
+}				t_layer_type;
+
 typedef struct s_layer_profile
 {
-	size_t		nodes;
+	size_t			nodes;
+	t_layer_type	layer_type;
 }				t_layer_profile;
 
 static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
-	= {{NUMBER_OF_COLUMNS}, {3}, {3}, {2}};
-		// = {{2, LEARNING_RATE}};
+	= {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+	// = {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 	= {E_FALSE,
@@ -137,13 +145,6 @@ typedef struct s_dataset
 	t_matrix	*y;
 }			t_dataset;
 
-typedef enum e_layer_type
-{
-	E_LAYER_INPUT,
-	E_LAYER_HIDDEN,
-	E_LAYER_OUTPUT
-}				t_layer_type;
-
 typedef void					(*t_fn_normalize)(const t_matrix *const,
 									const t_matrix *const);
 typedef void					(*t_fn_linear)(const t_matrix *const,
@@ -152,6 +153,11 @@ typedef void					(*t_fn_linear)(const t_matrix *const,
 									const t_matrix *const);
 typedef void					(*t_fn_non_linear)(const t_matrix *const,
 									const t_matrix *const);
+
+typedef struct s_database
+{
+	const t_tcp_connection	*connection;
+}				t_database;
 
 typedef struct s_hyper_params
 {
@@ -348,5 +354,18 @@ void				propagation_forward(const t_neural_network
 						*const neural_network);
 void				propagation_backward(const t_neural_network
 						*const neural_network);
+void				bias_update(const size_t layer_id,
+						const t_vector *const bias,
+						const t_vector *const d_bias,
+						const double learning_rate);
+void				weight_update(const size_t layer_id,
+						const t_matrix *const weight,
+						const t_matrix *const d_weight,
+						const double learning_rate);
+void				send_bias_values_to_database(
+						const size_t layer_id,
+						const t_vector *const bias,
+						const t_hyper_params *const hyper_params);
+const t_tcp_connection	*get_database_connection(void);
 
 #endif

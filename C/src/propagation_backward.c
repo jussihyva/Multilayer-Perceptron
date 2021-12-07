@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 16:10:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/07 12:42:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,16 @@ static void	layer_output_print(const t_layer_output *const layer)
 	return ;
 }
 
-static void	weight_bias_update(
+static void	weight_bias_update(const size_t layer_id,
 						const t_weight_bias *const weight_bias,
 						const t_weight_bias *const d_weight_bias,
-						const double learning_rate)
+						const t_hyper_params *const hyper_params)
 {
-	size_t		i;
-	size_t		total_size;
-
-	total_size = weight_bias->weight->size.rows
-		* weight_bias->weight->size.cols;
-	i = -1;
-	while (++i < total_size)
-		((double *)weight_bias->weight->data)[i] -= learning_rate
-			* ((double *)d_weight_bias->weight->data)[i];
-	total_size = weight_bias->bias->size;
-	i = -1;
-	while (++i < total_size)
-		((double *)weight_bias->bias->data)[i] -= learning_rate
-			* ((double *)d_weight_bias->bias->data)[i];
+	weight_update(layer_id, weight_bias->weight, d_weight_bias->weight,
+		hyper_params->learning_rate);
+	bias_update(layer_id, weight_bias->bias, d_weight_bias->bias,
+		hyper_params->learning_rate);
+	send_bias_values_to_database(layer_id, weight_bias->bias, hyper_params);
 	return ;
 }
 
@@ -109,8 +100,8 @@ static void	propagation_backward_hidden(
 	}
 	derivative_w(activation_input, layer->d_z, layer->d_weight_bias.weight);
 	derivative_b(layer->d_z, layer->d_weight_bias.bias);
-	weight_bias_update(&layer->weight_bias, &layer->d_weight_bias,
-		layer->hyper_params->learning_rate);
+	weight_bias_update(layer_id, &layer->weight_bias, &layer->d_weight_bias,
+		layer->hyper_params);
 	if (ft_logging_level() <= LOG_DEBUG)
 		layer_hidden_print(layer);
 	return ;
@@ -120,12 +111,15 @@ static void	propagation_backward_output(
 								const t_layer_output *const layer,
 								const t_matrix *const activation_input)
 {
+	size_t			layer_id;
+
+	layer_id = layer->id;
 	derivative_z_cost(layer->y_hat, layer->y, layer->d_z);
 	derivative_w(activation_input, layer->d_z,
 		layer->d_weight_bias.weight);
 	derivative_b(layer->d_z, layer->d_weight_bias.bias);
-	weight_bias_update(&layer->weight_bias, &layer->d_weight_bias,
-		layer->hyper_params->learning_rate);
+	weight_bias_update(layer_id, &layer->weight_bias, &layer->d_weight_bias,
+		layer->hyper_params);
 	if (ft_logging_level() <= LOG_DEBUG)
 		layer_output_print(layer);
 	return ;

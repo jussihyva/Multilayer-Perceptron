@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   training_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 12:34:10 by juhani            #+#    #+#             */
-/*   Updated: 2021/11/23 19:53:45 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/07 13:07:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static t_database	g_database;
+
+const t_tcp_connection	*get_database_connection(void)
+{
+	return (g_database.connection);
+}
 
 t_training	*training_init(const int argc, const char *const *const argv)
 {
@@ -31,5 +38,6 @@ t_training	*training_init(const int argc, const char *const *const argv)
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);
 	training->grad_descent_attr->influxdb_connection
 		= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
+	g_database.connection = training->grad_descent_attr->influxdb_connection;
 	return (training);
 }

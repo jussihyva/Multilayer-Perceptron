@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 16:06:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/07 13:03:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_layer_input	*layer_input_init(
 	layer->x = x;
 	layer->a = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->fn_normalize = normalize;
-	layer->layer_type = E_LAYER_INPUT;
+	layer->layer_type = g_layer_attrs[id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }
@@ -77,7 +77,7 @@ static t_layer_hidden	*layer_hidden_init(
 		&layer->a->row_names);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples);
-	layer->layer_type = E_LAYER_HIDDEN;
+	layer->layer_type = g_layer_attrs[id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }
@@ -105,7 +105,7 @@ static t_layer_output	*layer_output_init(
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples);
 	layer->cost = ml_vector_create(layer->num_of_nodes);
-	layer->layer_type = E_LAYER_OUTPUT;
+	layer->layer_type = g_layer_attrs[id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }
