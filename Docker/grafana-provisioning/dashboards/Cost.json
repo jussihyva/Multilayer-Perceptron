@@ -77,15 +77,17 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 8,
-		  "w": 19,
+		  "h": 6,
+		  "w": 20,
 		  "x": 0,
 		  "y": 0
 		},
 		"id": 4,
 		"options": {
 		  "legend": {
-			"calcs": [],
+			"calcs": [
+			  "lastNotNull"
+			],
 			"displayMode": "list",
 			"placement": "right"
 		  },
@@ -125,6 +127,12 @@
 				{
 				  "params": [],
 				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 1"
+				  ],
+				  "type": "alias"
 				}
 			  ],
 			  [
@@ -137,6 +145,12 @@
 				{
 				  "params": [],
 				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 2"
+				  ],
+				  "type": "alias"
 				}
 			  ],
 			  [
@@ -149,6 +163,12 @@
 				{
 				  "params": [],
 				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 3"
+				  ],
+				  "type": "alias"
 				}
 			  ]
 			],
@@ -157,11 +177,17 @@
 				"key": "Record_type",
 				"operator": "=",
 				"value": "Bias"
+			  },
+			  {
+				"condition": "AND",
+				"key": "LayerId",
+				"operator": "=",
+				"value": "1"
 			  }
 			]
 		  }
 		],
-		"title": "Panel Title",
+		"title": "Layer 2 Bias values",
 		"type": "timeseries"
 	  },
 	  {
@@ -217,10 +243,324 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 12,
+		  "h": 5,
 		  "w": 20,
 		  "x": 0,
-		  "y": 8
+		  "y": 6
+		},
+		"id": 6,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"displayMode": "list",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 2"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"2"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 3"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Bias"
+			  },
+			  {
+				"condition": "AND",
+				"key": "LayerId",
+				"operator": "=",
+				"value": "2"
+			  }
+			]
+		  }
+		],
+		"title": "Layer 3 Bias values",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 5,
+		  "w": 20,
+		  "x": 0,
+		  "y": 11
+		},
+		"id": 5,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"displayMode": "list",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 2"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Bias"
+			  },
+			  {
+				"condition": "AND",
+				"key": "LayerId",
+				"operator": "=",
+				"value": "3"
+			  }
+			]
+		  }
+		],
+		"title": "Layer 4 Bias values",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 9,
+		  "w": 20,
+		  "x": 0,
+		  "y": 16
 		},
 		"id": 2,
 		"options": {
@@ -315,12 +655,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-5m",
+	  "from": "now-15m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Cost",
 	"uid": "Cost",
-	"version": 2
+	"version": 3
   }

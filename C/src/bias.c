@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/07 13:06:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/07 13:31:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ static const char	*elements_merge(
 
 static size_t	tags_add(
 							t_influxdb_elem *const tags_elem,
-							const t_hyper_params *const hyper_params)
+							const t_hyper_params *const hyper_params,
+							const size_t layer_id)
 {
 	t_queue				*string_queue;
 	const char			*tag_value_pair;
@@ -116,7 +117,6 @@ static size_t	tags_add(
 	tags_elem->length = 0;
 	tags_elem->length++;
 	ft_enqueue(string_queue, ft_strdup(","));
-
 	tag_value_pair = ft_strdup("Record_type=Bias");
 	tags_elem->length += ft_strlen(tag_value_pair);
 	ft_enqueue(string_queue, (void *)tag_value_pair);
@@ -124,6 +124,12 @@ static size_t	tags_add(
 	ft_enqueue(string_queue, ft_strdup(","));
 	ft_sprintf(string_value, "%f", hyper_params->learning_rate);
 	tag_value_pair = ft_strjoin("LearningRate=", string_value);
+	tags_elem->length += ft_strlen(tag_value_pair);
+	ft_enqueue(string_queue, (void *)tag_value_pair);
+	tags_elem->length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	ft_sprintf(string_value, "%d", layer_id);
+	tag_value_pair = ft_strjoin("LayerId=", string_value);
 	tags_elem->length += ft_strlen(tag_value_pair);
 	ft_enqueue(string_queue, (void *)tag_value_pair);
 	tags_elem->string = ft_strcat_queue(string_queue, tags_elem->length);
@@ -187,7 +193,7 @@ void	send_bias_values_to_database(
 		total_len = 0;
 		total_len += influxdb_measurement_add(&influxdb_elems[E_MEASUREMENT],
 				"dataset_train");
-		total_len += tags_add(&influxdb_elems[E_TAGS], hyper_params);
+		total_len += tags_add(&influxdb_elems[E_TAGS], hyper_params, layer_id);
 		total_len += fields_add_vector(&influxdb_elems[E_FIELDS], 0, bias);
 		total_len += influxdb_timestamp_add(&influxdb_elems[E_TIMESTAMP]);
 		influxdb_string = elements_merge(influxdb_elems, total_len);
