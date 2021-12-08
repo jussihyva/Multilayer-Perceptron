@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/07 13:07:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 13:40:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,19 +230,13 @@ typedef struct s_grad_descent_attr
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
-typedef enum e_influxdb_elem_type
+typedef struct s_influxdb_line
 {
-	E_MEASUREMENT,
-	E_TAGS,
-	E_FIELDS,
-	E_TIMESTAMP
-}				t_influxdb_elem_type;
-
-typedef struct s_influxdb_elem
-{
-	const char	*string;
-	size_t		length;
-}				t_influxdb_elem;
+	const char	*measurement;
+	const char	*tag_set;
+	const char	*field_set;
+	const char	*timestamp;
+}				t_influxdb_line;
 
 typedef struct s_cmd_args
 {
@@ -367,5 +361,17 @@ void				send_bias_values_to_database(
 						const t_vector *const bias,
 						const t_hyper_params *const hyper_params);
 const t_tcp_connection	*get_database_connection(void);
+size_t				influxdb_measurement(const char **const measurement,
+						const char *const string);
+void				influxdb_line_remove(t_influxdb_line *influxdb_line);
+const char			*influxdb_line_merge(
+						const t_influxdb_line *const influxdb_line,
+						size_t total_len);
+size_t				influxdb_tag_set(
+						const char **const tag_set,
+						t_queue *const name_value_queue);
+size_t				influxdb_field_set(const char **const field_set,
+						const t_vector *vector);
+size_t				influxdb_timestamp(const char **const timestamp);
 
 #endif
