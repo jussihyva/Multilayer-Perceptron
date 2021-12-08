@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:29:55 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/06 15:30:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:49:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,59 @@ void	propagation_forward_output(
 	return ;
 }
 
-void	layers_remove(void ***layers)
+static void	layer_input_remove(const t_layer_input **const layer)
 {
-	const void			*layer;
-	size_t				i;
+	ml_matrix_remove((t_matrix **)&(*layer)->a);
+	ft_memdel((void **)layer);
+	return ;
+}
+
+static void	layer_hidden_remove(const t_layer_hidden **const layer)
+{
+	ml_matrix_remove((t_matrix **)&(*layer)->weight_bias.weight);
+	ml_matrix_remove((t_matrix **)&(*layer)->g_prime);
+	ml_matrix_remove((t_matrix **)&(*layer)->d_z);
+	ml_matrix_remove((t_matrix **)&(*layer)->a);
+	ml_matrix_remove((t_matrix **)&(*layer)->z);
+	ml_matrix_remove((t_matrix **)&(*layer)->weight_transposed);
+	ml_matrix_remove((t_matrix **)&(*layer)->weight_bias.weight);
+	ml_vector_remove((t_vector **)&(*layer)->weight_bias.bias);
+	ml_matrix_remove((t_matrix **)&(*layer)->d_weight_bias.weight);
+	ml_vector_remove((t_vector **)&(*layer)->d_weight_bias.bias);
+	ft_memdel((void **)layer);
+	return ;
+}
+
+static void	layer_output_remove(const t_layer_output **const layer)
+{
+	ml_matrix_remove((t_matrix **)&(*layer)->weight_bias.weight);
+	ml_vector_remove((t_vector **)&(*layer)->cost);
+	ml_matrix_remove((t_matrix **)&(*layer)->d_z);
+	ml_matrix_remove((t_matrix **)&(*layer)->y_hat);
+	ml_matrix_remove((t_matrix **)&(*layer)->z);
+	ml_matrix_remove((t_matrix **)&(*layer)->weight_bias.weight);
+	ml_vector_remove((t_vector **)&(*layer)->weight_bias.bias);
+	ml_matrix_remove((t_matrix **)&(*layer)->d_weight_bias.weight);
+	ml_vector_remove((t_vector **)&(*layer)->d_weight_bias.bias);
+	ft_memdel((void **)layer);
+	return ;
+}
+
+void	layers_remove(const void **const *layers)
+{
+	size_t			i;
+	t_layer_type	layer_type;
 
 	i = -1;
 	while (++i < NUM_OF_LAYERS)
 	{
-		layer = (*layers)[i];
-		// ml_matrix_remove((t_matrix **)&layer->weight);
-		// ml_vector_remove((t_vector **)&layer->bias);
-		// ml_matrix_remove((t_matrix **)&layer->z);
-		// ml_matrix_remove((t_matrix **)&layer->a_output);
-		// ml_vector_remove((t_vector **)&(*layer)->cost);
-		// ml_matrix_remove((t_matrix **)&layer->d_weight);
-		// ml_vector_remove((t_vector **)&layer->d_bias);
-		// ml_matrix_remove((t_matrix **)&layer->d_z);
-		ft_memdel((void **)&(*layers)[i]);
+		layer_type = g_layer_attrs[i].layer_type;
+		if (layer_type == E_LAYER_INPUT)
+			layer_input_remove((const t_layer_input **const)&(*layers)[i]);
+		else if (layer_type == E_LAYER_HIDDEN)
+			layer_hidden_remove((const t_layer_hidden **const)&(*layers)[i]);
+		else if (layer_type == E_LAYER_OUTPUT)
+			layer_output_remove((const t_layer_output **const)&(*layers)[i]);
 	}
 	ft_memdel((void **)layers);
 	return ;

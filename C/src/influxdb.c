@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 13:35:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:40:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ size_t	influxdb_tag_set(
 		*tag_set = updated_string;
 		name_value_string = (char *)ft_dequeue(name_value_queue);
 		updated_string = ft_strjoin(*tag_set, name_value_string);
+		ft_strdel((char **)&name_value_string);
 		ft_strdel((char **)tag_set);
 		*tag_set = updated_string;
 	}

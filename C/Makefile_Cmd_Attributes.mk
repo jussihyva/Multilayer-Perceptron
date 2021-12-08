@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile_Cmd_Attributes.mk                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
+#    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:03:48 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/23 12:44:16 by juhani           ###   ########.fr        #
+#    Updated: 2021/12/08 15:54:51 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,5 +25,5 @@ endif
 ifdef E
 	EPOCS		=	-E $(E)
 else
-	EPOCS		=	-E 1000
+	EPOCS		=	-E 100
 endif

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/07 13:03:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 16:47:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,4 +162,12 @@ t_neural_network	*neural_network_init(
 				->layer_types[i], dataset, hyper_params);
 	}
 	return (neural_network);
+}
+
+void	neural_network_remove(const t_neural_network **neural_network)
+{
+	layers_remove(&(*neural_network)->layers);
+	ft_memdel((void **)&(*neural_network)->layer_types);
+	ft_memdel((void **)neural_network);
+	return ;
 }
