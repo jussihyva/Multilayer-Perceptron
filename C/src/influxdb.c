@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 16:40:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 20:33:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,39 +122,68 @@ size_t	influxdb_tag_set(
 	return (length);
 }
 
-size_t	influxdb_field_set(
-							const char **const field_set,
-							const t_vector *vector)
+static size_t	add(
+					t_queue *string_queue,
+					void *const value,
+					t_influxdb_field_type influxdb_field_type,
+					const char *const special_chars)
 {
 	size_t			length;
-	char			*string;
+	char			value_to_string[100];
+	const char		*validated_string;
+
+	if (influxdb_field_type == E_DOUBLE)
+		ft_sprintf(value_to_string, "%f", *(double *)value);
+	else if (influxdb_field_type == E_STRING)
+		ft_sprintf(value_to_string, "%s", (char *)value);
+	else if (influxdb_field_type == E_SIZE_T)
+		ft_sprintf(value_to_string, "%lu", *(size_t *)value);
+	if (special_chars)
+		validated_string = validate_influxdb_line_string(
+				SPECIAL_CHARS_INFLUXDB_FIELDS, value_to_string);
+	else
+		validated_string = ft_strdup(value_to_string);
+	length = ft_strlen(validated_string);
+	ft_enqueue(string_queue, (void *)validated_string);
+	return (length);
+}
+
+static size_t	add_name_value(
+					t_queue *const string_queue,
+					size_t i,
+					double value)
+{
+	size_t			length;
+
+	length = 0;
+	length += add(string_queue, &i, E_SIZE_T,
+			SPECIAL_CHARS_INFLUXDB_FIELDS);
+	length += add(string_queue, &"=", E_STRING, NULL);
+	length += add(string_queue, &value,
+			E_DOUBLE, SPECIAL_CHARS_INFLUXDB_FIELDS);
+	return (length);
+}
+
+size_t	influxdb_field_set(
+							const char **const field_set,
+							const t_vector *const vector,
+							const t_matrix *const matrix)
+{
+	size_t			length;
+	t_size_2d		i;
 	t_queue			*string_queue;
-	size_t			i;
-	char			string_for_values[100];
 
 	length = 0;
 	string_queue = ft_queue_init();
-	i = -1;
-	while (++i < vector->size)
+	i.rows = -1;
+	while (++i.rows < vector->size)
 	{
-		if (i)
-		{
-			length++;
-			ft_enqueue(string_queue, ft_strdup(","));
-		}
-		ft_sprintf(string_for_values, "%d", i);
-		length += ft_strlen(string_for_values);
-		ft_enqueue(string_queue, ft_strdup(string_for_values));
-
-		length++;
-		ft_enqueue(string_queue, ft_strdup("="));
-
-		ft_sprintf(string_for_values, "%f", ((double *)vector->data)[i]);
-		string = validate_influxdb_line_string(SPECIAL_CHARS_INFLUXDB_FIELDS,
-				string_for_values);
-		length += ft_strlen(string);
-		ft_enqueue(string_queue, string);
+		if (i.rows)
+			length += add(string_queue, &",", E_STRING, NULL);
+		length += add_name_value(string_queue, i.rows,
+				((double *)vector->data)[i.rows]);
 	}
+	(void)matrix;
 	*field_set = ft_strcat_queue(string_queue, length);
 	ft_queue_remove(&string_queue);
 	return (length);

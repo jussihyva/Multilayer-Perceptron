@@ -6,11 +6,66 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/07 11:43:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 19:21:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static t_queue	*weight_tag_set_name_value_queue_init(
+									const t_hyper_params *const hyper_params,
+									const size_t layer_id)
+{
+	t_queue			*name_value_queue;
+	const char		*name_value_string;
+	char			value_string[1000];
+
+	name_value_queue = ft_queue_init();
+	name_value_string = ft_strdup("Record_type=Weight");
+	ft_enqueue(name_value_queue, (void *)name_value_string);
+	ft_sprintf(value_string, "%f", hyper_params->learning_rate);
+	name_value_string = ft_strjoin("LearningRate=", value_string);
+	ft_enqueue(name_value_queue, (void *)name_value_string);
+	ft_sprintf(value_string, "%d", layer_id);
+	name_value_string = ft_strjoin("LayerId=", value_string);
+	ft_enqueue(name_value_queue, (void *)name_value_string);
+	return (name_value_queue);
+}
+
+void	send_weight_values_to_database(
+								const size_t layer_id,
+								const t_matrix *const weight,
+								const t_hyper_params *const hyper_params)
+{
+	t_influxdb_line			influxdb_line;
+	const char				*line;
+	size_t					total_len;
+	size_t					num_of_nodes;
+	const t_tcp_connection	*influxdb_connection;
+	t_queue					*name_value_queue;
+
+	influxdb_connection = get_database_connection();
+	if (influxdb_connection)
+	{
+		num_of_nodes = g_layer_attrs[layer_id].nodes;
+		total_len = 0;
+		total_len += influxdb_measurement(&influxdb_line.measurement,
+				"dataset_train");
+		name_value_queue = weight_tag_set_name_value_queue_init(hyper_params,
+				layer_id);
+		total_len += influxdb_tag_set(&influxdb_line.tag_set, name_value_queue);
+		total_len += influxdb_field_set(&influxdb_line.field_set, NULL, weight);
+		total_len += influxdb_timestamp(&influxdb_line.timestamp);
+		line = influxdb_line_merge(&influxdb_line, total_len);
+		influxdb_line_remove(&influxdb_line);
+		ft_influxdb_write(influxdb_connection, line, NULL, 1);
+		ft_strdel((char **)&line);
+		ft_queue_remove(&name_value_queue);
+	}
+	else
+		FT_LOG_DEBUG("Cost value is not sent to influxdb");
+	return ;
+}
 
 void	weight_update(const size_t layer_id, const t_matrix *const weight,
 				const t_matrix *const d_weight, const double learning_rate)
@@ -35,3 +90,4 @@ void	weight_update(const size_t layer_id, const t_matrix *const weight,
 	}
 	return ;
 }
+

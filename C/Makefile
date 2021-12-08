@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 10:47:00 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/24 19:12:45 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/12/08 20:28:04 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,18 +105,18 @@ libraries_norm:
 .PHONY: run
 run: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(LEARNING_RATE) $(DATASET)
 else
-	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(LEARNING_RATE) $(DATASET)
 endif
 
 .PHONY: run_leaks
 run_leaks: all
 ifeq ($(OS), Darwin)
-	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) -l $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) -l $(LEARNING_RATE) $(DATASET)
 else
 	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all \
-	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(DATASET)
+	$(CUR_DIR)/$(BIN)/$(NAME1) $(EPOCS) $(LEVEL) $(LEARNING_RATE) $(DATASET)
 endif
 
 .PHONY: clean

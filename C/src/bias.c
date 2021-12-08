@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 13:13:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 19:23:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	send_bias_values_to_database(
 		name_value_queue = bias_tag_set_name_value_queue_init(hyper_params,
 				layer_id);
 		total_len += influxdb_tag_set(&influxdb_line.tag_set, name_value_queue);
-		total_len += influxdb_field_set(&influxdb_line.field_set, bias);
+		total_len += influxdb_field_set(&influxdb_line.field_set, bias, NULL);
 		total_len += influxdb_timestamp(&influxdb_line.timestamp);
 		line = influxdb_line_merge(&influxdb_line, total_len);
 		influxdb_line_remove(&influxdb_line);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 16:18:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/08 19:49:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,13 @@ typedef struct s_prediction
 	t_grad_descent_attr		*grad_descent_attr;
 }				t_prediction;
 
+typedef enum e_influxdb_field_type
+{
+	E_SIZE_T,
+	E_DOUBLE,
+	E_STRING
+}				t_influxdb_field_type;
+
 t_dataset			*dataset_init(const char *const file_path);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(const t_dataset **dataset);
@@ -360,6 +367,10 @@ void				send_bias_values_to_database(
 						const size_t layer_id,
 						const t_vector *const bias,
 						const t_hyper_params *const hyper_params);
+void				send_weight_values_to_database(
+						const size_t layer_id,
+						const t_matrix *const weight,
+						const t_hyper_params *const hyper_params);
 const t_tcp_connection	*get_database_connection(void);
 size_t				influxdb_measurement(const char **const measurement,
 						const char *const string);
@@ -371,7 +382,8 @@ size_t				influxdb_tag_set(
 						const char **const tag_set,
 						t_queue *const name_value_queue);
 size_t				influxdb_field_set(const char **const field_set,
-						const t_vector *vector);
+						const t_vector *const vector,
+						const t_matrix *const matrix);
 size_t				influxdb_timestamp(const char **const timestamp);
 void				neural_network_remove(
 						const t_neural_network **const neural_network);
