@@ -221,3 +221,16 @@ Layer 2 is hidden layer which includes three nodes (Units). Non-linear function 
 Layer 3 is hidden layer which includes three nodes (Units). Non-linear function could be either Sigmoid or ReLU.
 
 <img src="Documentation/NeuralNetwork_Layer_3.drawio.png" alt="drawing" width="400"/>
+
+## 4. Lessons learned
+
+### 4.1 Three layers neural network
+
+#### 4.1.1 Bias and Cost relation
+
+<img src="Documentation/Bias.png" alt="drawing" width="800"/>
+
+#### 4.1.2 Weight and Cost relation
+
+<img src="Documentation/Layer_1_Weight.png" alt="drawing" width="800"/>
+<img src="Documentation/Cost.png" alt="drawing" width="800"/>
