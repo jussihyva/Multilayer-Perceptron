@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 12:23:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 19:00:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,26 @@ void	send_weight_values_to_database(
 	influxdb_connection = get_database_connection();
 	if (influxdb_connection)
 	{
+		line = ft_strdup("");
+		total_len = 0;
 		num_of_nodes = g_layer_attrs[layer_id].nodes;
 		i = -1;
 		while (++i < weight->size.rows)
 		{
-			total_len = 0;
 			total_len += influxdb_measurement(&influxdb_line.measurement,
 					"dataset_train");
 			name_value_queue = weight_tag_set_name_value_queue_init(hyper_params,
 					layer_id, i);
 			total_len += influxdb_tag_set(&influxdb_line.tag_set, name_value_queue);
-			total_len += influxdb_field_set(&influxdb_line.field_set, weight->table[i], weight->size.cols);
-			total_len += influxdb_timestamp(&influxdb_line.timestamp);
-			line = influxdb_line_merge(&influxdb_line, total_len);
-			influxdb_line_remove(&influxdb_line);
-			ft_influxdb_write(influxdb_connection, line, NULL, 1);
-			ft_strdel((char **)&line);
 			ft_queue_remove(&name_value_queue);
+			total_len += influxdb_field_set(&influxdb_line.field_set,
+					weight->table[i], weight->size.cols);
+			total_len += influxdb_timestamp(&influxdb_line.timestamp);
+			influxdb_line_merge(&influxdb_line, total_len, &line);
+			influxdb_line_remove(&influxdb_line);
 		}
+		ft_influxdb_write(influxdb_connection, line, NULL, 1);
+		ft_strdel((char **)&line);
 	}
 	else
 		FT_LOG_DEBUG("Cost value is not sent to influxdb");

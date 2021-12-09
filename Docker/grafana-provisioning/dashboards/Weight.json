@@ -26,6 +26,668 @@
 	"panels": [
 	  {
 		"datasource": null,
+		"description": "",
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "smooth",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 9,
+		  "w": 23,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 7,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"displayMode": "table",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "autogen",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 2"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"2"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 3"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"3"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 4"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"4"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 5"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"5"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 6"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"6"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 7"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"7"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 8"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"8"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 9"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"9"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 10"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"10"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 11"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"11"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 12"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"12"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 13"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"13"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 14"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"14"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 15"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"15"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 16"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"16"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 17"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"17"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 18"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"18"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 19"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"19"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 20"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"20"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 21"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"21"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 22"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"22"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 23"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"23"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 24"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"24"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 25"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"25"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 26"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"26"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 27"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"27"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 28"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"28"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 29"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"29"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 30"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Weight"
+			  },
+			  {
+				"condition": "AND",
+				"key": "LayerId",
+				"operator": "=",
+				"value": "1"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Node",
+				"operator": "=",
+				"value": "1"
+			  }
+			]
+		  }
+		],
+		"title": "Layer 1 Weight values (Node 1)",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
 		"fieldConfig": {
 		  "defaults": {
 			"color": {
@@ -80,15 +742,15 @@
 		  "h": 9,
 		  "w": 23,
 		  "x": 0,
-		  "y": 0
+		  "y": 9
 		},
-		"id": 7,
+		"id": 9,
 		"options": {
 		  "legend": {
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -117,36 +779,546 @@
 			"refId": "A",
 			"resultFormat": "time_series",
 			"select": [
-				[{"params":["0"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 1"], "type":"alias"}],
-				[{"params":["1"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 2"], "type":"alias"}],
-				[{"params":["2"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 3"], "type":"alias"}],
-				[{"params":["3"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 4"], "type":"alias"}],
-				[{"params":["4"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 5"], "type":"alias"}],
-				[{"params":["5"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 6"], "type":"alias"}],
-				[{"params":["6"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 7"], "type":"alias"}],
-				[{"params":["7"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 8"], "type":"alias"}],
-				[{"params":["8"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 9"], "type":"alias"}],
-				[{"params":["9"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 10"], "type":"alias"}],
-				[{"params":["10"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 11"], "type":"alias"}],
-				[{"params":["11"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 12"], "type":"alias"}],
-				[{"params":["12"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 13"], "type":"alias"}],
-				[{"params":["13"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 14"], "type":"alias"}],
-				[{"params":["14"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 15"], "type":"alias"}],
-				[{"params":["15"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 16"], "type":"alias"}],
-				[{"params":["16"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 17"], "type":"alias"}],
-				[{"params":["17"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 18"], "type":"alias"}],
-				[{"params":["18"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 19"], "type":"alias"}],
-				[{"params":["19"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 20"], "type":"alias"}],
-				[{"params":["20"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 21"], "type":"alias"}],
-				[{"params":["21"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 22"], "type":"alias"}],
-				[{"params":["22"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 23"], "type":"alias"}],
-				[{"params":["23"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 24"], "type":"alias"}],
-				[{"params":["24"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 25"], "type":"alias"}],
-				[{"params":["25"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 26"], "type":"alias"}],
-				[{"params":["26"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 27"], "type":"alias"}],
-				[{"params":["27"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 28"], "type":"alias"}],
-				[{"params":["28"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 29"], "type":"alias"}],
-				[{"params":["29"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 30"], "type":"alias"}]
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 2"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"2"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 3"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"3"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 4"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"4"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 5"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"5"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 6"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"6"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 7"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"7"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 8"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"8"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 9"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"9"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 10"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"10"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 11"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"11"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 12"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"12"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 13"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"13"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 14"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"14"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 15"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"15"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 16"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"16"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 17"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"17"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 18"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"18"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 19"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"19"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 20"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"20"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 21"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"21"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 22"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"22"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 23"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"23"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 24"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"24"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 25"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"25"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 26"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"26"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 27"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"27"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 28"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"28"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 29"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"29"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 30"
+				  ],
+				  "type": "alias"
+				}
+			  ]
 			],
 			"tags": [
 			  {
@@ -164,12 +1336,670 @@
 				"condition": "AND",
 				"key": "Node",
 				"operator": "=",
-				"value": "1"
+				"value": "2"
 			  }
 			]
 		  }
 		],
-		"title": "Layer 1 Weight values",
+		"title": "Layer 1 Weight values (Node 2)",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 9,
+		  "w": 23,
+		  "x": 0,
+		  "y": 18
+		},
+		"id": 10,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"displayMode": "table",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 2"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"2"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 3"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"3"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 4"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"4"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 5"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"5"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 6"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"6"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 7"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"7"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 8"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"8"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 9"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"9"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 10"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"10"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 11"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"11"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 12"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"12"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 13"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"13"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 14"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"14"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 15"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"15"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 16"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"16"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 17"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"17"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 18"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"18"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 19"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"19"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 20"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"20"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 21"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"21"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 22"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"22"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 23"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"23"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 24"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"24"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 25"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"25"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 26"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"26"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 27"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"27"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 28"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"28"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 29"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"29"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Input 30"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Weight"
+			  },
+			  {
+				"condition": "AND",
+				"key": "LayerId",
+				"operator": "=",
+				"value": "1"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Node",
+				"operator": "=",
+				"value": "3"
+			  }
+			]
+		  }
+		],
+		"title": "Layer 1 Weight values (Node 3)",
 		"type": "timeseries"
 	  },
 	  {
@@ -228,7 +2058,7 @@
 		  "h": 8,
 		  "w": 23,
 		  "x": 0,
-		  "y": 9
+		  "y": 27
 		},
 		"id": 4,
 		"options": {
@@ -236,7 +2066,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -594,7 +2424,7 @@
 		  "h": 8,
 		  "w": 23,
 		  "x": 0,
-		  "y": 17
+		  "y": 35
 		},
 		"id": 8,
 		"options": {
@@ -602,7 +2432,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -863,7 +2693,7 @@
 		  "h": 9,
 		  "w": 23,
 		  "x": 0,
-		  "y": 25
+		  "y": 43
 		},
 		"id": 2,
 		"options": {
@@ -871,7 +2701,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -958,12 +2788,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-10m",
+	  "from": "now-5m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Weight",
 	"uid": "Weight",
-	"version": 1
+	"version": 14
   }

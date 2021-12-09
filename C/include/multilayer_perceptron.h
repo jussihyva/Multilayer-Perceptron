@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 13:21:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 18:36:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,9 +375,10 @@ const t_tcp_connection	*get_database_connection(void);
 size_t				influxdb_measurement(const char **const measurement,
 						const char *const string);
 void				influxdb_line_remove(t_influxdb_line *influxdb_line);
-const char			*influxdb_line_merge(
+void				influxdb_line_merge(
 						const t_influxdb_line *const influxdb_line,
-						size_t total_len);
+						size_t total_len,
+						const char **const line);
 size_t				influxdb_tag_set(
 						const char **const tag_set,
 						t_queue *const name_value_queue);

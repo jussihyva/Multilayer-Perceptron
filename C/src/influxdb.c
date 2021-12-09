@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 11:58:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 18:58:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,26 @@ void	influxdb_line_remove(t_influxdb_line *influxdb_line)
 	return ;
 }
 
-const char	*influxdb_line_merge(
+void	influxdb_line_merge(
 						const t_influxdb_line *const influxdb_line,
-						size_t total_len)
+						size_t total_len,
+						const char **const line)
 {
-	char		*line;
+	char		*updated_line;
 
-	total_len += 3;
-	line = ft_strnew(sizeof(*line) * total_len);
-	ft_sprintf(line, "%s%s %s %s\n",
+	updated_line = ft_strnew(sizeof(*updated_line) * total_len);
+	ft_sprintf(updated_line, "%s%s%s%s%s",
+		*line,
 		influxdb_line->measurement,
 		influxdb_line->tag_set,
 		influxdb_line->field_set,
 		influxdb_line->timestamp);
-	if (ft_strlen(line) != total_len)
-		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(line),
+	ft_strdel((char **)line);
+	*line = updated_line;
+	if (ft_strlen(*line) != total_len)
+		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(*line),
 			total_len);
-	return (line);
+	return ;
 }
 
 size_t	influxdb_tag_set(
@@ -113,8 +116,11 @@ size_t	influxdb_tag_set(
 		ft_strdel((char **)tag_set);
 		*tag_set = updated_string;
 	}
+	updated_string = ft_strjoin(*tag_set, " ");
+	ft_strdel((char **)tag_set);
+	*tag_set = updated_string;
 	length = ft_strlen(*tag_set);
-	if (length <= 1)
+	if (length <= 2)
 	{
 		ft_strdel((char **)tag_set);
 		length = 0;
@@ -182,6 +188,7 @@ size_t	influxdb_field_set(
 			length += add(string_queue, &",", E_STRING, NULL);
 		length += add_name_value_pair(string_queue, i, data[i]);
 	}
+	length += add(string_queue, &" ", E_STRING, NULL);
 	*field_set = ft_strcat_queue(string_queue, length);
 	ft_queue_remove(&string_queue);
 	return (length);
@@ -195,8 +202,8 @@ size_t	influxdb_timestamp(const char **const timestamp)
 
 	utc_time_ms = ft_gettime();
 	ft_sprintf(string, "%lu", utc_time_ms);
-	length = ft_strlen(string);
-	*timestamp = ft_strdup(string);
+	*timestamp = ft_strjoin(string, "\n");
+	length = ft_strlen(*timestamp);
 	return (length);
 }
 

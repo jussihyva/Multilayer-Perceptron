@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 11:59:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 18:42:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	send_bias_values_to_database(
 	influxdb_connection = get_database_connection();
 	if (influxdb_connection)
 	{
+		line = ft_strdup("");
 		num_of_nodes = g_layer_attrs[layer_id].nodes;
 		total_len = 0;
 		total_len += influxdb_measurement(&influxdb_line.measurement,
@@ -57,7 +58,7 @@ void	send_bias_values_to_database(
 		total_len += influxdb_field_set(&influxdb_line.field_set, bias->data,
 				bias->size);
 		total_len += influxdb_timestamp(&influxdb_line.timestamp);
-		line = influxdb_line_merge(&influxdb_line, total_len);
+		influxdb_line_merge(&influxdb_line, total_len, &line);
 		influxdb_line_remove(&influxdb_line);
 		ft_influxdb_write(influxdb_connection, line, NULL, 1);
 		ft_strdel((char **)&line);
