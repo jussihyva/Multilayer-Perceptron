@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 12:06:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 00:46:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void	layer_output_print(const t_layer_output *const layer)
 	ft_printf("LAYER: %lu\n", layer->id);
 	ml_matrix_print(" (dZ) Derivative Z", layer->d_z);
 	ml_matrix_print(" (dW) Derivative Weight", d_weight_bias->weight);
-	// ml_matrix_print(" (W) Weight", weight_bias->weight);
-	// ml_vector_print(" (B) Bias", weight_bias->bias);
+	ml_matrix_print(" (W) Weight", weight_bias->weight);
+	ml_vector_print(" (B) Bias", weight_bias->bias);
 	return ;
 }
 

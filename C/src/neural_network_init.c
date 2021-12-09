@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 16:47:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 01:04:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,11 @@ static void	weight_bias_init(
 	d_weight_bias->bias = ml_vector_create(num_of_nodes);
 	d_weight_bias->weight = ml_matrix_create(num_of_nodes,
 			num_of_activation_functions);
-	weight_bias->weight->column_names.lengths = row_names->lengths;
-	weight_bias->weight->column_names.names = row_names->names;
+	if (row_names)
+	{
+		weight_bias->weight->column_names.lengths = row_names->lengths;
+		weight_bias->weight->column_names.names = row_names->names;
+	}
 	return ;
 }
 
@@ -101,7 +104,7 @@ static t_layer_output	*layer_output_init(
 	layer->z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->y_hat = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	weight_bias_init(layer->id, &layer->weight_bias, &layer->d_weight_bias,
-		&layer->y->row_names);
+		NULL);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples);
 	layer->cost = ml_vector_create(layer->num_of_nodes);
