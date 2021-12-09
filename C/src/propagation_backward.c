@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 19:52:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 12:06:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	weight_bias_update(const size_t layer_id,
 	bias_update(layer_id, weight_bias->bias, d_weight_bias->bias,
 		hyper_params->learning_rate);
 	send_bias_values_to_database(layer_id, weight_bias->bias, hyper_params);
-	// send_weight_values_to_database(layer_id, weight_bias->weight, hyper_params);
+	send_weight_values_to_database(layer_id, weight_bias->weight, hyper_params);
 	return ;
 }
 

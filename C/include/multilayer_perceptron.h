@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 19:49:47 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 11:59:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,8 +382,7 @@ size_t				influxdb_tag_set(
 						const char **const tag_set,
 						t_queue *const name_value_queue);
 size_t				influxdb_field_set(const char **const field_set,
-						const t_vector *const vector,
-						const t_matrix *const matrix);
+						const double *const data, const size_t size);
 size_t				influxdb_timestamp(const char **const timestamp);
 void				neural_network_remove(
 						const t_neural_network **const neural_network);

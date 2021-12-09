@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 20:33:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 11:58:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ const char	*influxdb_line_merge(
 {
 	char		*line;
 
-	total_len += 2;
+	total_len += 3;
 	line = ft_strnew(sizeof(*line) * total_len);
-	ft_sprintf(line, "%s%s %s %s",
+	ft_sprintf(line, "%s%s %s %s\n",
 		influxdb_line->measurement,
 		influxdb_line->tag_set,
 		influxdb_line->field_set,
@@ -148,7 +148,7 @@ static size_t	add(
 	return (length);
 }
 
-static size_t	add_name_value(
+static size_t	add_name_value_pair(
 					t_queue *const string_queue,
 					size_t i,
 					double value)
@@ -166,24 +166,22 @@ static size_t	add_name_value(
 
 size_t	influxdb_field_set(
 							const char **const field_set,
-							const t_vector *const vector,
-							const t_matrix *const matrix)
+							const double *const data,
+							const size_t size)
 {
-	size_t			length;
-	t_size_2d		i;
-	t_queue			*string_queue;
+	size_t		length;
+	size_t		i;
+	t_queue		*string_queue;
 
 	length = 0;
 	string_queue = ft_queue_init();
-	i.rows = -1;
-	while (++i.rows < vector->size)
+	i = -1;
+	while (++i < size)
 	{
-		if (i.rows)
+		if (i)
 			length += add(string_queue, &",", E_STRING, NULL);
-		length += add_name_value(string_queue, i.rows,
-				((double *)vector->data)[i.rows]);
+		length += add_name_value_pair(string_queue, i, data[i]);
 	}
-	(void)matrix;
 	*field_set = ft_strcat_queue(string_queue, length);
 	ft_queue_remove(&string_queue);
 	return (length);
