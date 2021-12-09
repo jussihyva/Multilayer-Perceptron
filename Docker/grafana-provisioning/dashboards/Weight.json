@@ -117,168 +117,36 @@
 			"refId": "A",
 			"resultFormat": "time_series",
 			"select": [
-			  [
-				{
-				  "params": [
-					"0"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 1"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"1"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 2"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"2"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"3"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"4"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"5"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"6"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"7"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"8"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node1, Input 3"
-				  ],
-				  "type": "alias"
-				}
-			  ]
+				[{"params":["0"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 1"], "type":"alias"}],
+				[{"params":["1"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 2"], "type":"alias"}],
+				[{"params":["2"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 3"], "type":"alias"}],
+				[{"params":["3"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 4"], "type":"alias"}],
+				[{"params":["4"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 5"], "type":"alias"}],
+				[{"params":["5"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 6"], "type":"alias"}],
+				[{"params":["6"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 7"], "type":"alias"}],
+				[{"params":["7"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 8"], "type":"alias"}],
+				[{"params":["8"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 9"], "type":"alias"}],
+				[{"params":["9"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 10"], "type":"alias"}],
+				[{"params":["10"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 11"], "type":"alias"}],
+				[{"params":["11"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 12"], "type":"alias"}],
+				[{"params":["12"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 13"], "type":"alias"}],
+				[{"params":["13"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 14"], "type":"alias"}],
+				[{"params":["14"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 15"], "type":"alias"}],
+				[{"params":["15"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 16"], "type":"alias"}],
+				[{"params":["16"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 17"], "type":"alias"}],
+				[{"params":["17"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 18"], "type":"alias"}],
+				[{"params":["18"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 19"], "type":"alias"}],
+				[{"params":["19"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 20"], "type":"alias"}],
+				[{"params":["20"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 21"], "type":"alias"}],
+				[{"params":["21"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 22"], "type":"alias"}],
+				[{"params":["22"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 23"], "type":"alias"}],
+				[{"params":["23"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 24"], "type":"alias"}],
+				[{"params":["24"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 25"], "type":"alias"}],
+				[{"params":["25"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 26"], "type":"alias"}],
+				[{"params":["26"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 27"], "type":"alias"}],
+				[{"params":["27"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 28"], "type":"alias"}],
+				[{"params":["28"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 29"], "type":"alias"}],
+				[{"params":["29"], "type":"field"}, {"params":[], "type":"mean"}, {"params":["Node1, Input 30"], "type":"alias"}]
 			],
 			"tags": [
 			  {

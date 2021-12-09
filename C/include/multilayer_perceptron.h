@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 11:59:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/09 13:21:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_layer_profile
 }				t_layer_profile;
 
 static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
-	= {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
 	// = {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
