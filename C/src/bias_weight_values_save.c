@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 13:55:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:41:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	bias_weight_values_save(
 	layer_id = 0;
 	while (++layer_id < (NUM_OF_LAYERS - 1))
 	{
-		len = ft_sprintf(read_attr.line, "%d\n", g_layer_attrs[layer_id].nodes);
+		len = ft_sprintf(read_attr.line, "%d\n", g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes);
 		read_attr.ret = write(read_attr.fd, read_attr.line, len);
 	}
 	ft_strdel((char **)&read_attr.line);

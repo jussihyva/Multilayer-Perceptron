@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 19:00:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:43:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	send_weight_values_to_database(
 	{
 		line = ft_strdup("");
 		total_len = 0;
-		num_of_nodes = g_layer_attrs[layer_id].nodes;
+		num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
 		i = -1;
 		while (++i < weight->size.rows)
 		{
@@ -90,8 +90,8 @@ void	weight_update(const size_t layer_id, const t_matrix *const weight,
 	size_t		prev_layer_id;
 
 	prev_layer_id = layer_id - 1;
-	num_of_nodes = g_layer_attrs[layer_id].nodes;
-	num_of_activation_inputs = g_layer_attrs[prev_layer_id].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
+	num_of_activation_inputs = g_layer_attrs[NUM_OF_LAYERS][prev_layer_id].nodes;
 	total_size = num_of_nodes * num_of_activation_inputs;
 	i.rows = -1;
 	while (++i.rows < num_of_nodes)

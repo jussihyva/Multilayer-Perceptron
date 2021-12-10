@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 00:46:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:42:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	propagation_backward_hidden(
 	while (++example_id < d_z->size.cols)
 	{
 		node_id = -1;
-		while (++node_id < g_layer_attrs[layer_id].nodes)
+		while (++node_id < g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes)
 		{
 			function_id = -1;
 			while (++function_id < layer->weight_transposed->size.cols)

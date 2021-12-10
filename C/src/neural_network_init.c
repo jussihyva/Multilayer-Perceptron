@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 01:04:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:40:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static t_layer_input	*layer_input_init(
 	t_layer_input		*layer;
 	size_t				num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[id].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][id].nodes;
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
 	layer->num_of_nodes = num_of_nodes;
 	layer->x = x;
 	layer->a = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->fn_normalize = normalize;
-	layer->layer_type = g_layer_attrs[id].layer_type;
+	layer->layer_type = g_layer_attrs[NUM_OF_LAYERS][id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }
@@ -42,8 +42,8 @@ static void	weight_bias_init(
 	size_t		num_of_activation_functions;
 	size_t		num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[id].nodes;
-	num_of_activation_functions = g_layer_attrs[id - 1].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][id].nodes;
+	num_of_activation_functions = g_layer_attrs[NUM_OF_LAYERS][id - 1].nodes;
 	weight_bias->weight = ml_matrix_create(num_of_nodes,
 			num_of_activation_functions);
 	weight_bias->bias = ml_vector_create(num_of_nodes);
@@ -67,20 +67,20 @@ static t_layer_hidden	*layer_hidden_init(
 	size_t				num_of_activation_functions;
 	size_t				num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[id].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][id].nodes;
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
 	layer->num_of_nodes = num_of_nodes;
-	num_of_activation_functions = g_layer_attrs[id - 1].nodes;
+	num_of_activation_functions = g_layer_attrs[NUM_OF_LAYERS][id - 1].nodes;
 	layer->z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->a = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->weight_transposed = ml_matrix_create(num_of_nodes,
-			g_layer_attrs[id + 1].nodes);
+			g_layer_attrs[NUM_OF_LAYERS][id + 1].nodes);
 	weight_bias_init(layer->id, &layer->weight_bias, &layer->d_weight_bias,
 		&layer->a->row_names);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples);
-	layer->layer_type = g_layer_attrs[id].layer_type;
+	layer->layer_type = g_layer_attrs[NUM_OF_LAYERS][id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }
@@ -95,12 +95,12 @@ static t_layer_output	*layer_output_init(
 	size_t				num_of_activation_functions;
 	size_t				num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[id].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][id].nodes;
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
 	layer->num_of_nodes = num_of_nodes;
 	layer->y = y;
-	num_of_activation_functions = g_layer_attrs[id - 1].nodes;
+	num_of_activation_functions = g_layer_attrs[NUM_OF_LAYERS][id - 1].nodes;
 	layer->z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->y_hat = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	weight_bias_init(layer->id, &layer->weight_bias, &layer->d_weight_bias,
@@ -108,7 +108,7 @@ static t_layer_output	*layer_output_init(
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples);
 	layer->cost = ml_vector_create(layer->num_of_nodes);
-	layer->layer_type = g_layer_attrs[id].layer_type;
+	layer->layer_type = g_layer_attrs[NUM_OF_LAYERS][id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);
 }

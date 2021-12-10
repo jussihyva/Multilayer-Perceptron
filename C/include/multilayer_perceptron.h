@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 13:14:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:53:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,13 @@ typedef struct s_layer_profile
 	t_layer_type	layer_type;
 }				t_layer_profile;
 
-static const t_layer_profile	g_layer_attrs[NUM_OF_LAYERS]
+static const t_layer_profile	g_two_layers[3]
+	= {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
+static const t_layer_profile	g_three_layers[3]
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+static const t_layer_profile	g_four_layers[4]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
-	// = {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
+static const t_layer_profile	*g_layer_attrs[5] = {NULL, NULL, g_two_layers, g_three_layers, g_four_layers};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 	= {E_FALSE,

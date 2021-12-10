@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 18:42:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:42:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	send_bias_values_to_database(
 	if (influxdb_connection)
 	{
 		line = ft_strdup("");
-		num_of_nodes = g_layer_attrs[layer_id].nodes;
+		num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
 		total_len = 0;
 		total_len += influxdb_measurement(&influxdb_line.measurement,
 				"dataset_train");
@@ -75,7 +75,7 @@ void	bias_update(const size_t layer_id, const t_vector *const bias,
 	size_t			i;
 	size_t			num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[layer_id].nodes;
+	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
 	i = -1;
 	while (++i < num_of_nodes)
 		((double *)bias->data)[i]

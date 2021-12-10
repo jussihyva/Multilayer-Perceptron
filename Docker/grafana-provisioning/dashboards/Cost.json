@@ -21,7 +21,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 2,
+	"id": 4,
 	"links": [],
 	"panels": [
 	  {
@@ -33,7 +33,7 @@
 			},
 			"custom": {
 			  "axisLabel": "",
-			  "axisPlacement": "auto",
+			  "axisPlacement": "right",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
 			  "fillOpacity": 0,
@@ -78,7 +78,7 @@
 		},
 		"gridPos": {
 		  "h": 6,
-		  "w": 11,
+		  "w": 24,
 		  "x": 0,
 		  "y": 0
 		},
@@ -88,7 +88,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -199,7 +199,7 @@
 			},
 			"custom": {
 			  "axisLabel": "",
-			  "axisPlacement": "auto",
+			  "axisPlacement": "right",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
 			  "fillOpacity": 0,
@@ -243,150 +243,8 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 16,
-		  "w": 11,
-		  "x": 11,
-		  "y": 0
-		},
-		"id": 2,
-		"options": {
-		  "legend": {
-			"calcs": [
-			  "lastNotNull"
-			],
-			"displayMode": "list",
-			"placement": "right"
-		  },
-		  "tooltip": {
-			"mode": "single"
-		  }
-		},
-		"targets": [
-		  {
-			"groupBy": [
-			  {
-				"params": [
-				  "$__interval"
-				],
-				"type": "time"
-			  },
-			  {
-				"params": [
-				  "null"
-				],
-				"type": "fill"
-			  }
-			],
-			"measurement": "dataset_train",
-			"orderByTime": "ASC",
-			"policy": "default",
-			"refId": "A",
-			"resultFormat": "time_series",
-			"select": [
-			  [
-				{
-				  "params": [
-					"0"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node 1"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"1"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node 2"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"tags": [
-			  {
-				"key": "Record_type",
-				"operator": "=",
-				"value": "Cost"
-			  }
-			]
-		  }
-		],
-		"title": "Cost",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": null,
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			}
-		  },
-		  "overrides": []
-		},
-		"gridPos": {
-		  "h": 5,
-		  "w": 11,
+		  "h": 6,
+		  "w": 24,
 		  "x": 0,
 		  "y": 6
 		},
@@ -396,7 +254,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -507,7 +365,7 @@
 			},
 			"custom": {
 			  "axisLabel": "",
-			  "axisPlacement": "auto",
+			  "axisPlacement": "right",
 			  "barAlignment": 0,
 			  "drawStyle": "line",
 			  "fillOpacity": 0,
@@ -551,10 +409,10 @@
 		  "overrides": []
 		},
 		"gridPos": {
-		  "h": 5,
-		  "w": 11,
+		  "h": 6,
+		  "w": 24,
 		  "x": 0,
-		  "y": 11
+		  "y": 12
 		},
 		"id": 5,
 		"options": {
@@ -562,7 +420,7 @@
 			"calcs": [
 			  "lastNotNull"
 			],
-			"displayMode": "list",
+			"displayMode": "table",
 			"placement": "right"
 		  },
 		  "tooltip": {
@@ -645,6 +503,148 @@
 		],
 		"title": "Layer 4 Bias values",
 		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "right",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 24,
+		  "x": 0,
+		  "y": 18
+		},
+		"id": 2,
+		"options": {
+		  "legend": {
+			"calcs": [
+			  "lastNotNull"
+			],
+			"displayMode": "table",
+			"placement": "right"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 1"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Node 2"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  }
+			]
+		  }
+		],
+		"title": "Cost",
+		"type": "timeseries"
 	  }
 	],
 	"refresh": "5s",
@@ -662,5 +662,5 @@
 	"timezone": "",
 	"title": "Cost",
 	"uid": "Cost",
-	"version": 4
+	"version": 2
   }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:29:55 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/08 16:49:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 14:41:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	layers_remove(const void **const *layers)
 	i = -1;
 	while (++i < NUM_OF_LAYERS)
 	{
-		layer_type = g_layer_attrs[i].layer_type;
+		layer_type = g_layer_attrs[NUM_OF_LAYERS][i].layer_type;
 		if (layer_type == E_LAYER_INPUT)
 			layer_input_remove((const t_layer_input **const)&(*layers)[i]);
 		else if (layer_type == E_LAYER_HIDDEN)

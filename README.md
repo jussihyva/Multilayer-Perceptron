@@ -224,13 +224,33 @@ Layer 3 is hidden layer which includes three nodes (Units). Non-linear function 
 
 ## 4. Lessons learned
 
+Used hyper parameters
+Learning rate:      0.5
+Epochs:             1300
+Activation function: Sigmoid
+Weight start values : 0
+Bias start values: 0
+Cost function: Refert to chapter 3.2.3.2 (Cost function)
+Input param normalization (values between 0 to 1)
+
 ### 4.1 Three layers neural network
 
 #### 4.1.1 Bias and Cost relation
 
-<img src="Documentation/Bias.png" alt="drawing" width="800"/>
+<img src="Documentation/3_layers_Bias.png" alt="drawing" width="800"/>
 
 #### 4.1.2 Weight and Cost relation
 
-<img src="Documentation/Layer_1_Weight.png" alt="drawing" width="800"/>
-<img src="Documentation/Cost.png" alt="drawing" width="800"/>
+<img src="Documentation/3_layers_Weight_1.png" alt="drawing" width="800"/>
+<img src="Documentation/3_layers_Weight_2.png" alt="drawing" width="800"/>
+
+### 4.2 Four layers neural network
+
+#### 4.2.1 Bias and Cost relation
+
+<img src="Documentation/4_layers_Bias.png" alt="drawing" width="800"/>
+
+#### 4.1.2 Weight and Cost relation
+
+<img src="Documentation/4_layers_Weight_1.png" alt="drawing" width="800"/>
+<img src="Documentation/4_layers_Weight_2.png" alt="drawing" width="800"/>
