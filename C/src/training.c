@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:26:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:14:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ int	main(int argc, char **argv)
 		layers = neural_network->layers;
 		grad_descent(neural_network, grad_descent_attr->hyper_params,
 			grad_descent_attr->influxdb_connection);
-		// bias_weight_values_save(layers[NUM_OF_LAYERS - 1]->bias,
-		// 	layers[NUM_OF_LAYERS - 1]->weight,
-		// 	grad_descent_attr->weight_bias_file);
+		bias_weight_values_save(layers, neural_network->layer_types,
+			grad_descent_attr->weight_bias_file);
 	}
 	main_remove(&training, "training");
 	return (0);

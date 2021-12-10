@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 18:36:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:14:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,9 +312,8 @@ void				arg_usage_prediction(void);
 void				arg_remove(const t_cmd_args **cmd_args);
 void				normalize(const t_matrix *const input,
 						const t_matrix *const output);
-void				bias_weight_values_save(
-						const t_vector *const bias,
-						const t_matrix *const weight,
+void				bias_weight_values_save(const void *const *const layers,
+						const t_layer_type *const layer_types,
 						const char *const weight_bias_file);
 void				bias_weight_values_set(
 						const t_vector *const bias,

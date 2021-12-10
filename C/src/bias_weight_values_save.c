@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:27:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:55:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static size_t	weight_values_add(
 	return (string_length);
 }
 
-static const char	*strings_merge(
-							t_queue *const queue,
-							const size_t string_length)
+static char	*strings_merge(
+					t_queue *const queue,
+					const size_t string_length)
 {
 	char		*str;
 	const char	*substring;
@@ -52,7 +52,7 @@ static const char	*strings_merge(
 	return (str);
 }
 
-static const char	*yaml_string_create(
+static char	*yaml_string_create(
 							const double *const weight_row,
 							const double bias,
 							const size_t columns)
@@ -60,7 +60,7 @@ static const char	*yaml_string_create(
 	t_queue		*queue;
 	char		*substring;
 	size_t		string_length;
-	const char	*str;
+	char		*str;
 
 	queue = ft_queue_init();
 	string_length = 0;
@@ -77,30 +77,47 @@ static const char	*yaml_string_create(
 }
 
 void	bias_weight_values_save(
-						const t_vector *const bias,
-						const t_matrix *const weight,
+						const void *const *layers,
+						const t_layer_type *const layer_types,
 						const char *const weight_bias_file)
 {
-	const char		*write_buf;
-	int				fd;
-	ssize_t			ret;
+	t_read_attr		read_attr;
+	ssize_t			len;
 	size_t			i;
+	size_t			layer_id;
+	t_weight_bias	*weight_bias;
 
-	if (ft_logging_level() <= LOG_INFO)
-	{
-		ml_matrix_print("WEIGHT", weight);
-		ml_vector_print("BIAS", bias);
-	}
 	remove(weight_bias_file);
-	fd = open(weight_bias_file, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
-	i = -1;
-	while (++i < weight->size.rows)
+	read_attr.fd = open(weight_bias_file, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
+	read_attr.line = ft_strnew(SUB_STRING_MAX_LENGTH);
+	len = ft_sprintf(read_attr.line, "%d\n", NUM_OF_LAYERS);
+	read_attr.ret = write(read_attr.fd, read_attr.line, len);
+	layer_id = 0;
+	while (++layer_id < (NUM_OF_LAYERS - 1))
 	{
-		write_buf = yaml_string_create(((double **)weight->table)[i],
-				((double *)bias->data)[i], weight->size.cols);
-		ret = write(fd, write_buf, ft_strlen(write_buf));
-		ft_strdel((char **)&write_buf);
+		len = ft_sprintf(read_attr.line, "%d\n", g_layer_attrs[layer_id].nodes);
+		read_attr.ret = write(read_attr.fd, read_attr.line, len);
 	}
-	ret = close(fd);
+	ft_strdel((char **)&read_attr.line);
+	layer_id = 0;
+	while (++layer_id < NUM_OF_LAYERS)
+	{
+		if (layer_types[layer_id] == E_LAYER_HIDDEN)
+			weight_bias = &((t_layer_hidden *)layers[layer_id])->weight_bias;
+		else if (layer_types[layer_id] == E_LAYER_OUTPUT)
+			weight_bias = &((t_layer_output *)layers[layer_id])->weight_bias;
+		i = -1;
+		while (++i < weight_bias->weight->size.rows)
+		{
+			read_attr.line
+				= yaml_string_create(((double **)weight_bias->weight->table)[i],
+				((double *)weight_bias->bias->data)[i],
+				weight_bias->weight->size.cols);
+			read_attr.ret = write(read_attr.fd, read_attr.line,
+					ft_strlen(read_attr.line));
+			ft_strdel((char **)&read_attr.line);
+		}
+	}
+	read_attr.ret = close(read_attr.fd);
 	return ;
 }
