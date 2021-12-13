@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dataset_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 20:13:48 by juhani            #+#    #+#             */
-/*   Updated: 2021/11/30 23:06:28 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/13 15:21:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,11 @@ t_dataset	*dataset_init(const char *const file_path)
 	{
 		dataset = ft_memalloc(sizeof(*dataset));
 		valid_columns = get_valid_columns_and_create_matrix(file_attr->rows,
-				g_dataset_file_x_columns, &dataset->x);
-		update_content_of_matrix(file_attr->row_array, valid_columns,
-			dataset->x);
+				g_dataset_file_x_columns, dataset);
+		update_content_of_matrix(file_attr, valid_columns, dataset);
 		ft_memdel((void **)&valid_columns);
 		update_content_of_matrix_y(file_attr->row_array, file_attr->rows,
-			&dataset->y);
-		// normalize(dataset->x);
+			dataset);
 	}
 	file_attr_remove(&file_attr);
 	return (dataset);

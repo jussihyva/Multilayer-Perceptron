@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 12:29:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 15:52:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,11 @@ typedef enum e_dataset_type
 typedef struct s_dataset
 {
 	t_matrix	*x;
+	t_matrix	*x_train;
+	t_matrix	*x_test;
 	t_matrix	*y;
+	t_matrix	*y_train;
+	t_matrix	*y_test;
 }			t_dataset;
 
 typedef void					(*t_fn_normalize)(const t_matrix *const,
@@ -334,13 +338,13 @@ double				set_learning_rate(const t_argc_argv *const argc_argv);
 void				prediction_validate(const t_matrix *const observed,
 						const t_vector *const argmax);
 void				update_content_of_matrix_y(const char ***row_array,
-						const size_t rows, t_matrix **matrix);
-t_matrix			*update_content_of_matrix(const char ***row_array,
-						size_t *valid_columns, t_matrix *matrix);
+						const size_t rows, t_dataset *const dataset);
+void				update_content_of_matrix(const t_file_attr *const file_attr,
+						const size_t *const valid_columns, t_dataset *const dataset);
 size_t				*get_valid_columns_and_create_matrix(
 						const size_t rows,
 						const t_bool *const array_of_valid_columns,
-						t_matrix **matrix);
+						t_dataset *const dataset);
 void				g_prime_sigmoid(const t_matrix *const a,
 						const t_matrix *const g_prime);
 const t_matrix		*get_activation_input(
