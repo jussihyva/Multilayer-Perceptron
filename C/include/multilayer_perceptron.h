@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 01:22:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 11:39:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,8 @@ typedef struct s_layer_output
 
 typedef struct s_neural_network
 {
-	const void					**layers;
-	t_layer_type				*layer_types;
+	const void				**layers;
+	const t_layer_type		*layer_types;
 }				t_neural_network;
 
 typedef struct s_grad_descent_attr
@@ -341,21 +341,15 @@ size_t				*get_valid_columns_and_create_matrix(
 						const size_t rows,
 						const t_bool *const array_of_valid_columns,
 						t_matrix **matrix);
-void				propagation_forward_input(
-						const t_layer_input *const layer);
-void				propagation_forward_hidden(
-						const t_layer_hidden *const layer,
-						const t_matrix *const activation_input);
-void				propagation_forward_output(
-						const t_layer_output *const layer,
-						const t_matrix *const activation_input);
 void				g_prime_sigmoid(const t_matrix *const a,
 						const t_matrix *const g_prime);
 const t_matrix		*get_activation_input(
 						const t_neural_network *const neural_network,
 						const size_t layer_id);
 void				propagation_forward(const t_neural_network
-						*const neural_network);
+						*const neural_network,
+						const size_t epochs,
+						const size_t iter_cnt);
 void				propagation_backward(const t_neural_network
 						*const neural_network);
 void				bias_update(const size_t layer_id,
@@ -390,6 +384,19 @@ size_t				influxdb_field_set(const char **const field_set,
 size_t				influxdb_timestamp(const char **const timestamp);
 void				neural_network_remove(
 						const t_neural_network **const neural_network);
-void				layers_remove(const void **const *layers);
+const void			*layer_init(
+						const size_t i,
+						const t_layer_type layer_type,
+						const t_dataset *const dataset,
+						const t_hyper_params *const hyper_params);
+void				bias_weight_init(
+						const size_t id,
+						t_weight_bias *const weight_bias,
+						const t_name_array *const row_names);
+void				layer_print_input(const t_layer_input *const layer);
+void				layer_print_output(const t_layer_output *const layer);
+void				layer_remove_input(const t_layer_input **const layer);
+void				layer_remove_hidden(const t_layer_hidden **const layer);
+void				layer_remove_output(const t_layer_output **const layer);
 
 #endif
