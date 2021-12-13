@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 14:42:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 12:39:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,19 @@ static void	weight_bias_update(const size_t layer_id,
 	return ;
 }
 
-static void	propagation_backward_input(const t_layer_input *const layer)
+static void	propagation_backward_input(
+							const void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t epochs,
+							const size_t iter_cnt)
 {
-
-	(void)layer;
+	const t_layer_output	*layer_output;
+	propagation_forward(layers, layer_types, 0, 1);
+	if (!(iter_cnt % 100) || iter_cnt == epochs)
+	{
+		layer_output = ((t_layer_output **)layers)[OUTPUT_LAYER_ID];
+		ft_printf(" - val_loss: %f\n", ((double *)layer_output->cost->data)[0]);
+	}
 	return ;
 }
 
@@ -145,7 +154,8 @@ static void	propagation_backward_output(
 // }
 
 const t_matrix	*get_activation_input(
-							const t_neural_network *const neural_network,
+							const void *const *const layers,
+							const t_layer_type *const layer_types,
 							const size_t layer_id)
 {
 	size_t				prev_layer_id;
@@ -155,72 +165,65 @@ const t_matrix	*get_activation_input(
 	if (layer_id)
 	{
 		prev_layer_id = layer_id - 1;
-		if (neural_network->layer_types[prev_layer_id] == E_LAYER_HIDDEN)
-			activation_input
-				= ((t_layer_hidden *)neural_network->layers[prev_layer_id])->a;
+		if (layer_types[prev_layer_id] == E_LAYER_HIDDEN)
+			activation_input = ((t_layer_hidden *)layers[prev_layer_id])->a;
 		else
-			activation_input
-				= ((t_layer_input *)neural_network->layers[prev_layer_id])->a;
+			activation_input = ((t_layer_input *)layers[prev_layer_id])->a;
 	}
 	return (activation_input);
 }
 
 static void	get_previous_weight_and_d_z(
-								const size_t i,
-								const t_neural_network *const neural_network,
+								const void *const next_layer,
+								const t_layer_type layer_type,
 								const t_matrix **const weight,
 								const t_matrix **const d_z)
 {
-	size_t						next_layer_id;
 	t_layer_type				next_layer_type;
-	const void *const			*layers;
-	const void					*next_layer;
 
-	next_layer_id = i + 1;
-	*weight = NULL;
-	*d_z = NULL;
-	if (next_layer_id != NUM_OF_LAYERS)
+	next_layer_type = layer_type;
+	if (next_layer_type == E_LAYER_HIDDEN)
 	{
-		layers = neural_network->layers;
-		next_layer_type = neural_network->layer_types[next_layer_id];
-		next_layer = layers[next_layer_id];
-		if (next_layer_type == E_LAYER_HIDDEN)
-		{
-			*weight = ((t_layer_hidden *)next_layer)->weight_bias.weight;
-			*d_z = ((t_layer_hidden *)next_layer)->d_z;
-		}
-		else if (next_layer_type == E_LAYER_OUTPUT)
-		{
-			*weight = ((t_layer_output *)next_layer)->weight_bias.weight;
-			*d_z = ((t_layer_output *)next_layer)->d_z;
-		}
-		else
-			FT_LOG_FATAL("Unknown layer type (%d). "
-				"Type should be either HIDDEN or OUTPUT.", next_layer_type);
+		*weight = ((t_layer_hidden *)next_layer)->weight_bias.weight;
+		*d_z = ((t_layer_hidden *)next_layer)->d_z;
+	}
+	else if (next_layer_type == E_LAYER_OUTPUT)
+	{
+		*weight = ((t_layer_output *)next_layer)->weight_bias.weight;
+		*d_z = ((t_layer_output *)next_layer)->d_z;
+	}
+	else
+	{
+		*weight = NULL;
+		*d_z = NULL;
+		FT_LOG_FATAL("Unknown layer type (%d). "
+			"Type should be either HIDDEN or OUTPUT.", next_layer_type);
 	}
 	return ;
 }
 
-void	propagation_backward(const t_neural_network *const neural_network)
+void	propagation_backward(
+					const void *const *const layers,
+					const t_layer_type *const layer_types,
+					const size_t epochs,
+					const size_t iter_cnt)
 {
 	size_t				i;
 	const t_matrix		*activation_input;
 	const t_matrix		*weight;
 	const t_matrix		*d_z;
-	const void			**layers;
 
-	layers = neural_network->layers;
 	i = NUM_OF_LAYERS;
-	while (--i)
+	while (i--)
 	{
-		activation_input = get_activation_input(neural_network, i);
-		if (neural_network->layer_types[i] == E_LAYER_INPUT)
-			propagation_backward_input(layers[i]);
-		else if (neural_network->layer_types[i] == E_LAYER_OUTPUT)
+		activation_input = get_activation_input(layers, layer_types, i);
+		if (layer_types[i] == E_LAYER_INPUT)
+			propagation_backward_input(layers, layer_types, epochs, iter_cnt);
+		else if (layer_types[i] == E_LAYER_OUTPUT)
 			propagation_backward_output(layers[i], activation_input);
-		else
+		else if (layer_types[i] == E_LAYER_HIDDEN)
 		{
-			get_previous_weight_and_d_z(i, neural_network, &weight, &d_z);
+			get_previous_weight_and_d_z(layers[i + 1], layer_types[i + 1], &weight, &d_z);
 			propagation_backward_hidden(layers[i], activation_input, weight, d_z);
 		}
 	}

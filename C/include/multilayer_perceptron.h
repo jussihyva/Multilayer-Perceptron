@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 11:39:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 12:29:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,14 +344,16 @@ size_t				*get_valid_columns_and_create_matrix(
 void				g_prime_sigmoid(const t_matrix *const a,
 						const t_matrix *const g_prime);
 const t_matrix		*get_activation_input(
-						const t_neural_network *const neural_network,
+						const void *const *const layers,
+						const t_layer_type *const layer_types,
 						const size_t layer_id);
-void				propagation_forward(const t_neural_network
-						*const neural_network,
+void				propagation_forward(const void *const *const layers,
+						const t_layer_type *const layer_types,
 						const size_t epochs,
 						const size_t iter_cnt);
-void				propagation_backward(const t_neural_network
-						*const neural_network);
+void				propagation_backward(const void *const *const layers,
+						const t_layer_type *const layer_types,
+						const size_t epochs, const size_t iter_cnt);
 void				bias_update(const size_t layer_id,
 						const t_vector *const bias,
 						const t_vector *const d_bias,
