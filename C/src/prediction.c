@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:25:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 02:01:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,20 @@ static void	print_result(t_grad_descent_attr *grad_descent_attr)
 
 int	main(int argc, char **argv)
 {
-	t_prediction			*prediction;
-	t_grad_descent_attr		*grad_descent_attr;
-	// const t_layer			*layer;
+	t_prediction				*prediction;
+	t_grad_descent_attr			*grad_descent_attr;
+	const t_neural_network		*neural_network;
 
 	prediction = prediction_init(argc, (const char *const *)argv);
 	grad_descent_attr = prediction->grad_descent_attr;
 	if (grad_descent_attr)
 	{
-		// layer = grad_descent_attr->logistic_reg_attr->neural_network
-		// 	->layers[NUM_OF_LAYERS - 1];
-		// bias_weight_values_set(layer->bias, layer->weight,
-		// 	prediction->cmd_args->weight_bias_file);
-		// logistic_regression(layer);
-		// ml_softmax(layer->a_output, grad_descent_attr->softmax);
+		neural_network = grad_descent_attr->neural_network;
+		bias_weight_values_set(neural_network->layers,
+			neural_network->layer_types,
+			prediction->cmd_args->weight_bias_file);
+		propagation_forward(neural_network);
+		ml_softmax(((t_layer_output *)neural_network->layers[OUTPUT_LAYER_ID])->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);

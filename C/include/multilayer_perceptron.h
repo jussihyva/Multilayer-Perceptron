@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 15:53:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/13 01:22:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,8 +320,8 @@ void				bias_weight_values_save(const void *const *const layers,
 						const t_layer_type *const layer_types,
 						const char *const weight_bias_file);
 void				bias_weight_values_set(
-						const t_vector *const bias,
-						const t_matrix *const weight,
+						const void *const *const layers,
+						const t_layer_type *const layer_types,
 						const char *const weight_bias_file);
 void				send_softmax_result_to_database(
 						const t_grad_descent_attr *const grad_descent_attr);
