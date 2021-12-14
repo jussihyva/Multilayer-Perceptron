@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 15:45:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 19:29:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,23 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	const t_layer_output	*layer;
-	t_dataset				*dataset_train;
-	t_dataset				*dataset_test;
 	t_file_attr				*file_attr;
 	t_input_data			*input_data;
 
-	dataset_train = ft_memalloc(sizeof(*dataset_train));
-	dataset_test = ft_memalloc(sizeof(*dataset_test));
-	file_attr = ft_read_file(dataset_file, E_CSV);
 	grad_descent_attr = NULL;
+	file_attr = ft_read_file(dataset_file, E_CSV);
 	if (!file_attr || file_attr->read_failure)
 		FT_LOG_ERROR("Reading of file %s failed!", dataset_file);
 	else
 	{
-		input_data = dataset_split_input_data_for_train_and_test(
-				file_attr->row_array, file_attr->rows, dataset_train, dataset_test);
-		if (dataset_train)
+		input_data = input_data_init(file_attr->row_array, file_attr->rows);
+		if (input_data->dataset_array[E_TRAIN])
 		{
 			grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-			grad_descent_attr->neural_network = neural_network_init(dataset_train,
-					hyper_params);
-			grad_descent_attr->dataset = dataset_train;
+			grad_descent_attr->neural_network
+				= neural_network_init(input_data->dataset_array[E_TRAIN],
+				hyper_params);
+			grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
 			grad_descent_attr->hyper_params = hyper_params;
 			grad_descent_attr->weight_bias_file = weight_bias_file;
 			layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
@@ -52,6 +48,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		}
 		else
 			grad_descent_attr = NULL;
+		file_attr_remove(&file_attr);
 	}
 	return (grad_descent_attr);
 }

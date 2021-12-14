@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 15:49:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 18:17:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "libml.h"
 # include <libgen.h>
 
+# define NUM_OF_DATASETS						2
 # define NUM_OF_LAYERS							4
 # define INPUT_LAYER_ID							0
 # define OUTPUT_LAYER_ID						NUM_OF_LAYERS - 1
@@ -177,6 +178,7 @@ typedef struct s_input_data
 	const t_dataset_type	*dataset_type_array;
 	const size_t			*valid_input_column_ids;
 	t_num_of_records		num_of_records;
+	t_dataset				**dataset_array;
 }			t_input_data;
 
 typedef void					(*t_fn_normalize)(const t_matrix *const,
@@ -307,7 +309,7 @@ typedef enum e_influxdb_field_type
 	E_STRING
 }				t_influxdb_field_type;
 
-t_dataset			*dataset_init(const char *const file_path);
+t_dataset			**dataset_init(const t_input_data *const input_data);
 void				file_attr_remove(t_file_attr **file_attr);
 void				dataset_remove(const t_dataset **dataset);
 void				derivative_z_cost(const t_matrix *const y_hat,
@@ -430,10 +432,8 @@ void				layer_print_output(const t_layer_output *const layer);
 void				layer_remove_input(const t_layer_input **const layer);
 void				layer_remove_hidden(const t_layer_hidden **const layer);
 void				layer_remove_output(const t_layer_output **const layer);
-t_input_data		*dataset_split_input_data_for_train_and_test(
+t_input_data		*input_data_init(
 						const char *const *const *const row_array,
-						const size_t rows,
-						t_dataset *const dataset_train,
-						t_dataset *const dataset_test);
+						const size_t rows);
 
 #endif
