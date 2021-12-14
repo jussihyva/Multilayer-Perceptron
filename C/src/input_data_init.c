@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:38:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 20:16:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 23:46:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static const t_dataset_type	*decide_records_to_datasets(
 
 	dataset_type_array
 		= ft_memalloc(sizeof(*dataset_type_array) * num_of_records->total);
-	num_of_records->train = num_of_records->total * 0.7;
+	num_of_records->train = num_of_records->total * 0.5;
 	num_of_records->test = num_of_records->total - num_of_records->train;
 	i = -1;
 	while (++i < num_of_records->total)
@@ -58,6 +58,10 @@ static const t_dataset_type	*decide_records_to_datasets(
 			dataset_type_array[i] = E_TRAIN;
 		else
 			dataset_type_array[i] = E_TEST;
+		// if (i < num_of_records->test)
+		// 	dataset_type_array[i] = E_TEST;
+		// else
+		// 	dataset_type_array[i] = E_TRAIN;
 	}
 	return (dataset_type_array);
 }
