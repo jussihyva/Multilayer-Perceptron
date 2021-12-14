@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 15:52:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 12:41:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,25 @@ typedef struct s_layer_profile
 }				t_layer_profile;
 
 static const t_layer_profile	g_two_layers[3]
-	= {{NUMBER_OF_COLUMNS, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
 static const t_layer_profile	g_three_layers[3]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
 static const t_layer_profile	g_four_layers[4]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
 static const t_layer_profile	*g_layer_attrs[5] = {NULL, NULL, g_two_layers, g_three_layers, g_four_layers};
+
+static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
+	= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
+	"Mean Perimeter", "Mean Area", "Mean Smoothness",
+	"Mean Compactness", "Mean Concavity", "Mean Concave points",
+	"Mean Symmetry", "Mean Fractal dimension", "Radius SE",
+	"Texture SE", "Perimeter SE", "Area SE", "Smoothness SE",
+	"Compactness SE", "Concavity SE", "Concave points SE",
+	"Symmetry SE", "Fractal dimension SE", "Worst Radius",
+	"Worst Texture", "Worst Perimeter", "Worst Area",
+	"Worst Smoothness", "Worst Compactness", "Worst Concavity",
+	"Worst Concave points", "Worst Symmetry",
+	"Worst Fractal dimension"};
 
 static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 	= {E_FALSE,
@@ -146,12 +159,19 @@ typedef enum e_dataset_type
 typedef struct s_dataset
 {
 	t_matrix	*x;
-	t_matrix	*x_train;
-	t_matrix	*x_test;
 	t_matrix	*y;
-	t_matrix	*y_train;
-	t_matrix	*y_test;
 }			t_dataset;
+
+typedef struct s_neural_network_input_data
+{
+	size_t			num_of_input_functions;
+	size_t			num_of_output_functions;
+	const char		*const *const *input_records;
+	size_t			num_of_records_for_train;
+	size_t			num_of_records_for_test;
+	const size_t	*train_record_id_array;
+	const size_t	*test_record_id_array;
+}			t_neural_network_input_data;
 
 typedef void					(*t_fn_normalize)(const t_matrix *const,
 									const t_matrix *const);
@@ -404,5 +424,11 @@ void				layer_print_output(const t_layer_output *const layer);
 void				layer_remove_input(const t_layer_input **const layer);
 void				layer_remove_hidden(const t_layer_hidden **const layer);
 void				layer_remove_output(const t_layer_output **const layer);
+t_neural_network_input_data
+					*dataset_split_input_data_for_train_and_test(
+						const char *const *const *const row_array,
+						const size_t rows,
+						t_dataset *const dataset_train,
+						t_dataset *const dataset_test);
 
 #endif

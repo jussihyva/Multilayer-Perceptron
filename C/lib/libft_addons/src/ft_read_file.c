@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 11:37:52 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/17 11:37:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 13:00:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ static t_bool	read_csv_file(
 	return (read_failure);
 }
 
-static const char	***move_rows_from_queue_to_array(t_queue *queue)
+static const char	*const *const *move_rows_from_queue_to_array(t_queue *queue)
 {
-	const char		***array;
+	const char		*const **array;
 	size_t			i;
 
 	array = ft_memalloc(sizeof(*array) * queue->len);
 	i = 0;
 	while (!ft_is_queue_empty(queue))
 	{
-		array[i] = (const char **)ft_dequeue(queue);
+		array[i] = (const char *const *const)ft_dequeue(queue);
 		i++;
 	}
 	return (array);

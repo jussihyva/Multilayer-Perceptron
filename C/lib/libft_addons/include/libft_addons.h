@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_addons.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 13:04:46 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/14 13:01:34 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_file_attr
 	t_bool			read_failure;
 	size_t			rows;
 	t_file_type		file_type;
-	const char		***row_array;
+	const char		*const *const *row_array;
 }				t_file_attr;
 
 typedef struct s_argc_argv

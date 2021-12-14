@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 15:50:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 13:05:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ const void	*layer_init(
 
 	num_of_examples = dataset->y->size.cols;
 	if (layer_type == E_LAYER_INPUT)
-		layer = layer_init_input(i, num_of_examples, dataset->train, hyper_params);
+		layer = layer_init_input(i, num_of_examples, dataset->x, hyper_params);
 	else if (layer_type == E_LAYER_HIDDEN)
 		layer = layer_init_hidden(i, num_of_examples, hyper_params);
 	else if (layer_type == E_LAYER_OUTPUT)
