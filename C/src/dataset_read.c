@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 20:00:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 13:06:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 16:55:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@
 // 	return ;
 // }
 
-static size_t	*calculate_num_of_input_functions(size_t *num_of_input_functions)
+static size_t	*calculate_num_of_input_functions(
+									size_t *const num_of_input_functions)
 {
 	size_t		i;
 	size_t		j;
@@ -163,74 +164,106 @@ static size_t	*calculate_num_of_input_functions(size_t *num_of_input_functions)
 	return (valid_input_columns);
 }
 
-static void	update_content_of_dataset(
-						const size_t *const valid_input_columns,
-						const size_t *const record_id_array,
-						const char *const *const *input_records,
-						const t_dataset *const dataset)
+static void	add_record_values_to_dataset(
+					double *const *const dataset_table,
+					const t_input_data *const input_data,
+					const size_t col_id,
+					const char *const *const record)
 {
-	t_size_2d		i;
-	const char		*const *row;
+	size_t		row_id;
 	const char		*value_string;
 	double			value;
 	char			*endptr;
-	double			*const *dataset_table;
-	size_t			row_id;
 
-	dataset_table = ((double **)dataset->x->table);
-	i.rows = -1;
-	row_id = 0;
-	while (++i.rows < dataset->x->size.rows)
+	row_id = -1;
+	while (++row_id < input_data->num_of_input_functions)
 	{
-		row = input_records[record_id_array[row_id]];
-		i.cols = -1;
-		while (++i.cols < dataset->x->size.cols)
-		{
-			value_string = row[valid_input_columns[i.cols]];
-			errno = 0;
-			value = strtod(value_string, &endptr);
-			if (errno || *endptr != '\0' || value_string == endptr)
-				ft_printf("Value is not valid\n");
-			dataset_table[i.rows][i.cols] = value;
-		}
-		i.cols++;
-		row_id++;
+		value_string = record[input_data->valid_input_column_ids[row_id]];
+		errno = 0;
+		value = strtod(value_string, &endptr);
+		if (errno || *endptr != '\0' || value_string == endptr)
+			ft_printf("Value is not valid\n");
+		dataset_table[row_id][col_id] = value;
+	}
+	return ;
+}
+static void	set_input_values_to_dataset(
+						const t_input_data *const input_data,
+						double *const *const dataset_train_table,
+						double *const *const dataset_test_table)
+{
+	size_t			col_id_train;
+	size_t			col_id_test;
+	const char		*const *record;
+	size_t			record_id;
+
+	col_id_train = 0;
+	col_id_test = 0;
+	record_id = -1;
+	while (++record_id < input_data->num_of_records.total)
+	{
+		record = input_data->input_record_array[record_id];
+		if (input_data->dataset_type_array[record_id] == E_TRAIN)
+			add_record_values_to_dataset(dataset_train_table, input_data,
+				col_id_train++, record);
+		else
+			add_record_values_to_dataset(dataset_test_table, input_data,
+				col_id_test++, record);
 	}
 	return ;
 }
 
-t_neural_network_input_data	*dataset_split_input_data_for_train_and_test(
+static const t_dataset_type	*decide_records_to_datasets(
+								t_num_of_records *const num_of_records)
+{
+	t_dataset_type	*dataset_type_array;
+	size_t			i;
+
+	dataset_type_array
+		= ft_memalloc(sizeof(*dataset_type_array) * num_of_records->total);
+	num_of_records->train = num_of_records->total * 0.7;
+	num_of_records->test = num_of_records->total - num_of_records->train;
+	i = -1;
+	while (++i < num_of_records->total)
+	{
+		if (i < num_of_records->train)
+			dataset_type_array[i] = E_TRAIN;
+		else
+			dataset_type_array[i] = E_TEST;
+	}
+	return (dataset_type_array);
+}
+
+t_input_data	*dataset_split_input_data_for_train_and_test(
 							const char *const *const *const row_array,
 							const size_t rows,
 							t_dataset *const dataset_train,
 							t_dataset *const dataset_test)
 {
-	t_neural_network_input_data		*neural_network_input_data;
-	const size_t					*valid_input_columns;
+	t_input_data	*input_data;
 
-	neural_network_input_data = ft_memalloc(sizeof(neural_network_input_data));
-	neural_network_input_data->input_records = row_array;
-	neural_network_input_data->num_of_records_for_train = rows * 0.7;
-	neural_network_input_data->num_of_records_for_test
-		= rows - neural_network_input_data->num_of_records_for_train;
-	valid_input_columns = calculate_num_of_input_functions(
-			&neural_network_input_data->num_of_input_functions);
-	neural_network_input_data->num_of_output_functions = 2;
+	input_data = ft_memalloc(sizeof(input_data));
+	input_data->num_of_records.total = rows;
+	input_data->input_record_array = row_array;
+	input_data->valid_input_column_ids = calculate_num_of_input_functions(
+			&input_data->num_of_input_functions);
+	input_data->num_of_output_functions = 2;
+	input_data->dataset_type_array
+		= decide_records_to_datasets(&input_data->num_of_records);
 	dataset_train->x = ml_matrix_create(
-			neural_network_input_data->num_of_input_functions,
-			neural_network_input_data->num_of_records_for_train);
+			input_data->num_of_input_functions,
+			input_data->num_of_records.train);
 	dataset_test->x = ml_matrix_create(
-			neural_network_input_data->num_of_input_functions,
-			neural_network_input_data->num_of_records_for_test);
+			input_data->num_of_input_functions,
+			input_data->num_of_records.test);
 	dataset_train->y = ml_matrix_create(
-			neural_network_input_data->num_of_output_functions,
-			neural_network_input_data->num_of_records_for_train);
+			input_data->num_of_output_functions,
+			input_data->num_of_records.train);
 	dataset_test->y = ml_matrix_create(
-			neural_network_input_data->num_of_output_functions,
-			neural_network_input_data->num_of_records_for_test);
-	update_content_of_dataset(valid_input_columns,
-		neural_network_input_data->train_record_id_array,
-		neural_network_input_data->input_records,
-		dataset_train);
-	return (neural_network_input_data);
+			input_data->num_of_output_functions,
+			input_data->num_of_records.test);
+	set_input_values_to_dataset(input_data,
+		(double *const *const)dataset_train->x->table,
+		(double *const *const)dataset_test->x->table);
+	return (input_data);
 }

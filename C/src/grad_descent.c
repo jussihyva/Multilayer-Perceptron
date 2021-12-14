@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 12:50:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 15:45:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 									const char *const weight_bias_file,
 									const t_hyper_params *const hyper_params)
 {
-	t_grad_descent_attr				*grad_descent_attr;
-	const t_layer_output			*layer;
-	t_dataset						*dataset_train;
-	t_dataset						*dataset_test;
-	t_file_attr						*file_attr;
-	t_neural_network_input_data		*neural_network_input_data;
+	t_grad_descent_attr		*grad_descent_attr;
+	const t_layer_output	*layer;
+	t_dataset				*dataset_train;
+	t_dataset				*dataset_test;
+	t_file_attr				*file_attr;
+	t_input_data			*input_data;
 
 	dataset_train = ft_memalloc(sizeof(*dataset_train));
 	dataset_test = ft_memalloc(sizeof(*dataset_test));
@@ -32,7 +32,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		FT_LOG_ERROR("Reading of file %s failed!", dataset_file);
 	else
 	{
-		neural_network_input_data = dataset_split_input_data_for_train_and_test(
+		input_data = dataset_split_input_data_for_train_and_test(
 				file_attr->row_array, file_attr->rows, dataset_train, dataset_test);
 		if (dataset_train)
 		{
