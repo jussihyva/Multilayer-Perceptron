@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 18:17:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 20:25:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ typedef struct s_training
 	t_arg_parser			*arg_parser;
 	const t_cmd_args		*cmd_args;
 	t_grad_descent_attr		*grad_descent_attr;
+	t_input_data			*input_data;
 }				t_training;
 
 typedef struct s_prediction
@@ -300,6 +301,7 @@ typedef struct s_prediction
 	t_arg_parser			*arg_parser;
 	const t_cmd_args		*cmd_args;
 	t_grad_descent_attr		*grad_descent_attr;
+	t_input_data			*input_data;
 }				t_prediction;
 
 typedef enum e_influxdb_field_type
@@ -311,7 +313,7 @@ typedef enum e_influxdb_field_type
 
 t_dataset			**dataset_init(const t_input_data *const input_data);
 void				file_attr_remove(t_file_attr **file_attr);
-void				dataset_remove(const t_dataset **dataset);
+void				dataset_remove(t_dataset **dataset);
 void				derivative_z_cost(const t_matrix *const y_hat,
 						const t_matrix *const y, t_matrix *const derivative_z);
 void				derivative_w(const t_matrix *const x,
@@ -319,7 +321,6 @@ void				derivative_w(const t_matrix *const x,
 						t_matrix *const derivative_w);
 void				derivative_b(const t_matrix *const derivative_z,
 						t_vector *const derivative_b);
-// void				logistic_regression(const t_layer *const layer);
 void				linear_function_hidden(const t_layer_hidden *const layer,
 						const t_matrix *const activation_input);
 void				linear_function_output(const t_layer_output *const layer,
@@ -329,7 +330,7 @@ t_neural_network	*neural_network_init(const t_dataset *const dataset,
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
 t_grad_descent_attr	*grad_descent_attr_initialize(
-						const char *const dataset_file,
+						const t_input_data *const input_data,
 						const char *const weight_bias_file,
 						const t_hyper_params *const hyper_params);
 void				grad_descent(
@@ -432,8 +433,7 @@ void				layer_print_output(const t_layer_output *const layer);
 void				layer_remove_input(const t_layer_input **const layer);
 void				layer_remove_hidden(const t_layer_hidden **const layer);
 void				layer_remove_output(const t_layer_output **const layer);
-t_input_data		*input_data_init(
-						const char *const *const *const row_array,
-						const size_t rows);
+t_input_data		*input_data_init(const char *const dataset_file);
+void				input_data_remove(t_input_data **input_data);
 
 #endif

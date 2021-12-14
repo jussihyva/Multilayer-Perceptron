@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 12:34:10 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/07 13:07:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 20:00:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ const t_tcp_connection	*get_database_connection(void)
 
 t_training	*training_init(const int argc, const char *const *const argv)
 {
-	t_training			*training;
-	const t_cmd_args	*cmd_args;
+	t_training				*training;
+	const t_cmd_args		*cmd_args;
 
 	training = ft_memalloc(sizeof(*training));
 	training->argc_argv.argc = argc;
@@ -33,8 +33,9 @@ t_training	*training_init(const int argc, const char *const *const argv)
 			arg_init, arg_analyze, arg_usage_training);
 	training->cmd_args = ft_arg_parser(training->arg_parser);
 	cmd_args = training->cmd_args;
+	training->input_data = input_data_init(cmd_args->dataset_file);
 	training->grad_descent_attr
-		= grad_descent_attr_initialize(cmd_args->dataset_file,
+		= grad_descent_attr_initialize(training->input_data,
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);
 	training->grad_descent_attr->influxdb_connection
 		= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);

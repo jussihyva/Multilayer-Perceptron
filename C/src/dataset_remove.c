@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 23:23:40 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/02 11:35:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 20:13:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-void	dataset_remove(const t_dataset **dataset)
+void	dataset_remove(t_dataset **dataset)
 {
 	ft_strarraydel(&(*dataset)->x->column_names.names,
 		(*dataset)->x->size.cols);

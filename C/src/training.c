@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 13:14:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 19:57:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	main_remove(t_training **training, const char *const prog_name)
 	arg_parser = (*training)->arg_parser;
 	print_leaks = cmd_args->print_leaks;
 	grad_descent_attr_remove(&grad_descent_attr);
+	input_data_remove(&(*training)->input_data);
 	arg_remove(&cmd_args);
 	arg_parser_remove(&arg_parser);
 	ft_memdel((void **)training);

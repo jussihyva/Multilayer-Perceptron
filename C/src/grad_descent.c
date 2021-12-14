@@ -6,50 +6,39 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 19:29:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 20:07:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
 t_grad_descent_attr	*grad_descent_attr_initialize(
-									const char *const dataset_file,
+									const t_input_data *const input_data,
 									const char *const weight_bias_file,
 									const t_hyper_params *const hyper_params)
 {
 	t_grad_descent_attr		*grad_descent_attr;
 	const t_layer_output	*layer;
-	t_file_attr				*file_attr;
-	t_input_data			*input_data;
 
-	grad_descent_attr = NULL;
-	file_attr = ft_read_file(dataset_file, E_CSV);
-	if (!file_attr || file_attr->read_failure)
-		FT_LOG_ERROR("Reading of file %s failed!", dataset_file);
-	else
+	if (input_data->dataset_array[E_TRAIN])
 	{
-		input_data = input_data_init(file_attr->row_array, file_attr->rows);
-		if (input_data->dataset_array[E_TRAIN])
-		{
-			grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-			grad_descent_attr->neural_network
-				= neural_network_init(input_data->dataset_array[E_TRAIN],
-				hyper_params);
-			grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
-			grad_descent_attr->hyper_params = hyper_params;
-			grad_descent_attr->weight_bias_file = weight_bias_file;
-			layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
-			grad_descent_attr->softmax = ml_matrix_create(
-					layer->y_hat->size.rows, layer->y_hat->size.cols);
-			grad_descent_attr->argmax
-				= ml_vector_create(grad_descent_attr->softmax->size.cols);
-			grad_descent_attr->argmax_values
-				= ml_vector_create(grad_descent_attr->softmax->size.cols);
-		}
-		else
-			grad_descent_attr = NULL;
-		file_attr_remove(&file_attr);
+		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
+		grad_descent_attr->neural_network
+			= neural_network_init(input_data->dataset_array[E_TRAIN],
+			hyper_params);
+		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
+		grad_descent_attr->hyper_params = hyper_params;
+		grad_descent_attr->weight_bias_file = weight_bias_file;
+		layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
+		grad_descent_attr->softmax = ml_matrix_create(
+				layer->y_hat->size.rows, layer->y_hat->size.cols);
+		grad_descent_attr->argmax
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
+		grad_descent_attr->argmax_values
+			= ml_vector_create(grad_descent_attr->softmax->size.cols);
 	}
+	else
+		grad_descent_attr = NULL;
 	return (grad_descent_attr);
 }
 
@@ -80,7 +69,7 @@ void	grad_descent_attr_remove(
 {
 	if (*grad_descent_attr)
 	{
-		dataset_remove(&(*grad_descent_attr)->dataset);
+		// dataset_remove(&(*grad_descent_attr)->dataset);
 		ml_matrix_remove((t_matrix **)&(*grad_descent_attr)->softmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax_values);

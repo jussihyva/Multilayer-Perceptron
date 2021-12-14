@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:38:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 19:29:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/14 20:16:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,29 @@ static const t_dataset_type	*decide_records_to_datasets(
 }
 
 t_input_data	*input_data_init(
-							const char *const *const *const row_array,
-							const size_t rows)
+							const char *const dataset_file)
 {
 	t_input_data	*input_data;
+	t_file_attr		*file_attr;
 
-	input_data = ft_memalloc(sizeof(*input_data));
-	input_data->num_of_records.total = rows;
-	input_data->input_record_array = row_array;
-	input_data->valid_input_column_ids = calculate_num_of_input_functions(
-			&input_data->num_of_input_functions);
-	input_data->num_of_output_functions = 2;
-	input_data->dataset_type_array
-		= decide_records_to_datasets(&input_data->num_of_records);
-	input_data->dataset_array = dataset_init(input_data);
+	file_attr = ft_read_file(dataset_file, E_CSV);
+	if (!file_attr || file_attr->read_failure)
+	{
+		input_data = NULL;
+		FT_LOG_ERROR("Reading of file %s failed!", dataset_file);
+	}
+	else
+	{
+		input_data = ft_memalloc(sizeof(*input_data));
+		input_data->num_of_records.total = file_attr->rows;
+		input_data->input_record_array = file_attr->row_array;
+		input_data->valid_input_column_ids = calculate_num_of_input_functions(
+				&input_data->num_of_input_functions);
+		input_data->num_of_output_functions = 2;
+		input_data->dataset_type_array
+			= decide_records_to_datasets(&input_data->num_of_records);
+		input_data->dataset_array = dataset_init(input_data);
+	}
+	file_attr_remove(&file_attr);
 	return (input_data);
 }
