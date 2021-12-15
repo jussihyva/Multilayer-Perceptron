@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 20:07:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:16:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,13 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
 		grad_descent_attr->neural_network
-			= neural_network_init(input_data->dataset_array[E_TRAIN],
-			hyper_params);
+			= neural_network_init((const t_dataset *const *)input_data->dataset_array, hyper_params);
 		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
 		grad_descent_attr->softmax = ml_matrix_create(
-				layer->y_hat->size.rows, layer->y_hat->size.cols);
+				layer->num_of_nodes, layer->y_hat_train->size.cols);
 		grad_descent_attr->argmax
 			= ml_vector_create(grad_descent_attr->softmax->size.cols);
 		grad_descent_attr->argmax_values
@@ -47,8 +46,8 @@ void	grad_descent(
 				const t_hyper_params *const hyper_params,
 				const t_tcp_connection *const influxdb_connection)
 {
-	const void *const	*layers;
-	size_t				iter_cnt;
+	void *const		*layers;
+	size_t			iter_cnt;
 
 	layers = neural_network->layers;
 	iter_cnt = 0;

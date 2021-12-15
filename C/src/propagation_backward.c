@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 12:39:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:23:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	weight_bias_update(const size_t layer_id,
 }
 
 static void	propagation_backward_input(
-							const void *const *const layers,
+							void *const *const layers,
 							const t_layer_type *const layer_types,
 							const size_t epochs,
 							const size_t iter_cnt)
@@ -154,7 +154,7 @@ static void	propagation_backward_output(
 // }
 
 const t_matrix	*get_activation_input(
-							const void *const *const layers,
+							void *const *const layers,
 							const t_layer_type *const layer_types,
 							const size_t layer_id)
 {
@@ -174,7 +174,7 @@ const t_matrix	*get_activation_input(
 }
 
 static void	get_previous_weight_and_d_z(
-								const void *const next_layer,
+								void *const next_layer,
 								const t_layer_type layer_type,
 								const t_matrix **const weight,
 								const t_matrix **const d_z)
@@ -203,7 +203,7 @@ static void	get_previous_weight_and_d_z(
 }
 
 void	propagation_backward(
-					const void *const *const layers,
+					void *const *const layers,
 					const t_layer_type *const layer_types,
 					const size_t epochs,
 					const size_t iter_cnt)

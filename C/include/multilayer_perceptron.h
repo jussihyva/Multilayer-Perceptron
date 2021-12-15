@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/15 14:21:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:25:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,8 +220,12 @@ typedef struct s_layer_input
 	t_layer_type			layer_type;
 	size_t					num_of_nodes;
 	const t_matrix			*x;
+	const t_matrix			*x_train;
+	const t_matrix			*x_test;
 	t_fn_normalize			fn_normalize;
 	t_matrix				*a;
+	t_matrix				*a_train;
+	t_matrix				*a_test;
 	const t_hyper_params	*hyper_params;
 }				t_layer_input;
 
@@ -232,7 +236,11 @@ typedef struct s_layer_hidden
 	size_t					num_of_nodes;
 	t_weight_bias			weight_bias;
 	t_matrix				*z;
+	t_matrix				*z_train;
+	t_matrix				*z_test;
 	t_matrix				*a;
+	t_matrix				*a_train;
+	t_matrix				*a_test;
 	t_weight_bias			d_weight_bias;
 	t_matrix				*d_z;
 	const t_hyper_params	*hyper_params;
@@ -247,8 +255,14 @@ typedef struct s_layer_output
 	size_t					num_of_nodes;
 	t_weight_bias			weight_bias;
 	t_matrix				*z;
+	t_matrix				*z_train;
+	t_matrix				*z_test;
 	t_matrix				*y_hat;
+	t_matrix				*y_hat_train;
+	t_matrix				*y_hat_test;
 	const t_matrix			*y;
+	t_matrix				*y_train;
+	t_matrix				*y_test;
 	t_vector				*cost;
 	t_weight_bias			d_weight_bias;
 	t_matrix				*d_z;
@@ -257,7 +271,7 @@ typedef struct s_layer_output
 
 typedef struct s_neural_network
 {
-	const void				**layers;
+	void					**layers;
 	const t_layer_type		*layer_types;
 }				t_neural_network;
 
@@ -332,7 +346,8 @@ void				linear_function_hidden(const t_layer_hidden *const layer,
 						const t_matrix *const activation_input);
 void				linear_function_output(const t_layer_output *const layer,
 						const t_matrix *const activation_input);
-t_neural_network	*neural_network_init(const t_dataset *const dataset,
+t_neural_network	*neural_network_init(
+						const t_dataset *const *const dataset_array,
 						const t_hyper_params *const hyper_params);
 void				grad_descent_attr_remove(
 						t_grad_descent_attr **grad_descent_attr);
@@ -346,7 +361,7 @@ void				grad_descent(
 						const t_tcp_connection *const influxdb_connection);
 void				send_iteration_result_to_database(
 						const t_tcp_connection *const influxdb_connection,
-						const void *const *const layers,
+						void *const *const layers,
 						const size_t iter_cnt);
 void				*arg_init(t_argc_argv *argc_argv);
 void				arg_analyze(void *const cmd_args, char opt,
@@ -356,11 +371,11 @@ void				arg_usage_prediction(void);
 void				arg_remove(const t_cmd_args **cmd_args);
 void				normalize(const t_matrix *const input,
 						const t_matrix *const output);
-void				bias_weight_values_save(const void *const *const layers,
+void				bias_weight_values_save(void *const *const layers,
 						const t_layer_type *const layer_types,
 						const char *const weight_bias_file);
 void				bias_weight_values_set(
-						const void *const *const layers,
+						void *const *const layers,
 						const t_layer_type *const layer_types,
 						const char *const weight_bias_file);
 void				send_softmax_result_to_database(
@@ -384,14 +399,14 @@ size_t				*get_valid_columns_and_create_matrix(
 void				g_prime_sigmoid(const t_matrix *const a,
 						const t_matrix *const g_prime);
 const t_matrix		*get_activation_input(
-						const void *const *const layers,
+						void *const *const layers,
 						const t_layer_type *const layer_types,
 						const size_t layer_id);
-void				propagation_forward(const void *const *const layers,
+void				propagation_forward(void *const *const layers,
 						const t_layer_type *const layer_types,
 						const size_t epochs,
 						const size_t iter_cnt);
-void				propagation_backward(const void *const *const layers,
+void				propagation_backward(void *const *const layers,
 						const t_layer_type *const layer_types,
 						const size_t epochs, const size_t iter_cnt);
 void				bias_update(const size_t layer_id,
@@ -426,10 +441,10 @@ size_t				influxdb_field_set(const char **const field_set,
 size_t				influxdb_timestamp(const char **const timestamp);
 void				neural_network_remove(
 						const t_neural_network **const neural_network);
-const void			*layer_init(
+void				*layer_init(
 						const size_t i,
 						const t_layer_type layer_type,
-						const t_dataset *const dataset,
+						const t_dataset *const *const dataset_array,
 						const t_hyper_params *const hyper_params);
 void				bias_weight_init(
 						const size_t id,

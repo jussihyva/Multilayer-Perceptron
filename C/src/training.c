@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 19:57:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:24:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static void	main_remove(t_training **training, const char *const prog_name)
 
 int	main(int argc, char **argv)
 {
-	t_training						*training;
-	t_grad_descent_attr				*grad_descent_attr;
-	const t_neural_network			*neural_network;
-	const void *const				*layers;
+	t_training					*training;
+	t_grad_descent_attr			*grad_descent_attr;
+	const t_neural_network		*neural_network;
+	void *const					*layers;
 
 	training = training_init(argc, (const char *const *)argv);
 	grad_descent_attr = training->grad_descent_attr;

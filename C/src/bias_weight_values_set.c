@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 12:58:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 01:58:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:25:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	print_values(
 }
 
 void	bias_weight_values_set(
-						const void *const *const layers,
+						void *const *const layers,
 						const t_layer_type *const layer_types,
 						const char *const weight_bias_file)
 {

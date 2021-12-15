@@ -6,18 +6,20 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 12:38:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:33:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static void	propagation_forward_input(const t_layer_input *const layer)
+static void	propagation_forward_input(t_layer_input *const layer)
 {
 	static t_bool	is_normalized = E_FALSE;
 
 	if (!is_normalized)
 	{
+		layer->x = layer->x_train;
+		layer->a = layer->a_train;
 		normalize(layer->x, layer->a);
 		is_normalized = E_TRUE;
 		if (ft_logging_level() <= LOG_DEBUG)
@@ -27,20 +29,25 @@ static void	propagation_forward_input(const t_layer_input *const layer)
 }
 
 static void	propagation_forward_hidden(
-						const t_layer_hidden *const layer,
+						t_layer_hidden *const layer,
 						const t_matrix *const activation_input)
 {
+	layer->z = layer->z_train;
+	layer->a = layer->a_train;
 	linear_function_hidden(layer, activation_input);
 	ml_sigmoid(layer->z, layer->a);
 	return ;
 }
 
 static void	propagation_forward_output(
-						const t_layer_output *const layer,
+						t_layer_output *const layer,
 						const t_matrix *const activation_input,
 						const size_t epochs,
 						const size_t iter_cnt)
 {
+	layer->z = layer->z_train;
+	layer->y = layer->y_train;
+	layer->y_hat = layer->y_hat_train;
 	linear_function_output(layer, activation_input);
 	ml_sigmoid(layer->z, layer->y_hat);
 	ml_matrix_cost(layer->y, layer->y_hat, layer->cost);
@@ -53,7 +60,7 @@ static void	propagation_forward_output(
 }
 
 void	propagation_forward(
-					const void *const *const layers,
+					void *const *const layers,
 					const t_layer_type *const layer_types,
 					const size_t epochs,
 					const size_t iter_cnt)

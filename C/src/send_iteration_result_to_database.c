@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/08 12:51:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:20:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ static size_t	influxdb_fields_add(
 
 void	send_iteration_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
-							const void *const *const layers,
+							void *const *const layers,
 							const size_t iter_cnt)
 {
 	t_influxdb_line		influxdb_line;

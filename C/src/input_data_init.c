@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:38:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/15 12:05:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:57:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static const t_dataset_type	*decide_records_to_datasets(
 	i = -1;
 	while (++i < num_of_records->total)
 	{
-		if (i < num_of_records->train)
-			dataset_type_array[i] = E_TRAIN;
-		else
-			dataset_type_array[i] = E_TEST;
-		// if (i < num_of_records->test)
-		// 	dataset_type_array[i] = E_TEST;
-		// else
+		// if (i < num_of_records->train)
 		// 	dataset_type_array[i] = E_TRAIN;
+		// else
+		// 	dataset_type_array[i] = E_TEST;
+		if (i < num_of_records->test)
+			dataset_type_array[i] = E_TEST;
+		else
+			dataset_type_array[i] = E_TRAIN;
 	}
 	return (dataset_type_array);
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 14:41:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 00:25:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static char	*yaml_string_create(
 }
 
 void	bias_weight_values_save(
-						const void *const *layers,
+						void *const *layers,
 						const t_layer_type *const layer_types,
 						const char *const weight_bias_file)
 {
