@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 10:17:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/13 10:23:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/15 14:36:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	bias_weight_init(
 				const size_t id,
 				t_weight_bias *const weight_bias,
-				const t_name_array *const row_names)
+				t_name *const row_name_array)
 {
 	size_t		num_of_activation_functions;
 	size_t		num_of_nodes;
@@ -25,11 +25,7 @@ void	bias_weight_init(
 	weight_bias->weight = ml_matrix_create(num_of_nodes,
 			num_of_activation_functions);
 	weight_bias->bias = ml_vector_create(num_of_nodes);
-	if (row_names)
-	{
-		weight_bias->weight->column_names.lengths = row_names->lengths;
-		weight_bias->weight->column_names.names = row_names->names;
-	}
+	if (row_name_array)
+		weight_bias->weight->col_name_array = row_name_array;
 	return ;
 }
-

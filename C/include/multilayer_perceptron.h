@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 20:25:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/15 14:21:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,15 +170,22 @@ typedef struct s_num_of_records
 	size_t		test;
 }			t_num_of_records;
 
+typedef struct s_input_function_attr
+{
+	size_t			column_id;
+	const char		*name;
+	size_t			name_len;
+}			t_input_function_attr;
+
 typedef struct s_input_data
 {
 	size_t					num_of_input_functions;
 	size_t					num_of_output_functions;
 	const char				*const *const *input_record_array;
 	const t_dataset_type	*dataset_type_array;
-	const size_t			*valid_input_column_ids;
 	t_num_of_records		num_of_records;
 	t_dataset				**dataset_array;
+	t_input_function_attr	*input_function_attrs;
 }			t_input_data;
 
 typedef void					(*t_fn_normalize)(const t_matrix *const,
@@ -427,7 +434,7 @@ const void			*layer_init(
 void				bias_weight_init(
 						const size_t id,
 						t_weight_bias *const weight_bias,
-						const t_name_array *const row_names);
+						t_name *const row_name_array);
 void				layer_print_input(const t_layer_input *const layer);
 void				layer_print_output(const t_layer_output *const layer);
 void				layer_remove_input(const t_layer_input **const layer);

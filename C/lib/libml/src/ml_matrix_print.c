@@ -6,22 +6,25 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:29:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/19 14:21:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/15 13:30:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-static void	print_columns(const t_name_array *const names, const size_t len)
+static void	print_columns(
+				const t_name *const column_name_array,
+				const size_t len)
 {
 	size_t		i;
 
-	if (names->names)
+	if (column_name_array && column_name_array[0].name)
 	{
 		ft_printf("      ");
 		i = -1;
 		while (++i < len)
-			ft_printf("%*s", names->lengths[i] + 2, names->names[i]);
+			ft_printf("%*s", column_name_array[i].len + 2,
+				column_name_array[i].name);
 		ft_printf("\n");
 	}
 	return ;
@@ -29,14 +32,14 @@ static void	print_columns(const t_name_array *const names, const size_t len)
 
 static void	print_value(
 					const double value,
-					const size_t *const lengths,
+					const size_t length,
 					const size_t i,
 					const size_t total)
 {
 	if (total < 30 || (i < 15 || i > (total - 15)))
 	{
-		if (lengths)
-			ft_printf("%*f", lengths[i] + 2, value);
+		if (length)
+			ft_printf("%*f", length + 2, value);
 		else
 			ft_printf("%10f", value);
 	}
@@ -57,7 +60,7 @@ void	ml_matrix_print(
 	values = (const double **)matrix->table;
 	cnt = -1;
 	ft_printf("%s\n", name);
-	print_columns(&matrix->column_names, matrix->size.cols);
+	print_columns(matrix->col_name_array, matrix->size.cols);
 	i.rows = -1;
 	while (++i.rows < matrix->size.rows)
 	{
@@ -67,7 +70,7 @@ void	ml_matrix_print(
 		while (++i.cols < matrix->size.cols)
 		{
 			value = ((double **)matrix->table)[i.rows][i.cols];
-			print_value(value, matrix->column_names.lengths, i.cols,
+			print_value(value, matrix->col_name_array[i.cols].len, i.cols,
 				matrix->size.cols);
 		}
 		ft_printf("\n");

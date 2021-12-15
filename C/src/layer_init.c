@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 13:05:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/15 14:32:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_layer_hidden	*layer_init_hidden(
 	layer->a = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->weight_transposed = ml_matrix_create(num_of_nodes,
 			g_layer_attrs[NUM_OF_LAYERS][id + 1].nodes);
-	bias_weight_init(layer->id, &layer->weight_bias, &layer->a->row_names);
+	bias_weight_init(layer->id, &layer->weight_bias, NULL);
 	bias_weight_init(layer->id, &layer->d_weight_bias, NULL);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples);
 	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples);
