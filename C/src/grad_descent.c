@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:16:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 22:26:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,27 @@ void	grad_descent(
 				const t_tcp_connection *const influxdb_connection)
 {
 	void *const		*layers;
+	t_layer_output	*layer_output;	
 	size_t			iter_cnt;
 
 	layers = neural_network->layers;
 	iter_cnt = 0;
 	while (++iter_cnt <= hyper_params->epochs)
 	{
-		propagation_forward(neural_network->layers, neural_network->layer_types,
+		neural_network_mode_set(layers, neural_network->layer_types, E_TRAIN);
+		propagation_forward(layers, neural_network->layer_types,
 			hyper_params->epochs, iter_cnt);
-		propagation_backward(neural_network->layers, neural_network->layer_types,
-			hyper_params->epochs, iter_cnt);
+		propagation_backward(layers, neural_network->layer_types);
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);
+		neural_network_mode_set(layers, neural_network->layer_types, E_TEST);
+		propagation_forward(layers, neural_network->layer_types, 0, 1);
+		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
+		{
+			layer_output = ((t_layer_output **)layers)[OUTPUT_LAYER_ID];
+			ft_printf(" - val_loss: %f\n",
+				((double *)layer_output->cost->data)[0]);
+		}
 	}
 	return ;
 }
@@ -68,7 +77,6 @@ void	grad_descent_attr_remove(
 {
 	if (*grad_descent_attr)
 	{
-		// dataset_remove(&(*grad_descent_attr)->dataset);
 		ml_matrix_remove((t_matrix **)&(*grad_descent_attr)->softmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax);
 		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax_values);

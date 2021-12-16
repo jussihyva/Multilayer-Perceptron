@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 12:30:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 22:35:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ typedef struct s_layer_input
 	t_matrix				*a_train;
 	t_matrix				*a_test;
 	const t_hyper_params	*hyper_params;
+	t_dataset_type			dataset_type;
 }				t_layer_input;
 
 typedef struct s_layer_hidden
@@ -263,6 +264,7 @@ typedef struct s_layer_hidden
 	const t_hyper_params	*hyper_params;
 	const t_matrix			*g_prime;
 	const t_matrix			*weight_transposed;
+	t_dataset_type			dataset_type;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
@@ -284,6 +286,7 @@ typedef struct s_layer_output
 	t_weight_bias			d_weight_bias;
 	t_matrix				*d_z;
 	const t_hyper_params	*hyper_params;
+	t_dataset_type			dataset_type;
 }				t_layer_output;
 
 typedef struct s_neural_network
@@ -430,8 +433,7 @@ void					propagation_forward(void *const *const layers,
 							const size_t epochs,
 							const size_t iter_cnt);
 void					propagation_backward(void *const *const layers,
-							const t_layer_type *const layer_types,
-							const size_t epochs, const size_t iter_cnt);
+							const t_layer_type *const layer_types);
 void					bias_update(const size_t layer_id,
 							const t_vector *const bias,
 							const t_vector *const d_bias,
@@ -486,5 +488,8 @@ const t_dataset_split_order	*set_dataset_split_mode(
 t_dataset_type			*dataset_split(
 							t_num_of_records *const num_of_records,
 							const t_dataset_split_order *dataset_split_order);
+void					neural_network_mode_set(void *const *const layers,
+							const t_layer_type *const layer_types,
+							const t_dataset_type dataset_type);
 
 #endif

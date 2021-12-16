@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:23:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 22:07:05 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,8 @@ static void	weight_bias_update(const size_t layer_id,
 	return ;
 }
 
-static void	propagation_backward_input(
-							void *const *const layers,
-							const t_layer_type *const layer_types,
-							const size_t epochs,
-							const size_t iter_cnt)
+static void	propagation_backward_input(void)
 {
-	const t_layer_output	*layer_output;
-	propagation_forward(layers, layer_types, 0, 1);
-	if (!(iter_cnt % 100) || iter_cnt == epochs)
-	{
-		layer_output = ((t_layer_output **)layers)[OUTPUT_LAYER_ID];
-		ft_printf(" - val_loss: %f\n", ((double *)layer_output->cost->data)[0]);
-	}
 	return ;
 }
 
@@ -204,9 +193,7 @@ static void	get_previous_weight_and_d_z(
 
 void	propagation_backward(
 					void *const *const layers,
-					const t_layer_type *const layer_types,
-					const size_t epochs,
-					const size_t iter_cnt)
+					const t_layer_type *const layer_types)
 {
 	size_t				i;
 	const t_matrix		*activation_input;
@@ -218,7 +205,7 @@ void	propagation_backward(
 	{
 		activation_input = get_activation_input(layers, layer_types, i);
 		if (layer_types[i] == E_LAYER_INPUT)
-			propagation_backward_input(layers, layer_types, epochs, iter_cnt);
+			propagation_backward_input();
 		else if (layer_types[i] == E_LAYER_OUTPUT)
 			propagation_backward_output(layers[i], activation_input);
 		else if (layer_types[i] == E_LAYER_HIDDEN)

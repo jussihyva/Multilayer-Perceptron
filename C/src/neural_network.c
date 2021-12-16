@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:19:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 22:38:44 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,79 @@ static void	layers_remove(void **const *layers)
 			layer_remove_output((const t_layer_output **const)&(*layers)[i]);
 	}
 	ft_memdel((void **)layers);
+	return ;
+}
+
+static void	set_mode_for_input(t_layer_input *const layer,
+					const t_dataset_type dataset_type)
+{
+	layer->dataset_type = dataset_type;
+	if (dataset_type == E_TRAIN)
+	{
+		layer->x = layer->x_train;
+		layer->a = layer->a_train;
+	}
+	else
+	{
+		layer->x = layer->x_test;
+		layer->a = layer->a_test;
+	}
+	return ;
+}
+
+static void	set_mode_for_hidden(t_layer_hidden *const layer,
+					const t_dataset_type dataset_type)
+{
+	layer->dataset_type = dataset_type;
+	if (dataset_type == E_TRAIN)
+	{
+		layer->z = layer->z_train;
+		layer->a = layer->a_train;
+	}
+	else
+	{
+		layer->z = layer->z_test;
+		layer->a = layer->a_test;
+	}
+	return ;
+}
+
+static void	set_mode_for_output(t_layer_output *const layer,
+					const t_dataset_type dataset_type)
+{
+	layer->dataset_type = dataset_type;
+	if (dataset_type == E_TRAIN)
+	{
+		layer->z = layer->z_train;
+		layer->y = layer->y_train;
+		layer->y_hat = layer->y_hat_train;
+	}
+	else
+	{
+		layer->z = layer->z_test;
+		layer->y = layer->y_test;
+		layer->y_hat = layer->y_hat_test;
+	}
+	return ;
+}
+
+void	neural_network_mode_set(
+					void *const *const layers,
+					const t_layer_type *const layer_types,
+					const t_dataset_type dataset_type)
+{
+	size_t				i;
+
+	i = -1;
+	while (++i < NUM_OF_LAYERS)
+	{
+		if (layer_types[i] == E_LAYER_INPUT)
+			set_mode_for_input(layers[i], dataset_type);
+		else if (layer_types[i] == E_LAYER_OUTPUT)
+			set_mode_for_output(layers[i], dataset_type);
+		else
+			set_mode_for_hidden(layers[i], dataset_type);
+	}
 	return ;
 }
 
