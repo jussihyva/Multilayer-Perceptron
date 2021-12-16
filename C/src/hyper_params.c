@@ -3,14 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   hyper_params.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2021/11/23 15:21:22 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/16 10:56:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+static t_dataset_split_mode	set_split_mode(const char mode_char)
+{
+	t_dataset_split_mode	dataset_split_mode;
+
+	dataset_split_mode = 0;
+	if (mode_char == 'B')
+		dataset_split_mode = E_BEGIN;
+	else if (mode_char == 'E')
+		dataset_split_mode = E_END;
+	else if (mode_char == 'R')
+		dataset_split_mode = E_RAND;
+	else
+		FT_LOG_ERROR("Split mode %c is not supported.", mode_char);
+	return (dataset_split_mode);
+}
+
+const t_dataset_split_order	*set_dataset_split_mode(
+								const t_argc_argv *const argc_argv)
+{
+	const char				*arg;
+	char					*endptr;
+	t_dataset_split_order	*dataset_split_order;
+	char					mode_char;
+
+	dataset_split_order = ft_memalloc(sizeof(*dataset_split_order));
+	arg = argc_argv->argv[argc_argv->i];
+	mode_char = *arg;
+	arg++;
+	dataset_split_order->dataset_split_mode = set_split_mode(mode_char);
+	errno = 0;
+	dataset_split_order->extra_info = strtoul(arg, &endptr, 10);
+	if (errno != 0 || *endptr != '\0')
+		FT_LOG_ERROR("Value of param -s is not valid");
+	else if (dataset_split_order->extra_info > 100)
+		FT_LOG_ERROR("Maximum value for split mode (-s) is 100");
+	return (dataset_split_order);
+}
 
 size_t	set_number_of_epochs(const t_argc_argv *const argc_argv)
 {

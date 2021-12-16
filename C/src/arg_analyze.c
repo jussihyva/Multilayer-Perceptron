@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_analyze.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhani <juhani@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/23 15:16:30 by juhani           ###   ########.fr       */
+/*   Updated: 2021/12/16 09:51:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ static void	input_param_save_short(
 		cmd_args->is_influxdb = E_TRUE;
 	else if (opt == 'A')
 		hyper_params->learning_rate = set_learning_rate(arg_parser->argc_argv);
+	else if (opt == 's')
+		hyper_params->dataset_split_order = set_dataset_split_mode(
+				arg_parser->argc_argv);
 	else if (opt == 'E')
 		hyper_params->epochs = set_number_of_epochs(arg_parser->argc_argv);
 	else if (opt == 'l')

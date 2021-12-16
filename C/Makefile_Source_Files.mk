@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/12/14 20:01:00 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/12/16 12:24:36 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
 							g_prime.c propagation_forward.c bias.c weight.c \
 							influxdb.c layer_init.c layer_remove.c \
 							bias_weight_init.c layer_print.c input_data_init.c \
-							input_data_remove.c
+							input_data_remove.c dataset_split.c
 SRC_H_FILES				=	multilayer_perceptron.h
 LOCAL_LIBS				=	libml.a libft_addons.a libftprintf.a libft.a
 GLOBAL_LIBS				=	libssl.a libcrypto.a

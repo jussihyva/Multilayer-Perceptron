@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:25:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/16 12:30:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ typedef struct s_layer_profile
 static const t_layer_profile	g_two_layers[3]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
 static const t_layer_profile	g_three_layers[3]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
+	{2, E_LAYER_OUTPUT}};
 static const t_layer_profile	g_four_layers[4]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
-static const t_layer_profile	*g_layer_attrs[5] = {NULL, NULL, g_two_layers, g_three_layers, g_four_layers};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
+	{3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+static const t_layer_profile	*g_layer_attrs[5]
+	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers};
 
-static const char	*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
+static const char				*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 	= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
 	"Mean Perimeter", "Mean Area", "Mean Smoothness",
 	"Mean Compactness", "Mean Concavity", "Mean Concave points",
@@ -117,7 +120,7 @@ static const t_bool				g_dataset_file_x_columns[NUMBER_OF_COLUMNS]
 	E_TRUE,
 	E_TRUE};
 
-static const t_bool	g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
+static const t_bool				g_dataset_file_y_columns[NUMBER_OF_COLUMNS]
 	= {E_FALSE,
 	E_TRUE,
 	E_FALSE,
@@ -177,15 +180,28 @@ typedef struct s_input_function_attr
 	size_t			name_len;
 }			t_input_function_attr;
 
+typedef enum e_dataset_split_mode
+{
+	E_BEGIN,
+	E_END,
+	E_RAND
+}			t_dataset_split_mode;
+
+typedef struct s_dataset_split_order
+{
+	t_dataset_split_mode	dataset_split_mode;
+	size_t					extra_info;
+}			t_dataset_split_order;
+
 typedef struct s_input_data
 {
-	size_t					num_of_input_functions;
-	size_t					num_of_output_functions;
-	const char				*const *const *input_record_array;
-	const t_dataset_type	*dataset_type_array;
-	t_num_of_records		num_of_records;
-	t_dataset				**dataset_array;
-	t_input_function_attr	*input_function_attrs;
+	size_t						num_of_input_functions;
+	size_t						num_of_output_functions;
+	const char *const *const	*input_record_array;
+	const t_dataset_type		*dataset_type_array;
+	t_num_of_records			num_of_records;
+	t_dataset					**dataset_array;
+	t_input_function_attr		*input_function_attrs;
 }			t_input_data;
 
 typedef void					(*t_fn_normalize)(const t_matrix *const,
@@ -204,8 +220,9 @@ typedef struct s_database
 
 typedef struct s_hyper_params
 {
-	size_t		epochs;
-	double		learning_rate;
+	size_t						epochs;
+	double						learning_rate;
+	const t_dataset_split_order	*dataset_split_order;
 }				t_hyper_params;
 
 typedef struct s_weight_bias
@@ -332,130 +349,142 @@ typedef enum e_influxdb_field_type
 	E_STRING
 }				t_influxdb_field_type;
 
-t_dataset			**dataset_init(const t_input_data *const input_data);
-void				file_attr_remove(t_file_attr **file_attr);
-void				dataset_remove(t_dataset **dataset);
-void				derivative_z_cost(const t_matrix *const y_hat,
-						const t_matrix *const y, t_matrix *const derivative_z);
-void				derivative_w(const t_matrix *const x,
-						const t_matrix *const derivative_z,
-						t_matrix *const derivative_w);
-void				derivative_b(const t_matrix *const derivative_z,
-						t_vector *const derivative_b);
-void				linear_function_hidden(const t_layer_hidden *const layer,
-						const t_matrix *const activation_input);
-void				linear_function_output(const t_layer_output *const layer,
-						const t_matrix *const activation_input);
-t_neural_network	*neural_network_init(
-						const t_dataset *const *const dataset_array,
-						const t_hyper_params *const hyper_params);
-void				grad_descent_attr_remove(
-						t_grad_descent_attr **grad_descent_attr);
-t_grad_descent_attr	*grad_descent_attr_initialize(
-						const t_input_data *const input_data,
-						const char *const weight_bias_file,
-						const t_hyper_params *const hyper_params);
-void				grad_descent(
-						const t_neural_network *const neural_network,
-						const t_hyper_params *const hyper_params,
-						const t_tcp_connection *const influxdb_connection);
-void				send_iteration_result_to_database(
-						const t_tcp_connection *const influxdb_connection,
-						void *const *const layers,
-						const size_t iter_cnt);
-void				*arg_init(t_argc_argv *argc_argv);
-void				arg_analyze(void *const cmd_args, char opt,
-						void *arg_parser, t_cmd_param_type cmd_param_type);
-void				arg_usage_training(void);
-void				arg_usage_prediction(void);
-void				arg_remove(const t_cmd_args **cmd_args);
-void				normalize(const t_matrix *const input,
-						const t_matrix *const output);
-void				bias_weight_values_save(void *const *const layers,
-						const t_layer_type *const layer_types,
-						const char *const weight_bias_file);
-void				bias_weight_values_set(
-						void *const *const layers,
-						const t_layer_type *const layer_types,
-						const char *const weight_bias_file);
-void				send_softmax_result_to_database(
-						const t_grad_descent_attr *const grad_descent_attr);
-t_prediction		*prediction_init(const int argc,
-						const char *const *const argv);
-t_training			*training_init(const int argc,
-						const char *const *const argv);
-size_t				set_number_of_epochs(const t_argc_argv *const argc_argv);
-double				set_learning_rate(const t_argc_argv *const argc_argv);
-void				prediction_validate(const t_matrix *const observed,
-						const t_vector *const argmax);
-void				update_content_of_matrix_y(const char ***row_array,
-						const size_t rows, t_dataset *const dataset);
-void				update_content_of_matrix(const t_file_attr *const file_attr,
-						const size_t *const valid_columns, t_dataset *const dataset);
-size_t				*get_valid_columns_and_create_matrix(
-						const size_t rows,
-						const t_bool *const array_of_valid_columns,
-						t_dataset *const dataset);
-void				g_prime_sigmoid(const t_matrix *const a,
-						const t_matrix *const g_prime);
-const t_matrix		*get_activation_input(
-						void *const *const layers,
-						const t_layer_type *const layer_types,
-						const size_t layer_id);
-void				propagation_forward(void *const *const layers,
-						const t_layer_type *const layer_types,
-						const size_t epochs,
-						const size_t iter_cnt);
-void				propagation_backward(void *const *const layers,
-						const t_layer_type *const layer_types,
-						const size_t epochs, const size_t iter_cnt);
-void				bias_update(const size_t layer_id,
-						const t_vector *const bias,
-						const t_vector *const d_bias,
-						const double learning_rate);
-void				weight_update(const size_t layer_id,
-						const t_matrix *const weight,
-						const t_matrix *const d_weight,
-						const double learning_rate);
-void				send_bias_values_to_database(
-						const size_t layer_id,
-						const t_vector *const bias,
-						const t_hyper_params *const hyper_params);
-void				send_weight_values_to_database(
-						const size_t layer_id,
-						const t_matrix *const weight,
-						const t_hyper_params *const hyper_params);
+t_dataset				**dataset_init(const t_input_data *const input_data);
+void					file_attr_remove(t_file_attr **file_attr);
+void					dataset_remove(t_dataset **dataset);
+void					derivative_z_cost(const t_matrix *const y_hat,
+							const t_matrix *const y,
+							t_matrix *const derivative_z);
+void					derivative_w(const t_matrix *const x,
+							const t_matrix *const derivative_z,
+							t_matrix *const derivative_w);
+void					derivative_b(const t_matrix *const derivative_z,
+							t_vector *const derivative_b);
+void					linear_function_hidden(
+							const t_layer_hidden *const layer,
+							const t_matrix *const activation_input);
+void					linear_function_output(
+							const t_layer_output *const layer,
+							const t_matrix *const activation_input);
+t_neural_network		*neural_network_init(
+							const t_dataset *const *const dataset_array,
+							const t_hyper_params *const hyper_params);
+void					grad_descent_attr_remove(
+							t_grad_descent_attr **grad_descent_attr);
+t_grad_descent_attr		*grad_descent_attr_initialize(
+							const t_input_data *const input_data,
+							const char *const weight_bias_file,
+							const t_hyper_params *const hyper_params);
+void					grad_descent(
+							const t_neural_network *const neural_network,
+							const t_hyper_params *const hyper_params,
+							const t_tcp_connection *const influxdb_connection);
+void					send_iteration_result_to_database(
+							const t_tcp_connection *const influxdb_connection,
+							void *const *const layers,
+							const size_t iter_cnt);
+void					*arg_init(t_argc_argv *argc_argv);
+void					arg_analyze(void *const cmd_args, char opt,
+							void *arg_parser, t_cmd_param_type cmd_param_type);
+void					arg_usage_training(void);
+void					arg_usage_prediction(void);
+void					arg_remove(const t_cmd_args **cmd_args);
+void					normalize(const t_matrix *const input,
+							const t_matrix *const output);
+void					bias_weight_values_save(void *const *const layers,
+							const t_layer_type *const layer_types,
+							const char *const weight_bias_file);
+void					bias_weight_values_set(
+							void *const *const layers,
+							const t_layer_type *const layer_types,
+							const char *const weight_bias_file);
+void					send_softmax_result_to_database(
+							const t_grad_descent_attr *const grad_descent_attr);
+t_prediction			*prediction_init(const int argc,
+							const char *const *const argv);
+t_training				*training_init(const int argc,
+							const char *const *const argv);
+size_t					set_number_of_epochs(
+							const t_argc_argv *const argc_argv);
+double					set_learning_rate(const t_argc_argv *const argc_argv);
+void					prediction_validate(const t_matrix *const observed,
+							const t_vector *const argmax);
+void					update_content_of_matrix_y(const char ***row_array,
+							const size_t rows, t_dataset *const dataset);
+void					update_content_of_matrix(
+							const t_file_attr *const file_attr,
+							const size_t *const valid_columns,
+							t_dataset *const dataset);
+size_t					*get_valid_columns_and_create_matrix(
+							const size_t rows,
+							const t_bool *const array_of_valid_columns,
+							t_dataset *const dataset);
+void					g_prime_sigmoid(const t_matrix *const a,
+							const t_matrix *const g_prime);
+const t_matrix			*get_activation_input(
+							void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t layer_id);
+void					propagation_forward(void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t epochs,
+							const size_t iter_cnt);
+void					propagation_backward(void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t epochs, const size_t iter_cnt);
+void					bias_update(const size_t layer_id,
+							const t_vector *const bias,
+							const t_vector *const d_bias,
+							const double learning_rate);
+void					weight_update(const size_t layer_id,
+							const t_matrix *const weight,
+							const t_matrix *const d_weight,
+							const double learning_rate);
+void					send_bias_values_to_database(
+							const size_t layer_id,
+							const t_vector *const bias,
+							const t_hyper_params *const hyper_params);
+void					send_weight_values_to_database(
+							const size_t layer_id,
+							const t_matrix *const weight,
+							const t_hyper_params *const hyper_params);
 const t_tcp_connection	*get_database_connection(void);
-size_t				influxdb_measurement(const char **const measurement,
-						const char *const string);
-void				influxdb_line_remove(t_influxdb_line *influxdb_line);
-void				influxdb_line_merge(
-						const t_influxdb_line *const influxdb_line,
-						size_t total_len,
-						const char **const line);
-size_t				influxdb_tag_set(
-						const char **const tag_set,
-						t_queue *const name_value_queue);
-size_t				influxdb_field_set(const char **const field_set,
-						const double *const data, const size_t size);
-size_t				influxdb_timestamp(const char **const timestamp);
-void				neural_network_remove(
-						const t_neural_network **const neural_network);
-void				*layer_init(
-						const size_t i,
-						const t_layer_type layer_type,
-						const t_dataset *const *const dataset_array,
-						const t_hyper_params *const hyper_params);
-void				bias_weight_init(
-						const size_t id,
-						t_weight_bias *const weight_bias,
-						t_name *const row_name_array);
-void				layer_print_input(const t_layer_input *const layer);
-void				layer_print_output(const t_layer_output *const layer);
-void				layer_remove_input(const t_layer_input **const layer);
-void				layer_remove_hidden(const t_layer_hidden **const layer);
-void				layer_remove_output(const t_layer_output **const layer);
-t_input_data		*input_data_init(const char *const dataset_file);
-void				input_data_remove(t_input_data **input_data);
+size_t					influxdb_measurement(const char **const measurement,
+							const char *const string);
+void					influxdb_line_remove(t_influxdb_line *influxdb_line);
+void					influxdb_line_merge(
+							const t_influxdb_line *const influxdb_line,
+							size_t total_len,
+							const char **const line);
+size_t					influxdb_tag_set(
+							const char **const tag_set,
+							t_queue *const name_value_queue);
+size_t					influxdb_field_set(const char **const field_set,
+							const double *const data, const size_t size);
+size_t					influxdb_timestamp(const char **const timestamp);
+void					neural_network_remove(
+							const t_neural_network **const neural_network);
+void					*layer_init(
+							const size_t i,
+							const t_layer_type layer_type,
+							const t_dataset *const *const dataset_array,
+							const t_hyper_params *const hyper_params);
+void					bias_weight_init(
+							const size_t id,
+							t_weight_bias *const weight_bias,
+							t_name *const row_name_array);
+void					layer_print_input(const t_layer_input *const layer);
+void					layer_print_output(const t_layer_output *const layer);
+void					layer_remove_input(const t_layer_input **const layer);
+void					layer_remove_hidden(const t_layer_hidden **const layer);
+void					layer_remove_output(const t_layer_output **const layer);
+t_input_data			*input_data_init(const char *const dataset_file,
+							const t_dataset_split_order *dataset_split_order);
+void					input_data_remove(t_input_data **input_data);
+const t_dataset_split_order	*set_dataset_split_mode(
+							const t_argc_argv *const argc_argv);
+t_dataset_type			*dataset_split(
+							t_num_of_records *const num_of_records,
+							const t_dataset_split_order *dataset_split_order);
 
 #endif
