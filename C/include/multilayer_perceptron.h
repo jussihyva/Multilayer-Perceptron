@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 12:56:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 17:57:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_layer_profile
 	t_layer_type	layer_type;
 }				t_layer_profile;
 
-static const t_layer_profile	g_two_layers[3]
+static const t_layer_profile	g_two_layers[2]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
 static const t_layer_profile	g_three_layers[3]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
@@ -218,11 +218,18 @@ typedef struct s_database
 	const t_tcp_connection	*connection;
 }				t_database;
 
+typedef enum s_weigth_init_mode
+{
+	E_ZERO,
+	E_RAND_0_TO_1
+}				t_weigth_init_mode;
+
 typedef struct s_hyper_params
 {
 	size_t						epochs;
 	double						learning_rate;
 	const t_dataset_split_order	*dataset_split_order;
+	t_weigth_init_mode			weigth_init_mode;
 }				t_hyper_params;
 
 typedef struct s_weight_bias
@@ -472,7 +479,8 @@ void					*layer_init(
 void					bias_weight_init(
 							const size_t id,
 							t_weight_bias *const weight_bias,
-							t_name *const row_name_array);
+							t_name *const row_name_array,
+							const t_weigth_init_mode weigth_init_mode);
 void					layer_print_input(const t_layer_input *const layer);
 void					layer_print_output(const t_layer_output *const layer);
 void					layer_remove_input(const t_layer_input **const layer);
@@ -489,5 +497,7 @@ t_dataset_type			*dataset_split(
 void					neural_network_mode_set(void *const *const layers,
 							const t_layer_type *const layer_types,
 							const t_dataset_type dataset_type);
+t_weigth_init_mode		set_weigth_init_mode(
+							const t_argc_argv *const argc_argv);
 
 #endif

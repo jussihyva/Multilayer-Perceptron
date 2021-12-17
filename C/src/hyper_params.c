@@ -6,11 +6,27 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/16 10:56:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 16:27:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
+
+t_weigth_init_mode	set_weigth_init_mode(const t_argc_argv *const argc_argv)
+{
+	t_weigth_init_mode		weigth_init_mode;
+	const char				*arg;
+
+	weigth_init_mode = 0;
+	arg = argc_argv->argv[argc_argv->i];
+	if (ft_strequ(arg, "0"))
+		weigth_init_mode = E_ZERO;
+	else if (ft_strequ(arg, "1"))
+		weigth_init_mode = E_RAND_0_TO_1;
+	else
+		FT_LOG_ERROR("Weigth mode %s is not supported.", arg);
+	return (weigth_init_mode);
+}
 
 static t_dataset_split_mode	set_split_mode(const char mode_char)
 {

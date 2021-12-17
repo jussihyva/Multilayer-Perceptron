@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:05:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 10:55:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 17:43:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	arg_usage_training(void)
 	ft_printf("  -A <learning rate>        Learning rate\n");
 	ft_printf("  -s <dataset_split_mode>   Split input dataset file to \
 TRAIN and TEST parts\n");
+	ft_printf("  -w <weigth init mode>     Set init values for weigth matrix \
+0->ZERO and 1->RAND\n");
 	ft_printf("  -h                        Help printout\n");
 	ft_printf("  -l                        %s\n",
 		"Print leaks. Only in MAC-OS");
