@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:24:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 12:59:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ static t_layer_output	*layer_init_output(
 	bias_weight_init(layer->id, &layer->d_weight_bias, NULL);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples[E_TRAIN]);
-	layer->cost = ml_vector_create(layer->num_of_nodes);
+	layer->cost[E_TRAIN] = ml_vector_create(layer->num_of_nodes);
+	layer->cost[E_TEST] = ml_vector_create(layer->num_of_nodes);
 	layer->layer_type = g_layer_attrs[NUM_OF_LAYERS][id].layer_type;
 	layer->hyper_params = hyper_params;
 	return (layer);

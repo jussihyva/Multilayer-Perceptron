@@ -1,38 +1,4 @@
 // LINUX
-{
-	// Use IntelliSense to learn about possible attributes.
-	// Hover to view descriptions of existing attributes.
-	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "(lldb) Launch",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${workspaceFolder}/C/training",
-			// "program": "${workspaceFolder}/C/prediction",
-			// "args": [],
-			// "args": ["-L", "2", "../Data/data.csv"],
-			"args": ["-E", "2", "-L", "1", "../Data/data.csv"],
-			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}/C",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "gdb",
-			"setupCommands":
-			[
-				{
-					// "text": "settings set target.input-path ${workspaceFolder}/file.txt"
-					"description": "Enable pretty-printing for gdb",
-					"text": "-enable-pretty-printing",
-					"ignoreFailures": true
-				}
-			]
-		}
-	]
-}
-
-// MAC-OS
 // {
 // 	// Use IntelliSense to learn about possible attributes.
 // 	// Hover to view descriptions of existing attributes.
@@ -46,15 +12,50 @@
 // 			"program": "${workspaceFolder}/C/training",
 // 			// "program": "${workspaceFolder}/C/prediction",
 // 			// "args": [],
-// 			// "args": ["../Data"],
 // 			// "args": ["-L", "2", "../Data/data.csv"],
-// 			// "args": ["../Data/data.csv"],
-// 			"args": ["-E", "100", "../Data/data.csv"],
+// 			"args": ["-E", "2", "-L", "1", "../Data/data.csv"],
 // 			"stopAtEntry": false,
 // 			"cwd": "${workspaceFolder}/C",
 // 			"environment": [],
 // 			"externalConsole": false,
-// 			"MIMode": "lldb"
+// 			"MIMode": "gdb",
+// 			"setupCommands":
+// 			[
+// 				{
+// 					// "text": "settings set target.input-path ${workspaceFolder}/file.txt"
+// 					"description": "Enable pretty-printing for gdb",
+// 					"text": "-enable-pretty-printing",
+// 					"ignoreFailures": true
+// 				}
+// 			]
 // 		}
 // 	]
 // }
+
+// MAC-OS
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(lldb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/C/training",
+			// "program": "${workspaceFolder}/C/prediction",
+			// "args": [],
+			// "args": ["../Data"],
+			// "args": ["-L", "2", "../Data/data.csv"],
+			// "args": ["../Data/data.csv"],
+			// "args": ["-E", "100", "../Data/data.csv"],
+ 			"args": ["-E", "2", "-A", "0.5", "-s", "B70" "../Data/data.csv"],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}/C",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb"
+		}
+	]
+}

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:26:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 12:57:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
 		grad_descent_attr->neural_network
-			= neural_network_init((const t_dataset *const *)input_data->dataset_array, hyper_params);
+			= neural_network_init((const t_dataset *const *)
+				input_data->dataset_array, hyper_params);
 		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
 		grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
@@ -55,18 +56,20 @@ void	grad_descent(
 	while (++iter_cnt <= hyper_params->epochs)
 	{
 		neural_network_mode_set(layers, neural_network->layer_types, E_TRAIN);
-		propagation_forward(layers, neural_network->layer_types,
-			hyper_params->epochs, iter_cnt);
+		propagation_forward(layers, neural_network->layer_types);
 		propagation_backward(layers, neural_network->layer_types);
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);
 		neural_network_mode_set(layers, neural_network->layer_types, E_TEST);
-		propagation_forward(layers, neural_network->layer_types, 0, 1);
+		propagation_forward(layers, neural_network->layer_types);
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
 		{
 			layer_output = ((t_layer_output **)layers)[OUTPUT_LAYER_ID];
+			ft_printf("epoch %lu/%lu - loss: %f", iter_cnt,
+				hyper_params->epochs,
+				((double *)layer_output->cost[E_TRAIN]->data)[0]);
 			ft_printf(" - val_loss: %f\n",
-				((double *)layer_output->cost->data)[0]);
+				((double *)layer_output->cost[E_TEST]->data)[0]);
 		}
 	}
 	return ;

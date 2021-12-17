@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:41:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 13:00:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ int	main(int argc, char **argv)
 			neural_network->layer_types,
 			prediction->cmd_args->weight_bias_file);
 		neural_network_mode_set(neural_network->layers, neural_network->layer_types, E_TRAIN);
-		propagation_forward(neural_network->layers, neural_network->layer_types,
-			0, 1);
+		propagation_forward(neural_network->layers, neural_network->layer_types);
 		ml_softmax(((t_layer_output *)neural_network->layers[OUTPUT_LAYER_ID])->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,

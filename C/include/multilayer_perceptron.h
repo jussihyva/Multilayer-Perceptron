@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:35:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 12:56:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ typedef struct s_layer_output
 	const t_matrix			*y;
 	t_matrix				*y_train;
 	t_matrix				*y_test;
-	t_vector				*cost;
+	t_vector				*cost[NUM_OF_DATASETS];
 	t_weight_bias			d_weight_bias;
 	t_matrix				*d_z;
 	const t_hyper_params	*hyper_params;
@@ -429,9 +429,7 @@ const t_matrix			*get_activation_input(
 							const t_layer_type *const layer_types,
 							const size_t layer_id);
 void					propagation_forward(void *const *const layers,
-							const t_layer_type *const layer_types,
-							const size_t epochs,
-							const size_t iter_cnt);
+							const t_layer_type *const layer_types);
 void					propagation_backward(void *const *const layers,
 							const t_layer_type *const layer_types);
 void					bias_update(const size_t layer_id,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:20:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 13:13:54 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,23 @@ static const char	*elements_merge(
 	return (line);
 }
 
-static size_t	influxdb_tags_add(const char **const tags_set)
+static size_t	influxdb_tags_add(const char **const tags_set, const size_t dataset_type)
 {
-	t_queue				*string_queue;
-	const char			*tag_value_pair;
-	size_t				length;
+	t_queue		*string_queue;
+	char		*tag_value_pair;
+	size_t		length;
 
 	string_queue = ft_queue_init();
 	length = 0;
 	length++;
 	ft_enqueue(string_queue, ft_strdup(","));
 	tag_value_pair = ft_strdup("Record_type=Cost");
+	length += ft_strlen(tag_value_pair);
+	ft_enqueue(string_queue, (void *)tag_value_pair);
+	length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	tag_value_pair = ft_strnew(100);
+	ft_sprintf(tag_value_pair, "Dataset=%lu", dataset_type);
 	length += ft_strlen(tag_value_pair);
 	ft_enqueue(string_queue, (void *)tag_value_pair);
 	*tags_set = ft_strcat_queue(string_queue, length);
@@ -158,21 +164,26 @@ void	send_iteration_result_to_database(
 	const char			*line;
 	size_t				total_len;
 	const t_vector		*cost;
+	size_t				i;
 
 	if (influxdb_connection)
 	{
-		cost = ((t_layer_output *)layers[NUM_OF_LAYERS - 1])->cost;
-		total_len = 0;
-		total_len += influxdb_measurement(&influxdb_line.measurement,
-				"dataset_train");
-		total_len += influxdb_tags_add(&influxdb_line.tag_set);
-		total_len += influxdb_fields_add(&influxdb_line.field_set, iter_cnt,
-				cost);
-		total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
-		line = elements_merge(&influxdb_line, total_len);
-		influxdb_element_remove(&influxdb_line);
-		ft_influxdb_write(influxdb_connection, line, NULL, 1);
-		ft_strdel((char **)&line);
+		i = -1;
+		while (++i < NUM_OF_DATASETS)
+		{
+			cost = ((t_layer_output *)layers[NUM_OF_LAYERS - 1])->cost[i];
+			total_len = 0;
+			total_len += influxdb_measurement(&influxdb_line.measurement,
+					"dataset_train");
+			total_len += influxdb_tags_add(&influxdb_line.tag_set, i);
+			total_len += influxdb_fields_add(&influxdb_line.field_set, iter_cnt,
+					cost);
+			total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
+			line = elements_merge(&influxdb_line, total_len);
+			influxdb_element_remove(&influxdb_line);
+			ft_influxdb_write(influxdb_connection, line, NULL, 1);
+			ft_strdel((char **)&line);
+		}
 	}
 	else
 		FT_LOG_DEBUG("Cost value is not sent to influxdb");

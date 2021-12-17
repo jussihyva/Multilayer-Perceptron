@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:54:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/17 13:12:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,11 @@ static void	propagation_forward_hidden(
 
 static void	propagation_forward_output(
 						t_layer_output *const layer,
-						const t_matrix *const activation_input,
-						const size_t epochs,
-						const size_t iter_cnt)
+						const t_matrix *const activation_input)
 {
 	linear_function_output(layer, activation_input);
 	ml_sigmoid(layer->z, layer->y_hat);
-	ml_matrix_cost(layer->y, layer->y_hat, layer->cost);
-	if (!(iter_cnt % 100) || iter_cnt == epochs)
-		ft_printf("epoch %lu/%lu - loss: %f", iter_cnt, epochs,
-			((double *)layer->cost->data)[0]);
+	ml_matrix_cost(layer->y, layer->y_hat, layer->cost[layer->dataset_type]);
 	if (ft_logging_level() <= LOG_DEBUG)
 		layer_print_output(layer);
 	return ;
@@ -54,9 +49,7 @@ static void	propagation_forward_output(
 
 void	propagation_forward(
 					void *const *const layers,
-					const t_layer_type *const layer_types,
-					const size_t epochs,
-					const size_t iter_cnt)
+					const t_layer_type *const layer_types)
 {
 	size_t				i;
 	const t_matrix		*activation_input;
@@ -68,8 +61,7 @@ void	propagation_forward(
 		if (layer_types[i] == E_LAYER_INPUT)
 			propagation_forward_input(layers[i]);
 		else if (layer_types[i] == E_LAYER_OUTPUT)
-			propagation_forward_output(layers[i], activation_input, epochs,
-				iter_cnt);
+			propagation_forward_output(layers[i], activation_input);
 		else
 			propagation_forward_hidden(layers[i], activation_input);
 	}

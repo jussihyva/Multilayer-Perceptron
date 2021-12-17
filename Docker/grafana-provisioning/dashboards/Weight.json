@@ -21,7 +21,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 5,
+	"id": 4,
 	"links": [],
 	"panels": [
 	  {
@@ -2710,6 +2710,7 @@
 		},
 		"targets": [
 		  {
+			"alias": "Train Node 1",
 			"groupBy": [
 			  {
 				"params": [
@@ -2740,14 +2741,46 @@
 				{
 				  "params": [],
 				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node 1"
-				  ],
-				  "type": "alias"
 				}
-			  ],
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Dataset",
+				"operator": "=",
+				"value": "0"
+			  }
+			]
+		  },
+		  {
+			"alias": "Train Node 2",
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"hide": false,
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "B",
+			"resultFormat": "time_series",
+			"select": [
 			  [
 				{
 				  "params": [
@@ -2758,12 +2791,6 @@
 				{
 				  "params": [],
 				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Node 2"
-				  ],
-				  "type": "alias"
 				}
 			  ]
 			],
@@ -2772,6 +2799,112 @@
 				"key": "Record_type",
 				"operator": "=",
 				"value": "Cost"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Dataset",
+				"operator": "=",
+				"value": "0"
+			  }
+			]
+		  },
+		  {
+			"alias": "Test Node 1",
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"hide": false,
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "C",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Dataset",
+				"operator": "=",
+				"value": "1"
+			  }
+			]
+		  },
+		  {
+			"alias": "Test Node 2",
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"hide": false,
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "D",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  },
+			  {
+				"condition": "AND",
+				"key": "Dataset",
+				"operator": "=",
+				"value": "1"
 			  }
 			]
 		  }
@@ -2788,12 +2921,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-5m",
+	  "from": "now-30m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Weight",
 	"uid": "Weight",
-	"version": 16
+	"version": 1
   }
