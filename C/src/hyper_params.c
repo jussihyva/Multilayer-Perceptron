@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/17 16:27:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/25 14:30:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,76 @@ double	set_learning_rate(const t_argc_argv *const argc_argv)
 	if (learning_rate <= 0)
 		FT_LOG_ERROR("Minimum value for learning rate (-A) is >0");
 	return (learning_rate);
+}
+
+static size_t	influxdb_tags_add(const char **const tags_set)
+{
+	t_queue		*string_queue;
+	char		*tag_value_pair;
+	size_t		length;
+
+	string_queue = ft_queue_init();
+	length = 0;
+	length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	tag_value_pair = ft_strdup("Record_type=Hyper");
+	length += ft_strlen(tag_value_pair);
+	ft_enqueue(string_queue, (void *)tag_value_pair);
+	*tags_set = ft_strcat_queue(string_queue, length);
+	ft_queue_remove(&string_queue);
+	return (length);
+}
+
+static size_t	influxdb_fields_add(
+							const char **const field_set,
+							const double learning_rate,
+							const size_t percentage)
+{
+	t_queue				*string_queue;
+	char				string_for_values[100];
+	size_t				length;
+
+	length = 0;
+	string_queue = ft_queue_init();
+	ft_sprintf(string_for_values, "learning_rate=%f", learning_rate);
+	length += ft_strlen(string_for_values);
+	ft_enqueue(string_queue, ft_strdup(string_for_values));
+	length++;
+	ft_enqueue(string_queue, ft_strdup(","));
+	ft_sprintf(string_for_values, "percentage=%u", percentage);
+	length += ft_strlen(string_for_values);
+	ft_enqueue(string_queue, ft_strdup(string_for_values));
+	*field_set = ft_strcat_queue(string_queue, length);
+	ft_queue_remove(&string_queue);
+	return (length);
+}
+
+void	send_hyper_params_to_database(
+							const t_tcp_connection *const influxdb_connection,
+							const t_hyper_params *const hyper_params)
+{
+	t_influxdb_line		influxdb_line;
+	const char			*line;
+	size_t				total_len;
+	double				learning_rate;
+	size_t				percentage;
+
+	if (influxdb_connection)
+	{
+		learning_rate = hyper_params->learning_rate;
+		percentage = hyper_params->dataset_split_order->extra_info;
+		total_len = 0;
+		total_len += influxdb_measurement(&influxdb_line.measurement,
+				"dataset_train");
+		total_len += influxdb_tags_add(&influxdb_line.tag_set);
+		total_len += influxdb_fields_add(&influxdb_line.field_set, learning_rate, percentage);
+		total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
+		line = elements_merge(&influxdb_line, total_len);
+		influxdb_element_remove(&influxdb_line);
+		ft_influxdb_write(influxdb_connection, line, NULL, 1);
+		ft_strdel((char **)&line);
+	}
+	else
+		FT_LOG_DEBUG("Cost value is not sent to influxdb");
+	return ;
 }
