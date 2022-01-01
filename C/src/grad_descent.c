@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 12:57:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/25 14:16:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	grad_descent(
 		propagation_backward(layers, neural_network->layer_types);
 		send_iteration_result_to_database(influxdb_connection, layers,
 			iter_cnt);
+		send_hyper_params_to_database(influxdb_connection, hyper_params);
 		neural_network_mode_set(layers, neural_network->layer_types, E_TEST);
 		propagation_forward(layers, neural_network->layer_types);
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)

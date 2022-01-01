@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juhani <juhani@student.42.fr>              +#+  +:+       +#+         #
+#    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 16:31:11 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/23 10:23:47 by juhani           ###   ########.fr        #
+#    Updated: 2021/12/25 12:50:54 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,17 +48,12 @@ login_influxdb:
 login_grafana:
 	docker exec -it grafana bash
 
-login_chronograf:
-	docker exec -it chronograf bash
-
 stop:
-	-docker kill chronograf
 	-docker kill grafana
 	-docker kill influxdb
 	@echo "$(GREEN)Docker for influxdb stopped!$(END)"
 
 remove: stop
-	-docker rm chronograf
 	-docker rm grafana
 	-docker rm influxdb
 	@echo "$(GREEN)Docker for influxdb removed!$(END)"

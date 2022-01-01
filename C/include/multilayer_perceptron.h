@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 17:57:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/25 14:35:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -499,5 +499,13 @@ void					neural_network_mode_set(void *const *const layers,
 							const t_dataset_type dataset_type);
 t_weigth_init_mode		set_weigth_init_mode(
 							const t_argc_argv *const argc_argv);
+void					send_hyper_params_to_database(
+							const t_tcp_connection *const influxdb_connection,
+							const t_hyper_params *const hyper_params);
+size_t					influxdb_timestamp_add(const char **const timestamp);
+const char				*elements_merge(
+							const t_influxdb_line *const influxdb_line,
+							size_t total_len);
+void					influxdb_element_remove(t_influxdb_line *const influxdb_line);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/09 18:58:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/12/25 14:35:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,3 +207,43 @@ size_t	influxdb_timestamp(const char **const timestamp)
 	return (length);
 }
 
+size_t	influxdb_timestamp_add(const char **const timestamp)
+{
+	size_t		utc_time_ms;
+	char		string[100];
+	size_t		length;
+
+	utc_time_ms = ft_gettime();
+	ft_sprintf(string, "%lu", utc_time_ms);
+	length = ft_strlen(string);
+	*timestamp = ft_strdup(string);
+	return (length);
+}
+
+const char	*elements_merge(
+						const t_influxdb_line *const influxdb_line,
+						size_t total_len)
+{
+	char		*line;
+
+	total_len += 2;
+	line = ft_strnew(sizeof(*line) * total_len);
+	ft_sprintf(line, "%s%s %s %s",
+		influxdb_line->measurement,
+		influxdb_line->tag_set,
+		influxdb_line->field_set,
+		influxdb_line->timestamp);
+	if (ft_strlen(line) != total_len)
+		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(line),
+			total_len);
+	return (line);
+}
+
+void	influxdb_element_remove(t_influxdb_line *const influxdb_line)
+{
+	ft_strdel((char **)&influxdb_line->measurement);
+	ft_strdel((char **)&influxdb_line->tag_set);
+	ft_strdel((char **)&influxdb_line->field_set);
+	ft_strdel((char **)&influxdb_line->timestamp);
+	return ;
+}
