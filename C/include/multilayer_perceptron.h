@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 17:01:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 21:05:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -510,6 +510,8 @@ void					influxdb_element_remove(
 							t_influxdb_line *const influxdb_line);
 t_hyper_params			*hyper_params_init(
 							const char *const weight_bias_file,
-							const t_hyper_params *const input_hyper_params);
+							const t_hyper_params *const input_hyper_params,
+							const size_t num_of_input_functions,
+							const size_t num_of_output_functions);
 
 #endif

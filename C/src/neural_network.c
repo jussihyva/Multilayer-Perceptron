@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:38:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 21:26:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,21 @@ static void	**layers_init(
 	size_t		i;
 	void		**layers;
 
-	layers = ft_memalloc(sizeof(*layers) * NUM_OF_LAYERS);
+	layers = ft_memalloc(sizeof(*layers) * hyper_params->num_of_layers);
 	i = -1;
-	while (++i < NUM_OF_LAYERS)
+	while (++i < hyper_params->num_of_layers)
 		layers[i] = layer_init(i, layer_types[i], dataset_array, hyper_params);
 	return (layers);
 }
 
-static const t_layer_type	*layer_types_init(void)
+static const t_layer_type	*layer_types_init(const size_t num_of_layers)
 {
 	size_t				layer_id;
 	t_layer_type		*layer_types;
 
-	layer_types = ft_memalloc(sizeof(*layer_types) * NUM_OF_LAYERS);
+	layer_types = ft_memalloc(sizeof(*layer_types) * num_of_layers);
 	layer_id = -1;
-	while (++layer_id < NUM_OF_LAYERS)
+	while (++layer_id < num_of_layers)
 	{
 		if (layer_id == INPUT_LAYER_ID)
 			layer_types[layer_id] = E_LAYER_INPUT;
@@ -53,7 +53,7 @@ t_neural_network	*neural_network_init(
 	t_neural_network	*neural_network;
 
 	neural_network = ft_memalloc(sizeof(*neural_network));
-	neural_network->layer_types = layer_types_init();
+	neural_network->layer_types = layer_types_init(hyper_params->num_of_layers);
 	neural_network->layers = layers_init(neural_network->layer_types,
 			dataset_array, hyper_params);
 	return (neural_network);

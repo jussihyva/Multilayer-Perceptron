@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 22:38:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,15 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 	if (input_data->dataset_array[E_TRAIN])
 	{
 		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
+		grad_descent_attr->weight_bias_file = weight_bias_file;
+		grad_descent_attr->hyper_params
+			= hyper_params_init(weight_bias_file, hyper_params,
+				input_data->num_of_input_functions,
+				input_data->num_of_output_functions);
 		grad_descent_attr->neural_network
 			= neural_network_init((const t_dataset *const *)
-				input_data->dataset_array, hyper_params);
+				input_data->dataset_array, grad_descent_attr->hyper_params);
 		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
-		if (hyper_params->weight_init_mode == E_TRAINED)
-			grad_descent_attr->hyper_params
-				= hyper_params_init(weight_bias_file, hyper_params);
-		else
-			grad_descent_attr->hyper_params = hyper_params;
-		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
 		grad_descent_attr->softmax = ml_matrix_create(
 				layer->num_of_nodes, layer->y_hat_train->size.cols);
