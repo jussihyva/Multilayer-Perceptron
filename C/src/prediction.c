@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 13:00:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 12:37:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,14 @@ int	main(int argc, char **argv)
 		neural_network = grad_descent_attr->neural_network;
 		bias_weight_values_set(neural_network->layers,
 			neural_network->layer_types,
-			prediction->cmd_args->weight_bias_file);
-		neural_network_mode_set(neural_network->layers, neural_network->layer_types, E_TRAIN);
-		propagation_forward(neural_network->layers, neural_network->layer_types);
-		ml_softmax(((t_layer_output *)neural_network->layers[OUTPUT_LAYER_ID])->y_hat, grad_descent_attr->softmax);
+			prediction->cmd_args->weight_bias_file,
+			grad_descent_attr->hyper_params);
+		neural_network_mode_set(neural_network->layers,
+			neural_network->layer_types, E_TRAIN);
+		propagation_forward(neural_network->layers,
+			neural_network->layer_types);
+		ml_softmax(((t_layer_output *)neural_network->layers[OUTPUT_LAYER_ID])
+			->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/25 14:35:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 12:59:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,18 +131,18 @@ size_t	influxdb_tag_set(
 static size_t	add(
 					t_queue *string_queue,
 					void *const value,
-					t_influxdb_field_type influxdb_field_type,
+					const t_data_type data_type,
 					const char *const special_chars)
 {
 	size_t			length;
 	char			value_to_string[100];
 	const char		*validated_string;
 
-	if (influxdb_field_type == E_DOUBLE)
+	if (data_type == E_DOUBLE)
 		ft_sprintf(value_to_string, "%f", *(double *)value);
-	else if (influxdb_field_type == E_STRING)
+	else if (data_type == E_STRING)
 		ft_sprintf(value_to_string, "%s", (char *)value);
-	else if (influxdb_field_type == E_SIZE_T)
+	else if (data_type == E_SIZE_T)
 		ft_sprintf(value_to_string, "%lu", *(size_t *)value);
 	if (special_chars)
 		validated_string = validate_influxdb_line_string(

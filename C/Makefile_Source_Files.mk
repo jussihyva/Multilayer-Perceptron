@@ -6,12 +6,11 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2021/12/16 12:24:36 by jkauppi          ###   ########.fr        #
+#    Updated: 2022/01/01 13:26:30 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
-							dataset_remove.c derivative.c \
+SRC_C_FILES				=	file_attr_remove.c dataset_remove.c derivative.c \
 							logistic_regression.c neural_network.c \
 							linear_function.c grad_descent.c \
 							send_iteration_result_to_database.c arg_init.c \
@@ -25,7 +24,8 @@ SRC_C_FILES				=	dataset_read.c file_attr_remove.c \
 							g_prime.c propagation_forward.c bias.c weight.c \
 							influxdb.c layer_init.c layer_remove.c \
 							bias_weight_init.c layer_print.c input_data_init.c \
-							input_data_remove.c dataset_split.c
+							input_data_remove.c dataset_split.c \
+							hyper_params_init.c
 SRC_H_FILES				=	multilayer_perceptron.h
 LOCAL_LIBS				=	libml.a libft_addons.a libftprintf.a libft.a
 GLOBAL_LIBS				=	libssl.a libcrypto.a

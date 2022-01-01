@@ -6,26 +6,26 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/25 14:30:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-t_weigth_init_mode	set_weigth_init_mode(const t_argc_argv *const argc_argv)
+t_weight_init_mode	set_weight_init_mode(const t_argc_argv *const argc_argv)
 {
-	t_weigth_init_mode		weigth_init_mode;
+	t_weight_init_mode		weight_init_mode;
 	const char				*arg;
 
-	weigth_init_mode = 0;
+	weight_init_mode = E_ZERO;
 	arg = argc_argv->argv[argc_argv->i];
 	if (ft_strequ(arg, "0"))
-		weigth_init_mode = E_ZERO;
+		weight_init_mode = E_ZERO;
 	else if (ft_strequ(arg, "1"))
-		weigth_init_mode = E_RAND_0_TO_1;
+		weight_init_mode = E_RAND_0_TO_1;
 	else
-		FT_LOG_ERROR("Weigth mode %s is not supported.", arg);
-	return (weigth_init_mode);
+		FT_LOG_ERROR("Weight mode %s is not supported.", arg);
+	return (weight_init_mode);
 }
 
 static t_dataset_split_mode	set_split_mode(const char mode_char)

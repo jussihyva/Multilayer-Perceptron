@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/25 14:35:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 17:01:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,25 +218,29 @@ typedef struct s_database
 	const t_tcp_connection	*connection;
 }				t_database;
 
-typedef enum s_weigth_init_mode
+typedef enum s_weight_init_mode
 {
 	E_ZERO,
-	E_RAND_0_TO_1
-}				t_weigth_init_mode;
-
-typedef struct s_hyper_params
-{
-	size_t						epochs;
-	double						learning_rate;
-	const t_dataset_split_order	*dataset_split_order;
-	t_weigth_init_mode			weigth_init_mode;
-}				t_hyper_params;
+	E_RAND_0_TO_1,
+	E_TRAINED
+}				t_weight_init_mode;
 
 typedef struct s_weight_bias
 {
 	t_matrix		*weight;
 	t_vector		*bias;
 }				t_weight_bias;
+
+typedef struct s_hyper_params
+{
+	size_t						num_of_layers;
+	size_t						*num_of_nodes;
+	size_t						epochs;
+	double						learning_rate;
+	const t_dataset_split_order	*dataset_split_order;
+	t_weight_init_mode			weight_init_mode;
+	t_weight_bias				*bias_weight_init_values;
+}				t_hyper_params;
 
 typedef struct s_layer_input
 {
@@ -352,12 +356,12 @@ typedef struct s_prediction
 	t_input_data			*input_data;
 }				t_prediction;
 
-typedef enum e_influxdb_field_type
+typedef enum e_data_type
 {
 	E_SIZE_T,
 	E_DOUBLE,
 	E_STRING
-}				t_influxdb_field_type;
+}				t_data_type;
 
 t_dataset				**dataset_init(const t_input_data *const input_data);
 void					file_attr_remove(t_file_attr **file_attr);
@@ -393,7 +397,8 @@ void					send_iteration_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
 							void *const *const layers,
 							const size_t iter_cnt);
-void					*arg_init(t_argc_argv *argc_argv);
+void					*arg_init_train(t_argc_argv *argc_argv);
+void					*arg_init_predict(t_argc_argv *argc_argv);
 void					arg_analyze(void *const cmd_args, char opt,
 							void *arg_parser, t_cmd_param_type cmd_param_type);
 void					arg_usage_training(void);
@@ -407,7 +412,8 @@ void					bias_weight_values_save(void *const *const layers,
 void					bias_weight_values_set(
 							void *const *const layers,
 							const t_layer_type *const layer_types,
-							const char *const weight_bias_file);
+							const char *const weight_bias_file,
+							const t_hyper_params *const hyper_params);
 void					send_softmax_result_to_database(
 							const t_grad_descent_attr *const grad_descent_attr);
 t_prediction			*prediction_init(const int argc,
@@ -419,15 +425,9 @@ size_t					set_number_of_epochs(
 double					set_learning_rate(const t_argc_argv *const argc_argv);
 void					prediction_validate(const t_matrix *const observed,
 							const t_vector *const argmax);
-void					update_content_of_matrix_y(const char ***row_array,
-							const size_t rows, t_dataset *const dataset);
 void					update_content_of_matrix(
 							const t_file_attr *const file_attr,
 							const size_t *const valid_columns,
-							t_dataset *const dataset);
-size_t					*get_valid_columns_and_create_matrix(
-							const size_t rows,
-							const t_bool *const array_of_valid_columns,
 							t_dataset *const dataset);
 void					g_prime_sigmoid(const t_matrix *const a,
 							const t_matrix *const g_prime);
@@ -480,7 +480,7 @@ void					bias_weight_init(
 							const size_t id,
 							t_weight_bias *const weight_bias,
 							t_name *const row_name_array,
-							const t_weigth_init_mode weigth_init_mode);
+							const t_weight_init_mode weight_init_mode);
 void					layer_print_input(const t_layer_input *const layer);
 void					layer_print_output(const t_layer_output *const layer);
 void					layer_remove_input(const t_layer_input **const layer);
@@ -497,7 +497,7 @@ t_dataset_type			*dataset_split(
 void					neural_network_mode_set(void *const *const layers,
 							const t_layer_type *const layer_types,
 							const t_dataset_type dataset_type);
-t_weigth_init_mode		set_weigth_init_mode(
+t_weight_init_mode		set_weight_init_mode(
 							const t_argc_argv *const argc_argv);
 void					send_hyper_params_to_database(
 							const t_tcp_connection *const influxdb_connection,
@@ -506,6 +506,10 @@ size_t					influxdb_timestamp_add(const char **const timestamp);
 const char				*elements_merge(
 							const t_influxdb_line *const influxdb_line,
 							size_t total_len);
-void					influxdb_element_remove(t_influxdb_line *const influxdb_line);
+void					influxdb_element_remove(
+							t_influxdb_line *const influxdb_line);
+t_hyper_params			*hyper_params_init(
+							const char *const weight_bias_file,
+							const t_hyper_params *const input_hyper_params);
 
 #endif

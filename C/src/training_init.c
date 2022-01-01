@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 12:34:10 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/17 16:31:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 15:45:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_training	*training_init(const int argc, const char *const *const argv)
 	training->argc_argv.opt_pars = ft_strdup("L:hlA:E:s:w:");
 	training->argc_argv.mandatory_params = 1;
 	training->arg_parser = ft_arg_parser_init(&training->argc_argv,
-			arg_init, arg_analyze, arg_usage_training);
+			arg_init_train, arg_analyze, arg_usage_training);
 	training->cmd_args = ft_arg_parser(training->arg_parser);
 	cmd_args = training->cmd_args;
 	training->input_data = input_data_init(cmd_args->dataset_file,

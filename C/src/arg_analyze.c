@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 16:15:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	input_param_save_short(
 		hyper_params->dataset_split_order = set_dataset_split_mode(
 				arg_parser->argc_argv);
 	else if (opt == 'w')
-		hyper_params->weigth_init_mode = set_weigth_init_mode(
+		hyper_params->weight_init_mode = set_weight_init_mode(
 				arg_parser->argc_argv);
 	else if (opt == 'E')
 		hyper_params->epochs = set_number_of_epochs(arg_parser->argc_argv);

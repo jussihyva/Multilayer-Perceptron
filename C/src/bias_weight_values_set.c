@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 12:58:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:25:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 17:01:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	print_values(
 void	bias_weight_values_set(
 						void *const *const layers,
 						const t_layer_type *const layer_types,
-						const char *const weight_bias_file)
+						const char *const weight_bias_file,
+						const t_hyper_params *const hyper_params)
 {
 	t_file_attr		*file_attr;
 	t_size_2d		i;
@@ -38,6 +39,7 @@ void	bias_weight_values_set(
 	const char		*const *row;
 	size_t			row_id;
 
+	(void)hyper_params;
 	endptr = NULL;
 	file_attr = ft_read_file(weight_bias_file, E_CSV);
 	layer_id = 0;

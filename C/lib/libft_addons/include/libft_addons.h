@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/14 13:01:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 13:59:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,20 @@ typedef struct s_read_attr
 
 typedef struct s_file_attr
 {
-	t_bool			read_failure;
-	size_t			rows;
-	t_file_type		file_type;
-	const char		*const *const *row_array;
+	const char					*file_path;
+	t_bool						read_failure;
+	size_t						rows;
+	t_file_type					file_type;
+	const char *const *const	*row_array;
 }				t_file_attr;
 
 typedef struct s_argc_argv
 {
-	int			argc;
-	const char	*const *argv;
-	const char	*opt_pars;
-	int			i;
-	size_t		mandatory_params;
+	int					argc;
+	const char *const	*argv;
+	const char			*opt_pars;
+	int					i;
+	size_t				mandatory_params;
 }				t_argc_argv;
 
 typedef struct s_logging_data

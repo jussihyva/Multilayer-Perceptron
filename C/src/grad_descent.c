@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/25 14:16:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 			= neural_network_init((const t_dataset *const *)
 				input_data->dataset_array, hyper_params);
 		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
-		grad_descent_attr->hyper_params = hyper_params;
+		if (hyper_params->weight_init_mode == E_TRAINED)
+			grad_descent_attr->hyper_params
+				= hyper_params_init(weight_bias_file, hyper_params);
+		else
+			grad_descent_attr->hyper_params = hyper_params;
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		layer = grad_descent_attr->neural_network->layers[OUTPUT_LAYER_ID];
 		grad_descent_attr->softmax = ml_matrix_create(

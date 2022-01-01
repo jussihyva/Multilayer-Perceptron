@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:46:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/05 14:24:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-void	*arg_init(t_argc_argv *argc_argv)
+static void	*arg_init(t_argc_argv *argc_argv)
 {
 	t_cmd_args		*cmd_args;
 	const char		*program_folder;
@@ -25,5 +25,23 @@ void	*arg_init(t_argc_argv *argc_argv)
 	cmd_args->hyper_params.learning_rate = LEARNING_RATE;
 	program_folder = dirname(((char **)argc_argv->argv)[0]);
 	cmd_args->weight_bias_file = ft_strjoin(program_folder, BIAS_WEIGHT_FILE);
+	return (cmd_args);
+}
+
+void	*arg_init_train(t_argc_argv *argc_argv)
+{
+	t_cmd_args		*cmd_args;
+
+	cmd_args = arg_init(argc_argv);
+	cmd_args->hyper_params.weight_init_mode = E_ZERO;
+	return (cmd_args);
+}
+
+void	*arg_init_predict(t_argc_argv *argc_argv)
+{
+	t_cmd_args		*cmd_args;
+
+	cmd_args = arg_init(argc_argv);
+	cmd_args->hyper_params.weight_init_mode = E_TRAINED;
 	return (cmd_args);
 }

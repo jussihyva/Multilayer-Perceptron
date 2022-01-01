@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 10:44:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 11:41:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 15:45:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_prediction	*prediction_init(const int argc, const char *const *const argv)
 	prediction->argc_argv.opt_pars = ft_strdup("L:hl");
 	prediction->argc_argv.mandatory_params = 1;
 	prediction->arg_parser = ft_arg_parser_init(&prediction->argc_argv,
-			arg_init, arg_analyze, arg_usage_prediction);
+			arg_init_predict, arg_analyze, arg_usage_prediction);
 	prediction->cmd_args = ft_arg_parser(prediction->arg_parser);
 	cmd_args = prediction->cmd_args;
 	dataset_split_order.dataset_split_mode = E_BEGIN;

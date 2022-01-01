@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 16:30:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/01 16:07:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_layer_hidden	*layer_init_hidden(
 	layer->a_test = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TEST]);
 	layer->weight_transposed = ml_matrix_create(num_of_nodes,
 			g_layer_attrs[NUM_OF_LAYERS][id + 1].nodes);
-	bias_weight_init(layer->id, &layer->weight_bias, NULL, hyper_params->weigth_init_mode);
+	bias_weight_init(layer->id, &layer->weight_bias, NULL, hyper_params->weight_init_mode);
 	bias_weight_init(layer->id, &layer->d_weight_bias, NULL, E_ZERO);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TRAIN]);
 	layer->g_prime = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TRAIN]);
@@ -87,7 +87,7 @@ static t_layer_output	*layer_init_output(
 	layer->z_test = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TEST]);
 	layer->y_hat_train = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TRAIN]);
 	layer->y_hat_test = ml_matrix_create(layer->num_of_nodes, num_of_examples[E_TEST]);
-	bias_weight_init(layer->id, &layer->weight_bias, NULL, hyper_params->weigth_init_mode);
+	bias_weight_init(layer->id, &layer->weight_bias, NULL, hyper_params->weight_init_mode);
 	bias_weight_init(layer->id, &layer->d_weight_bias, NULL, E_ZERO);
 	layer->d_z = ml_matrix_create(layer->num_of_nodes,
 			num_of_examples[E_TRAIN]);
