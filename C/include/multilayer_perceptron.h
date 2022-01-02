@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 21:05:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:46:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 # define NUM_OF_DATASETS						2
 # define NUM_OF_LAYERS							4
-# define INPUT_LAYER_ID							0
-# define OUTPUT_LAYER_ID						NUM_OF_LAYERS - 1
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -395,7 +393,7 @@ void					grad_descent(
 							const t_tcp_connection *const influxdb_connection);
 void					send_iteration_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
-							void *const *const layers,
+							const t_layer_output *const layer_output,
 							const size_t iter_cnt);
 void					*arg_init_train(t_argc_argv *argc_argv);
 void					*arg_init_predict(t_argc_argv *argc_argv);
@@ -408,7 +406,8 @@ void					normalize(const t_matrix *const input,
 							const t_matrix *const output);
 void					bias_weight_values_save(void *const *const layers,
 							const t_layer_type *const layer_types,
-							const char *const weight_bias_file);
+							const char *const weight_bias_file,
+							const t_hyper_params *const hyper_params);
 void					bias_weight_values_set(
 							void *const *const layers,
 							const t_layer_type *const layer_types,
@@ -436,17 +435,19 @@ const t_matrix			*get_activation_input(
 							const t_layer_type *const layer_types,
 							const size_t layer_id);
 void					propagation_forward(void *const *const layers,
-							const t_layer_type *const layer_types);
+							const t_layer_type *const layer_types,
+							const size_t num_of_layers);
 void					propagation_backward(void *const *const layers,
-							const t_layer_type *const layer_types);
+							const t_layer_type *const layer_types,
+							const size_t num_of_layers);
 void					bias_update(const size_t layer_id,
 							const t_vector *const bias,
 							const t_vector *const d_bias,
-							const double learning_rate);
+							const t_hyper_params *const hyper_params);
 void					weight_update(const size_t layer_id,
 							const t_matrix *const weight,
 							const t_matrix *const d_weight,
-							const double learning_rate);
+							const t_hyper_params *const hyper_params);
 void					send_bias_values_to_database(
 							const size_t layer_id,
 							const t_vector *const bias,
@@ -470,14 +471,15 @@ size_t					influxdb_field_set(const char **const field_set,
 							const double *const data, const size_t size);
 size_t					influxdb_timestamp(const char **const timestamp);
 void					neural_network_remove(
-							const t_neural_network **const neural_network);
+							const t_neural_network **const neural_network,
+							const size_t num_of_layers);
 void					*layer_init(
 							const size_t i,
 							const t_layer_type layer_type,
 							const t_dataset *const *const dataset_array,
 							const t_hyper_params *const hyper_params);
 void					bias_weight_init(
-							const size_t id,
+							const t_size_2d size,
 							t_weight_bias *const weight_bias,
 							t_name *const row_name_array,
 							const t_weight_init_mode weight_init_mode);
@@ -496,7 +498,8 @@ t_dataset_type			*dataset_split(
 							const t_dataset_split_order *dataset_split_order);
 void					neural_network_mode_set(void *const *const layers,
 							const t_layer_type *const layer_types,
-							const t_dataset_type dataset_type);
+							const t_dataset_type dataset_type,
+							const size_t num_of_layers);
 t_weight_init_mode		set_weight_init_mode(
 							const t_argc_argv *const argc_argv);
 void					send_hyper_params_to_database(
@@ -513,5 +516,7 @@ t_hyper_params			*hyper_params_init(
 							const t_hyper_params *const input_hyper_params,
 							const size_t num_of_input_functions,
 							const size_t num_of_output_functions);
+t_layer_type			set_layer_type(const size_t id,
+							const size_t num_of_layers);
 
 #endif

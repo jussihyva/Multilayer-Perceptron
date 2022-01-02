@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 22:56:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 20:02:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,15 @@ static size_t	*get_number_of_nodes(
 
 static size_t	*get_number_of_nodes_default(const size_t num_of_layers)
 {
-	size_t				*num_of_nodes;
+	const t_layer_profile	*layer_profile;
+	size_t					*num_of_nodes;
+	size_t					i;
 
 	num_of_nodes = ft_memalloc(sizeof(*num_of_nodes) * num_of_layers);
-	num_of_nodes[0] = 30;
-	num_of_nodes[1] = 3;
-	num_of_nodes[2] = 3;
-	num_of_nodes[3] = 2;
+	layer_profile = g_layer_attrs[num_of_layers];
+	i = -1;
+	while (++i < num_of_layers)
+		num_of_nodes[i] = layer_profile[i].nodes;
 	return (num_of_nodes);
 }
 
@@ -91,7 +93,7 @@ static t_weight_bias	*get_bias_weight_init_values(
 							const size_t *num_of_nodes)
 {
 	t_weight_bias		*bias_weight_init_values;
-	t_size_2d			i;
+	t_size_2d			size;
 	size_t				row_id;
 	size_t				layer_id;
 	const char *const	*row;
@@ -106,23 +108,24 @@ static t_weight_bias	*get_bias_weight_init_values(
 	{
 		bias_weight_init_values[layer_id].bias
 			= ml_vector_create(num_of_nodes[layer_id]);
-		bias_weight_init_values[layer_id].weight
-			= ml_matrix_create(num_of_nodes[layer_id],
-				num_of_nodes[layer_id - 1]);
-		row = file_attr->row_array[row_id];
-		i.rows = 0;
-		i.cols = 0;
+		size.rows = num_of_nodes[layer_id];
+		size.cols = num_of_nodes[layer_id - 1];
+		bias_weight_init_values[layer_id].weight = ml_matrix_create(size);
 		bias_data = (double *)bias_weight_init_values[layer_id].bias->data;
 		weight_table
 			= (double **)bias_weight_init_values[layer_id].weight->table;
-		while (++i.rows < num_of_nodes[layer_id])
+		size.rows = -1;
+		while (++size.rows < num_of_nodes[layer_id])
 		{
-			read_and_validate(row[i.cols], E_DOUBLE, &bias_data[i.rows]);
-			while (++i.cols < num_of_nodes[layer_id - 1])
-				read_and_validate(row[i.cols], E_DOUBLE,
-					&weight_table[i.rows][i.cols]);
+			row = file_attr->row_array[row_id];
+			size.cols = -1;
+			read_and_validate(row[size.cols + 1], E_DOUBLE,
+				&bias_data[size.rows]);
+			while (++size.cols < num_of_nodes[layer_id - 1])
+				read_and_validate(row[size.cols + 1], E_DOUBLE,
+					&weight_table[size.rows][size.cols]);
+			row_id++;
 		}
-		row_id++;
 		layer_id++;
 	}
 	return (bias_weight_init_values);

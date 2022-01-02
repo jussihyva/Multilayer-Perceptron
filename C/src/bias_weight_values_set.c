@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 12:58:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 17:01:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 20:21:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ void	bias_weight_values_set(
 	file_attr = ft_read_file(weight_bias_file, E_CSV);
 	layer_id = 0;
 	row_id = 3;
-	while (++layer_id < NUM_OF_LAYERS)
+	while (++layer_id < hyper_params->num_of_layers)
 	{
 		if (layer_types[layer_id] == E_LAYER_HIDDEN)
 			weight_bias = &((t_layer_hidden *)layers[layer_id])->weight_bias;
 		else if (layer_types[layer_id] == E_LAYER_OUTPUT)
 			weight_bias = &((t_layer_output *)layers[layer_id])->weight_bias;
 		i.rows = -1;
-		while (++i.rows < weight_bias->weight->size.rows && row_id < file_attr->rows)
+		while (++i.rows < weight_bias->weight->size.rows
+			&& row_id < file_attr->rows)
 		{
 			row = file_attr->row_array[row_id];
 			i.cols = 0;

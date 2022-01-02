@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 12:37:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:58:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 
 static void	print_result(t_grad_descent_attr *grad_descent_attr)
 {
-	// ml_matrix_print("Prediction", grad_descent_attr->logistic_reg_attr
-	// 	->neural_network->layers[NUM_OF_LAYERS - 1]->a_output);
 	ml_matrix_print("Observed", grad_descent_attr->dataset->y);
 	ml_matrix_print("Softmax", grad_descent_attr->softmax);
 	ml_vector_print("ARGMAX VALUES", grad_descent_attr->argmax_values);
@@ -54,21 +52,24 @@ int	main(int argc, char **argv)
 	t_prediction				*prediction;
 	t_grad_descent_attr			*grad_descent_attr;
 	const t_neural_network		*neural_network;
+	size_t						num_of_layers;
 
 	prediction = prediction_init(argc, (const char *const *)argv);
 	grad_descent_attr = prediction->grad_descent_attr;
 	if (grad_descent_attr)
 	{
+		num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
 		neural_network = grad_descent_attr->neural_network;
 		bias_weight_values_set(neural_network->layers,
 			neural_network->layer_types,
 			prediction->cmd_args->weight_bias_file,
 			grad_descent_attr->hyper_params);
 		neural_network_mode_set(neural_network->layers,
-			neural_network->layer_types, E_TRAIN);
+			neural_network->layer_types, E_TRAIN,
+			grad_descent_attr->hyper_params->num_of_layers);
 		propagation_forward(neural_network->layers,
-			neural_network->layer_types);
-		ml_softmax(((t_layer_output *)neural_network->layers[OUTPUT_LAYER_ID])
+			neural_network->layer_types, num_of_layers);
+		ml_softmax(((t_layer_output *)neural_network->layers[num_of_layers - 1])
 			->y_hat, grad_descent_attr->softmax);
 		send_softmax_result_to_database(grad_descent_attr);
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,

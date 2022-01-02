@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/10 14:42:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 20:28:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	send_bias_values_to_database(
 	t_influxdb_line			influxdb_line;
 	const char				*line;
 	size_t					total_len;
-	size_t					num_of_nodes;
 	const t_tcp_connection	*influxdb_connection;
 	t_queue					*name_value_queue;
 
@@ -48,7 +47,6 @@ void	send_bias_values_to_database(
 	if (influxdb_connection)
 	{
 		line = ft_strdup("");
-		num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
 		total_len = 0;
 		total_len += influxdb_measurement(&influxdb_line.measurement,
 				"dataset_train");
@@ -69,16 +67,17 @@ void	send_bias_values_to_database(
 	return ;
 }
 
-void	bias_update(const size_t layer_id, const t_vector *const bias,
-				const t_vector *const d_bias, const double learning_rate)
+void	bias_update(
+				const size_t layer_id,
+				const t_vector *const bias,
+				const t_vector *const d_bias,
+				const t_hyper_params *const hyper_params)
 {
 	size_t			i;
-	size_t			num_of_nodes;
 
-	num_of_nodes = g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes;
 	i = -1;
-	while (++i < num_of_nodes)
+	while (++i < hyper_params->num_of_nodes[layer_id])
 		((double *)bias->data)[i]
-			-= learning_rate * ((double *)d_bias->data)[i];
+			-= hyper_params->learning_rate * ((double *)d_bias->data)[i];
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 21:26:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:45:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,7 @@ static const t_layer_type	*layer_types_init(const size_t num_of_layers)
 	layer_types = ft_memalloc(sizeof(*layer_types) * num_of_layers);
 	layer_id = -1;
 	while (++layer_id < num_of_layers)
-	{
-		if (layer_id == INPUT_LAYER_ID)
-			layer_types[layer_id] = E_LAYER_INPUT;
-		else if (layer_id == OUTPUT_LAYER_ID)
-			layer_types[layer_id] = E_LAYER_OUTPUT;
-		else
-			layer_types[layer_id] = E_LAYER_HIDDEN;
-	}
+		layer_types[layer_id] = set_layer_type(layer_id, num_of_layers);
 	return (layer_types);
 }
 
@@ -59,20 +52,21 @@ t_neural_network	*neural_network_init(
 	return (neural_network);
 }
 
-static void	layers_remove(void **const *layers)
+static void	layers_remove(
+					void **const *layers,
+					const t_layer_type *const layer_types,
+					const size_t num_of_layers)
 {
 	size_t			i;
-	t_layer_type	layer_type;
 
 	i = -1;
-	while (++i < NUM_OF_LAYERS)
+	while (++i < num_of_layers)
 	{
-		layer_type = g_layer_attrs[NUM_OF_LAYERS][i].layer_type;
-		if (layer_type == E_LAYER_INPUT)
+		if (layer_types[i] == E_LAYER_INPUT)
 			layer_remove_input((const t_layer_input **const)&(*layers)[i]);
-		else if (layer_type == E_LAYER_HIDDEN)
+		else if (layer_types[i] == E_LAYER_HIDDEN)
 			layer_remove_hidden((const t_layer_hidden **const)&(*layers)[i]);
-		else if (layer_type == E_LAYER_OUTPUT)
+		else if (layer_types[i] == E_LAYER_OUTPUT)
 			layer_remove_output((const t_layer_output **const)&(*layers)[i]);
 	}
 	ft_memdel((void **)layers);
@@ -135,12 +129,13 @@ static void	set_mode_for_output(t_layer_output *const layer,
 void	neural_network_mode_set(
 					void *const *const layers,
 					const t_layer_type *const layer_types,
-					const t_dataset_type dataset_type)
+					const t_dataset_type dataset_type,
+					const size_t num_of_layers)
 {
 	size_t				i;
 
 	i = -1;
-	while (++i < NUM_OF_LAYERS)
+	while (++i < num_of_layers)
 	{
 		if (layer_types[i] == E_LAYER_INPUT)
 			set_mode_for_input(layers[i], dataset_type);
@@ -152,9 +147,12 @@ void	neural_network_mode_set(
 	return ;
 }
 
-void	neural_network_remove(const t_neural_network **neural_network)
+void	neural_network_remove(
+					const t_neural_network **neural_network,
+					const size_t num_of_layers)
 {
-	layers_remove(&(*neural_network)->layers);
+	layers_remove(&(*neural_network)->layers, (*neural_network)->layer_types,
+		num_of_layers);
 	ft_memdel((void **)&(*neural_network)->layer_types);
 	ft_memdel((void **)neural_network);
 	return ;

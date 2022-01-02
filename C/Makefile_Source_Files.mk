@@ -6,17 +6,16 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2022/01/01 13:26:30 by jkauppi          ###   ########.fr        #
+#    Updated: 2022/01/02 20:44:09 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_C_FILES				=	file_attr_remove.c dataset_remove.c derivative.c \
-							logistic_regression.c neural_network.c \
-							linear_function.c grad_descent.c \
+							neural_network.c linear_function.c grad_descent.c \
 							send_iteration_result_to_database.c arg_init.c \
 							arg_analyze.c arg_usage_print.c arg_remove.c \
 							normalize.c bias_weight_values_save.c \
-							bias_weight_values_set.c \
+							bias_weight_values_set.c layer.c \
 							send_softmax_result_to_database.c \
 							prediction_init.c training_init.c \
 							hyper_params.c prediction_validate.c \

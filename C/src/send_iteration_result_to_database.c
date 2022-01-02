@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/25 14:34:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:10:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,12 @@ static size_t	influxdb_fields_add(
 
 void	send_iteration_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
-							void *const *const layers,
+							const t_layer_output *const layer_output,
 							const size_t iter_cnt)
 {
 	t_influxdb_line		influxdb_line;
 	const char			*line;
 	size_t				total_len;
-	const t_vector		*cost;
 	size_t				i;
 
 	if (influxdb_connection)
@@ -130,13 +129,12 @@ void	send_iteration_result_to_database(
 		i = -1;
 		while (++i < NUM_OF_DATASETS)
 		{
-			cost = ((t_layer_output *)layers[NUM_OF_LAYERS - 1])->cost[i];
 			total_len = 0;
 			total_len += influxdb_measurement(&influxdb_line.measurement,
 					"dataset_train");
 			total_len += influxdb_tags_add(&influxdb_line.tag_set, i);
 			total_len += influxdb_fields_add(&influxdb_line.field_set, iter_cnt,
-					cost);
+					layer_output->cost[i]);
 			total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
 			line = elements_merge(&influxdb_line, total_len);
 			influxdb_element_remove(&influxdb_line);

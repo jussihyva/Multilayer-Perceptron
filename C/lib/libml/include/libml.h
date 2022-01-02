@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/15 13:15:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 12:26:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_vector
 }				t_vector;
 
 void			ml_sigmoid(const t_matrix *const z, t_matrix *const y);
-t_matrix		*ml_matrix_create(const size_t rows, const size_t columns);
+t_matrix		*ml_matrix_create(const t_size_2d size);
 void			ml_double_div_matrix(const double value,
 					const t_matrix *const matrix,
 					t_matrix *const new_matrix);

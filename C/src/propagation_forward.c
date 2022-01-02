@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/17 13:12:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:41:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ static void	propagation_forward_output(
 
 void	propagation_forward(
 					void *const *const layers,
-					const t_layer_type *const layer_types)
+					const t_layer_type *const layer_types,
+					const size_t num_of_layers)
 {
 	size_t				i;
 	const t_matrix		*activation_input;
 
 	i = -1;
-	while (++i < NUM_OF_LAYERS)
+	while (++i < num_of_layers)
 	{
 		activation_input = get_activation_input(layers, layer_types, i);
 		if (layer_types[i] == E_LAYER_INPUT)

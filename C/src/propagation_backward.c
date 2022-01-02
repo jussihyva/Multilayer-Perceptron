@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 22:07:05 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 21:40:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ static void	weight_bias_update(const size_t layer_id,
 						const t_hyper_params *const hyper_params)
 {
 	weight_update(layer_id, weight_bias->weight, d_weight_bias->weight,
-		hyper_params->learning_rate);
-	bias_update(layer_id, weight_bias->bias, d_weight_bias->bias,
-		hyper_params->learning_rate);
+		hyper_params);
+	bias_update(layer_id, weight_bias->bias, d_weight_bias->bias, hyper_params);
 	send_bias_values_to_database(layer_id, weight_bias->bias, hyper_params);
 	send_weight_values_to_database(layer_id, weight_bias->weight, hyper_params);
 	return ;
@@ -82,19 +81,18 @@ static void	propagation_backward_hidden(
 	while (++example_id < d_z->size.cols)
 	{
 		node_id = -1;
-		while (++node_id < g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes)
+		while (++node_id < layer->num_of_nodes)
 		{
 			function_id = -1;
 			while (++function_id < layer->weight_transposed->size.cols)
 			{
 				((double **)layer->d_z->table)[node_id][example_id]
 					+= ((double **)layer->weight_transposed
-					->table)[node_id][function_id]
+						->table)[node_id][function_id]
 					* ((double **)d_z->table)[function_id][example_id];
 			}
 			((double **)layer->d_z->table)[node_id][example_id]
-				*= ((double **)layer->g_prime->table)[node_id]
-				[example_id];
+				*= ((double **)layer->g_prime->table)[node_id][example_id];
 		}
 	}
 	derivative_w(activation_input, layer->d_z, layer->d_weight_bias.weight);
@@ -123,24 +121,6 @@ static void	propagation_backward_output(
 		layer_output_print(layer);
 	return ;
 }
-
-// void	set_propagation_backward_functions(
-// 		t_fn_propagation_backward *const fn_propagation_backward)
-// {
-// 	size_t		i;
-
-// 	i = -1;
-// 	while (++i < NUM_OF_LAYERS)
-// 	{
-// 		if (!i)
-// 			fn_propagation_backward[i] = propagation_backward_input;
-// 		else if (i == (NUM_OF_LAYERS - 1))
-// 			fn_propagation_backward[i] = propagation_backward_output;
-// 		else
-// 			fn_propagation_backward[i] = propagation_backward_hidden;
-// 	}
-// 	return ;
-// }
 
 const t_matrix	*get_activation_input(
 							void *const *const layers,
@@ -193,14 +173,15 @@ static void	get_previous_weight_and_d_z(
 
 void	propagation_backward(
 					void *const *const layers,
-					const t_layer_type *const layer_types)
+					const t_layer_type *const layer_types,
+					const size_t num_of_layers)
 {
 	size_t				i;
 	const t_matrix		*activation_input;
 	const t_matrix		*weight;
 	const t_matrix		*d_z;
 
-	i = NUM_OF_LAYERS;
+	i = num_of_layers;
 	while (i--)
 	{
 		activation_input = get_activation_input(layers, layer_types, i);
@@ -210,8 +191,10 @@ void	propagation_backward(
 			propagation_backward_output(layers[i], activation_input);
 		else if (layer_types[i] == E_LAYER_HIDDEN)
 		{
-			get_previous_weight_and_d_z(layers[i + 1], layer_types[i + 1], &weight, &d_z);
-			propagation_backward_hidden(layers[i], activation_input, weight, d_z);
+			get_previous_weight_and_d_z(layers[i + 1], layer_types[i + 1],
+				&weight, &d_z);
+			propagation_backward_hidden(layers[i], activation_input, weight,
+				d_z);
 		}
 	}
 	return ;

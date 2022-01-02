@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 10:40:09 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 00:25:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 20:15:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static char	*yaml_string_create(
 void	bias_weight_values_save(
 						void *const *layers,
 						const t_layer_type *const layer_types,
-						const char *const weight_bias_file)
+						const char *const weight_bias_file,
+						const t_hyper_params *const hyper_params)
 {
 	t_read_attr		read_attr;
 	ssize_t			len;
@@ -90,17 +91,18 @@ void	bias_weight_values_save(
 	remove(weight_bias_file);
 	read_attr.fd = open(weight_bias_file, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
 	read_attr.line = ft_strnew(SUB_STRING_MAX_LENGTH);
-	len = ft_sprintf(read_attr.line, "%d\n", NUM_OF_LAYERS);
+	len = ft_sprintf(read_attr.line, "%d\n", hyper_params->num_of_layers);
 	read_attr.ret = write(read_attr.fd, read_attr.line, len);
 	layer_id = 0;
-	while (++layer_id < (NUM_OF_LAYERS - 1))
+	while (++layer_id < (hyper_params->num_of_layers - 1))
 	{
-		len = ft_sprintf(read_attr.line, "%d\n", g_layer_attrs[NUM_OF_LAYERS][layer_id].nodes);
+		len = ft_sprintf(read_attr.line, "%d\n",
+				hyper_params->num_of_nodes[layer_id]);
 		read_attr.ret = write(read_attr.fd, read_attr.line, len);
 	}
 	ft_strdel((char **)&read_attr.line);
 	layer_id = 0;
-	while (++layer_id < NUM_OF_LAYERS)
+	while (++layer_id < hyper_params->num_of_layers)
 	{
 		if (layer_types[layer_id] == E_LAYER_HIDDEN)
 			weight_bias = &((t_layer_hidden *)layers[layer_id])->weight_bias;
@@ -111,8 +113,8 @@ void	bias_weight_values_save(
 		{
 			read_attr.line
 				= yaml_string_create(((double **)weight_bias->weight->table)[i],
-				((double *)weight_bias->bias->data)[i],
-				weight_bias->weight->size.cols);
+					((double *)weight_bias->bias->data)[i],
+					weight_bias->weight->size.cols);
 			read_attr.ret = write(read_attr.fd, read_attr.line,
 					ft_strlen(read_attr.line));
 			ft_strdel((char **)&read_attr.line);

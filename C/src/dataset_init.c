@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 20:13:48 by juhani            #+#    #+#             */
-/*   Updated: 2021/12/15 14:53:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 12:32:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,23 +123,22 @@ t_dataset	**dataset_init(const t_input_data *const input_data)
 {
 	t_dataset		**dataset_array;
 	size_t			i;
+	t_size_2d		size;
 
 	dataset_array = ft_memalloc(sizeof(*dataset_array) * NUM_OF_DATASETS);
 	i = -1;
 	while (++i < NUM_OF_DATASETS)
 		dataset_array[i] = ft_memalloc(sizeof(*dataset_array[i]));
-	dataset_array[E_TRAIN]->x = ml_matrix_create(
-			input_data->num_of_input_functions,
-			input_data->num_of_records.train);
-	dataset_array[E_TEST]->x = ml_matrix_create(
-			input_data->num_of_input_functions,
-			input_data->num_of_records.test);
-	dataset_array[E_TRAIN]->y = ml_matrix_create(
-			input_data->num_of_output_functions,
-			input_data->num_of_records.train);
-	dataset_array[E_TEST]->y = ml_matrix_create(
-			input_data->num_of_output_functions,
-			input_data->num_of_records.test);
+	size.rows = input_data->num_of_input_functions;
+	size.cols = input_data->num_of_records.train;
+	dataset_array[E_TRAIN]->x = ml_matrix_create(size);
+	size.cols = input_data->num_of_records.test;
+	dataset_array[E_TEST]->x = ml_matrix_create(size);
+	size.rows = input_data->num_of_output_functions;
+	size.cols = input_data->num_of_records.train;
+	dataset_array[E_TRAIN]->y = ml_matrix_create(size);
+	size.cols = input_data->num_of_records.test;
+	dataset_array[E_TEST]->y = ml_matrix_create(size);
 	set_values_to_dataset(input_data, dataset_array);
 	return (dataset_array);
 }

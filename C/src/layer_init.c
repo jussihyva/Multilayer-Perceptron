@@ -6,24 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 22:48:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/02 20:45:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-static t_layer_type	set_layer_type(const size_t id, const size_t num_of_layers)
-{
-	t_layer_type	layer_type;
-
-	if (id == 0)
-		layer_type = E_LAYER_INPUT;
-	else if (id == num_of_layers - 1)
-		layer_type = E_LAYER_OUTPUT;
-	else
-		layer_type = E_LAYER_HIDDEN;
-	return (layer_type);
-}
 
 static t_layer_input	*layer_init_input(
 					const size_t id,
@@ -31,17 +18,18 @@ static t_layer_input	*layer_init_input(
 					const t_hyper_params *const hyper_params)
 {
 	t_layer_input		*layer;
-	size_t				num_of_examples;
+	t_size_2d			size;
 
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
 	layer->num_of_nodes = hyper_params->num_of_nodes[id];
 	layer->x_train = dataset_array[E_TRAIN]->x;
 	layer->x_test = dataset_array[E_TEST]->x;
-	num_of_examples = dataset_array[E_TRAIN]->x->size.cols;
-	layer->a_train = ml_matrix_create(layer->num_of_nodes, num_of_examples);
-	num_of_examples = dataset_array[E_TEST]->x->size.cols;
-	layer->a_test = ml_matrix_create(layer->num_of_nodes, num_of_examples);
+	size.rows = layer->num_of_nodes;
+	size.cols = dataset_array[E_TRAIN]->x->size.cols;
+	layer->a_train = ml_matrix_create(size);
+	size.cols = dataset_array[E_TEST]->x->size.cols;
+	layer->a_test = ml_matrix_create(size);
 	layer->fn_normalize = normalize;
 	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
 	layer->hyper_params = hyper_params;
@@ -54,25 +42,28 @@ static t_layer_hidden	*layer_init_hidden(
 								const t_hyper_params *const hyper_params)
 {
 	t_layer_hidden		*layer;
-	size_t				num_of_nodes;
+	t_size_2d			size;
 
-	num_of_nodes = hyper_params->num_of_nodes[id];
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
-	layer->z_train = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
-	layer->z_test = ml_matrix_create(num_of_nodes, num_of_examples[E_TEST]);
-	layer->a_train = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
-	layer->a_test = ml_matrix_create(num_of_nodes, num_of_examples[E_TEST]);
-	layer->weight_transposed = ml_matrix_create(num_of_nodes,
-			hyper_params->num_of_nodes[id + 1]);
-	bias_weight_init(layer->id, &layer->weight_bias, NULL,
+	size.rows = hyper_params->num_of_nodes[id];
+	size.cols = num_of_examples[E_TRAIN];
+	layer->z_train = ml_matrix_create(size);
+	layer->a_train = ml_matrix_create(size);
+	layer->d_z = ml_matrix_create(size);
+	layer->g_prime = ml_matrix_create(size);
+	size.cols = num_of_examples[E_TEST];
+	layer->z_test = ml_matrix_create(size);
+	layer->a_test = ml_matrix_create(size);
+	size.cols = hyper_params->num_of_nodes[id + 1];
+	layer->weight_transposed = ml_matrix_create(size);
+	size.cols = hyper_params->num_of_nodes[id - 1];
+	bias_weight_init(size, &layer->weight_bias, NULL,
 		hyper_params->weight_init_mode);
-	bias_weight_init(layer->id, &layer->d_weight_bias, NULL, E_ZERO);
-	layer->d_z = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
-	layer->g_prime = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
+	bias_weight_init(size, &layer->d_weight_bias, NULL, E_ZERO);
 	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
 	layer->hyper_params = hyper_params;
-	layer->num_of_nodes = num_of_nodes;
+	layer->num_of_nodes = hyper_params->num_of_nodes[id];
 	return (layer);
 }
 
@@ -83,27 +74,29 @@ static t_layer_output	*layer_init_output(
 								const t_hyper_params *const hyper_params)
 {
 	t_layer_output		*layer;
-	size_t				num_of_nodes;
+	t_size_2d			size;
 
-	num_of_nodes = hyper_params->num_of_nodes[id];
 	layer = ft_memalloc(sizeof(*layer));
 	layer->id = id;
 	layer->y_train = dataset_array[E_TRAIN]->y;
 	layer->y_test = dataset_array[E_TEST]->y;
-	layer->z_train = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
-	layer->z_test = ml_matrix_create(num_of_nodes, num_of_examples[E_TEST]);
-	layer->y_hat_train = ml_matrix_create(num_of_nodes,
-			num_of_examples[E_TRAIN]);
-	layer->y_hat_test = ml_matrix_create(num_of_nodes, num_of_examples[E_TEST]);
-	bias_weight_init(layer->id, &layer->weight_bias, NULL,
+	size.rows = hyper_params->num_of_nodes[id];
+	size.cols = num_of_examples[E_TRAIN];
+	layer->z_train = ml_matrix_create(size);
+	layer->y_hat_train = ml_matrix_create(size);
+	layer->d_z = ml_matrix_create(size);
+	size.cols = num_of_examples[E_TEST];
+	layer->z_test = ml_matrix_create(size);
+	layer->y_hat_test = ml_matrix_create(size);
+	size.cols = hyper_params->num_of_nodes[id - 1];
+	bias_weight_init(size, &layer->weight_bias, NULL,
 		hyper_params->weight_init_mode);
-	bias_weight_init(layer->id, &layer->d_weight_bias, NULL, E_ZERO);
-	layer->d_z = ml_matrix_create(num_of_nodes, num_of_examples[E_TRAIN]);
-	layer->cost[E_TRAIN] = ml_vector_create(num_of_nodes);
-	layer->cost[E_TEST] = ml_vector_create(num_of_nodes);
+	bias_weight_init(size, &layer->d_weight_bias, NULL, E_ZERO);
+	layer->cost[E_TRAIN] = ml_vector_create(size.rows);
+	layer->cost[E_TEST] = ml_vector_create(size.rows);
 	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
 	layer->hyper_params = hyper_params;
-	layer->num_of_nodes = num_of_nodes;
+	layer->num_of_nodes = hyper_params->num_of_nodes[id];
 	return (layer);
 }
 
