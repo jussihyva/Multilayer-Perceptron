@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 10:53:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 11:32:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <libgen.h>
 
 # define NUM_OF_DATASETS						2
-# define NUM_OF_LAYERS							4
+# define NUM_OF_LAYERS							5
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -48,8 +48,11 @@ static const t_layer_profile	g_three_layers[3]
 static const t_layer_profile	g_four_layers[4]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
 	{3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
-static const t_layer_profile	*g_layer_attrs[5]
-	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers};
+static const t_layer_profile	g_five_layers[5]
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {5, E_LAYER_HIDDEN},
+	{3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+static const t_layer_profile	*g_layer_attrs[6]
+	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers, g_five_layers};
 
 static const char				*g_dataset_file_column_names[NUMBER_OF_COLUMNS]
 	= {"ID number", "Diagnosis", "Mean Radius", "Mean Texture",
