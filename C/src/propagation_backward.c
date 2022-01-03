@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:40:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 16:40:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	propagation_backward_hidden(
 
 	layer_id = layer->id;
 	ml_matrix_reset(layer->d_z);
-	g_prime_sigmoid(layer->a, layer->g_prime);
+	g_prime(layer->z, layer->a, layer->g_prime, layer->activation_type);
 	ml_transpose(weight, layer->weight_transposed);
 	example_id = -1;
 	while (++example_id < d_z->size.cols)

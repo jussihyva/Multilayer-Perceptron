@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 15:37:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 15:52:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static t_layer_hidden	*layer_init_hidden(
 	layer->hyper_params = hyper_params;
 	layer->num_of_nodes = hyper_params->num_of_nodes[id];
 	layer->activation_type = E_RELU;
-	layer->activation_type = E_SIGMOID;
 	return (layer);
 }
 

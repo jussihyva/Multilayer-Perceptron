@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 14:25:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 17:27:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <libgen.h>
 
 # define NUM_OF_DATASETS						2
-# define NUM_OF_LAYERS							5
+# define NUM_OF_LAYERS							4
 # define NUMBER_OF_COLUMNS						32
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
@@ -447,8 +447,11 @@ void					update_content_of_matrix(
 							const t_file_attr *const file_attr,
 							const size_t *const valid_columns,
 							t_dataset *const dataset);
-void					g_prime_sigmoid(const t_matrix *const a,
-							const t_matrix *const g_prime);
+void					g_prime(
+							const t_matrix *const z,
+							const t_matrix *const a,
+							const t_matrix *const g_prime,
+							const t_activation_type activation_type);
 const t_matrix			*get_activation_input(
 							void *const *const layers,
 							const t_layer_type *const layer_types,
@@ -503,6 +506,7 @@ void					bias_weight_init(
 							t_name *const row_name_array,
 							const t_weight_init_mode weight_init_mode);
 void					layer_print_input(const t_layer_input *const layer);
+void					layer_print_hidden(const t_layer_hidden *const layer);
 void					layer_print_output(const t_layer_output *const layer);
 void					layer_remove_input(const t_layer_input **const layer);
 void					layer_remove_hidden(const t_layer_hidden **const layer);

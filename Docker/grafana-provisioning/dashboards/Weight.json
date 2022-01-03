@@ -3087,7 +3087,7 @@
 				"condition": "AND",
 				"key": "LayerId",
 				"operator": "=",
-				"value": "3"
+				"value": "4"
 			  },
 			  {
 				"condition": "AND",
@@ -3385,12 +3385,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-30m",
+	  "from": "now-15m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Weight",
 	"uid": "Weight",
-	"version": 18
+	"version": 19
   }

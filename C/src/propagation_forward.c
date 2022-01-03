@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 14:27:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 15:54:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static void	propagation_forward_hidden(
 		ml_sigmoid(layer->z, layer->a);
 	else if (layer->activation_type == E_RELU)
 		ml_relu(layer->z, layer->a);
+	if (ft_logging_level() <= LOG_DEBUG)
+		layer_print_hidden(layer);
 	return ;
 }
 

@@ -12,7 +12,7 @@
 			// "program": "${workspaceFolder}/C/prediction",
 			// "args": [],
 			// "args": ["-L", "2", "../Data/data.csv"],
-			"args": ["-E", "2", "-w", "1", "-s", "B70", "../Data/data.csv"],
+			"args": ["-E", "2", "-L", "1", "-w", "1", "-s", "B70", "../Data/data.csv"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}/C",
 			"environment": [],
