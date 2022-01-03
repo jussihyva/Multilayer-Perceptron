@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ml_sigmoid.c                                       :+:      :+:    :+:   */
+/*   ml_relu.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 15:30:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 14:52:19 by jkauppi          ###   ########.fr       */
+/*   Created: 2022/01/03 14:51:34 by jkauppi           #+#    #+#             */
+/*   Updated: 2022/01/03 15:17:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libml.h"
 
-void	ml_sigmoid(const t_matrix *const z, t_matrix *const y)
+void	ml_relu(const t_matrix *const z, t_matrix *const y)
 {
 	double		*z_ptr;
 	double		*y_ptr;
@@ -23,7 +23,7 @@ void	ml_sigmoid(const t_matrix *const z, t_matrix *const y)
 	y_ptr = (double *)y->data;
 	while (y_ptr < y_end_ptr)
 	{
-		*y_ptr = 1 / (1 + exp(-(*z_ptr)) + EPSILON);
+		*y_ptr = ft_max_double(EPSILON, *z_ptr);
 		z_ptr++;
 		y_ptr++;
 	}

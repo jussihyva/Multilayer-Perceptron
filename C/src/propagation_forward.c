@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:41:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 14:27:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ static void	propagation_forward_hidden(
 						const t_matrix *const activation_input)
 {
 	linear_function_hidden(layer, activation_input);
-	ml_sigmoid(layer->z, layer->a);
+	if (layer->activation_type == E_SIGMOID)
+		ml_sigmoid(layer->z, layer->a);
+	else if (layer->activation_type == E_RELU)
+		ml_relu(layer->z, layer->a);
 	return ;
 }
 
@@ -40,7 +43,10 @@ static void	propagation_forward_output(
 						const t_matrix *const activation_input)
 {
 	linear_function_output(layer, activation_input);
-	ml_sigmoid(layer->z, layer->y_hat);
+	if (layer->activation_type == E_SIGMOID)
+		ml_sigmoid(layer->z, layer->y_hat);
+	else if (layer->activation_type == E_RELU)
+		ml_relu(layer->z, layer->y_hat);
 	ml_matrix_cost(layer->y, layer->y_hat, layer->cost[layer->dataset_type]);
 	if (ft_logging_level() <= LOG_DEBUG)
 		layer_print_output(layer);

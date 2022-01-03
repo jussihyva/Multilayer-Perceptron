@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 12:26:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 14:54:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ void			ml_argmax(const t_matrix *const matrix,
 					const t_vector *argmax_values);
 void			ml_transpose(const t_matrix *const matrix,
 					const t_matrix *const transposed);
+void			ml_relu(const t_matrix *const z, t_matrix *const y);
 
 #endif

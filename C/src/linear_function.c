@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/06 12:19:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 14:29:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	linear_function(
 			{
 				table_z[node_id][example_id]
 					+= ((double **)weight_bias->weight
-					->table)[node_id][function_id]
+						->table)[node_id][function_id]
 					* ((double **)a_input
 						->table)[function_id][example_id];
 			}

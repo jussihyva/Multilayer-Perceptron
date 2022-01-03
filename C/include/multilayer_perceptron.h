@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 11:32:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 14:25:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@
 # define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
 
+typedef enum e_activation_type
+{
+	E_NO_ACTIVATION,
+	E_SIGMOID,
+	E_RELU
+}			t_activation_type;
+
 typedef enum e_layer_type
 {
 	E_LAYER_INPUT,
@@ -36,21 +43,29 @@ typedef enum e_layer_type
 
 typedef struct s_layer_profile
 {
-	size_t			nodes;
-	t_layer_type	layer_type;
+	size_t				nodes;
+	t_layer_type		layer_type;
+	t_activation_type	activation_type;
 }				t_layer_profile;
 
 static const t_layer_profile	g_two_layers[2]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
+		{2, E_LAYER_OUTPUT, E_SIGMOID}};
 static const t_layer_profile	g_three_layers[3]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
-	{2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
+		{3, E_LAYER_HIDDEN, E_RELU},
+		{2, E_LAYER_OUTPUT, E_SIGMOID}};
 static const t_layer_profile	g_four_layers[4]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN},
-	{3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
+		{3, E_LAYER_HIDDEN, E_RELU},
+		{3, E_LAYER_HIDDEN, E_RELU},
+		{2, E_LAYER_OUTPUT, E_SIGMOID}};
 static const t_layer_profile	g_five_layers[5]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT}, {3, E_LAYER_HIDDEN}, {5, E_LAYER_HIDDEN},
-	{3, E_LAYER_HIDDEN}, {2, E_LAYER_OUTPUT}};
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
+		{3, E_LAYER_HIDDEN, E_RELU},
+		{5, E_LAYER_HIDDEN, E_RELU},
+		{3, E_LAYER_HIDDEN, E_RELU},
+		{2, E_LAYER_OUTPUT, E_SIGMOID}};
 static const t_layer_profile	*g_layer_attrs[6]
 	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers, g_five_layers};
 
@@ -277,6 +292,7 @@ typedef struct s_layer_hidden
 	const t_matrix			*g_prime;
 	const t_matrix			*weight_transposed;
 	t_dataset_type			dataset_type;
+	t_activation_type		activation_type;
 }				t_layer_hidden;
 
 typedef struct s_layer_output
@@ -299,6 +315,7 @@ typedef struct s_layer_output
 	t_matrix				*d_z;
 	const t_hyper_params	*hyper_params;
 	t_dataset_type			dataset_type;
+	t_activation_type		activation_type;
 }				t_layer_output;
 
 typedef struct s_neural_network
