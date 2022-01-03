@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 12:58:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 20:21:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 11:11:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,49 +24,49 @@ static void	print_values(
 	return ;
 }
 
+static t_weight_bias	*get_weight_bias(
+								const t_layer_type layer_type,
+								const void *const layer)
+{
+	t_weight_bias		*weight_bias;
+
+	if (layer_type == E_LAYER_HIDDEN)
+		weight_bias = &((t_layer_hidden *)layer)->weight_bias;
+	else if (layer_type == E_LAYER_OUTPUT)
+		weight_bias = &((t_layer_output *)layer)->weight_bias;
+	else
+		weight_bias = NULL;
+	return (weight_bias);
+}
+
 void	bias_weight_values_set(
 						void *const *const layers,
 						const t_layer_type *const layer_types,
-						const char *const weight_bias_file,
 						const t_hyper_params *const hyper_params)
 {
-	t_file_attr		*file_attr;
-	t_size_2d		i;
-	char			*endptr;
-	double			value;
-	t_weight_bias	*weight_bias;
-	size_t			layer_id;
-	const char		*const *row;
-	size_t			row_id;
+	t_size_2d			i;
+	t_weight_bias		*weight_bias;
+	size_t				layer_id;
+	double				*bias_data;
+	double *const		*weight_table;
 
-	(void)hyper_params;
-	endptr = NULL;
-	file_attr = ft_read_file(weight_bias_file, E_CSV);
 	layer_id = 0;
-	row_id = 3;
 	while (++layer_id < hyper_params->num_of_layers)
 	{
-		if (layer_types[layer_id] == E_LAYER_HIDDEN)
-			weight_bias = &((t_layer_hidden *)layers[layer_id])->weight_bias;
-		else if (layer_types[layer_id] == E_LAYER_OUTPUT)
-			weight_bias = &((t_layer_output *)layers[layer_id])->weight_bias;
+		weight_bias = get_weight_bias(layer_types[layer_id], layers[layer_id]);
+		bias_data = (double *)weight_bias->bias->data;
+		weight_table = (double **)weight_bias->weight->table;
 		i.rows = -1;
-		while (++i.rows < weight_bias->weight->size.rows
-			&& row_id < file_attr->rows)
+		while (++i.rows < weight_bias->weight->size.rows)
 		{
-			row = file_attr->row_array[row_id];
-			i.cols = 0;
-			value = strtod(row[i.cols], &endptr);
-			((double *)weight_bias->bias->data)[i.rows] = value;
-			while (++i.cols <= weight_bias->weight->size.cols)
-			{
-				value = strtod(row[i.cols], &endptr);
-				((double **)weight_bias->weight->table)[i.rows][i.cols - 1] = value;
-			}
-			row_id++;
+			bias_data[i.rows] = ((double *)hyper_params
+					->bias_weight_init_values[layer_id].bias->data)[i.rows];
+			i.cols = -1;
+			while (++i.cols < weight_bias->weight->size.cols)
+				weight_table[i.rows][i.cols] = ((double **)hyper_params
+						->bias_weight_init_values[layer_id].weight
+						->table)[i.rows][i.cols];
 		}
 	}
-	file_attr_remove(&file_attr);
 	print_values(weight_bias->bias, weight_bias->weight);
-	return ;
 }

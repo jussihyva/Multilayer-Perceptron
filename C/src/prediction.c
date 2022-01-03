@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:58:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 10:54:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	main(int argc, char **argv)
 		neural_network = grad_descent_attr->neural_network;
 		bias_weight_values_set(neural_network->layers,
 			neural_network->layer_types,
-			prediction->cmd_args->weight_bias_file,
 			grad_descent_attr->hyper_params);
 		neural_network_mode_set(neural_network->layers,
 			neural_network->layer_types, E_TRAIN,

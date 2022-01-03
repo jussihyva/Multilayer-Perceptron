@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 20:02:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/03 10:37:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@ static t_bool	read_and_validate(
 	{
 		errno = 0;
 		*(size_t *)value = (size_t)ft_strtoi(string, &endptr, 10);
+		if (errno != 0 || *endptr != '\0')
+			validation_result = E_FALSE;
+	}
+	else if (data_type == E_DOUBLE)
+	{
+		errno = 0;
+		*(double *)value = strtod(string, &endptr);
 		if (errno != 0 || *endptr != '\0')
 			validation_result = E_FALSE;
 	}
