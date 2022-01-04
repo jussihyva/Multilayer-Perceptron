@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 12:48:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:38:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,25 @@ static t_weight_bias	*get_bias_weight_init_values(
 	return (bias_weight_init_values);
 }
 
+static void	get_hyper_params_from_file(
+							const char *const weight_bias_file,
+							const size_t num_of_input_functions,
+							const size_t num_of_output_functions,
+							t_hyper_params	*hyper_params)
+{
+	t_file_attr		*file_attr;
+
+	file_attr = ft_read_file(weight_bias_file, E_CSV);
+	hyper_params->num_of_layers = get_number_of_layers(file_attr);
+	hyper_params->num_of_nodes = get_number_of_nodes(file_attr,
+			hyper_params->num_of_layers, num_of_input_functions,
+			num_of_output_functions);
+	hyper_params->bias_weight_init_values
+		= get_bias_weight_init_values(file_attr,
+			hyper_params->num_of_layers, hyper_params->num_of_nodes);
+	return ;
+}
+
 t_hyper_params	*hyper_params_init(
 						const char *const weight_bias_file,
 						const t_hyper_params *const input_hyper_params,
@@ -159,31 +178,22 @@ t_hyper_params	*hyper_params_init(
 						const size_t num_of_output_functions)
 {
 	t_hyper_params	*hyper_params;
-	t_file_attr		*file_attr;
 
 	hyper_params = ft_memalloc(sizeof(*hyper_params));
+	hyper_params->split_order = input_hyper_params->split_order;
+	hyper_params->epochs = input_hyper_params->epochs;
+	hyper_params->learning_rate = input_hyper_params->learning_rate;
+	hyper_params->weight_init_mode = input_hyper_params->weight_init_mode;
 	if (input_hyper_params->weight_init_mode == E_TRAINED)
-	{
-		file_attr = ft_read_file(weight_bias_file, E_CSV);
-		hyper_params->num_of_layers = get_number_of_layers(file_attr);
-		hyper_params->num_of_nodes = get_number_of_nodes(file_attr,
-				hyper_params->num_of_layers, num_of_input_functions,
-				num_of_output_functions);
-		hyper_params->bias_weight_init_values
-			= get_bias_weight_init_values(file_attr,
-				hyper_params->num_of_layers, hyper_params->num_of_nodes);
-	}
+		get_hyper_params_from_file(weight_bias_file, num_of_input_functions,
+			num_of_output_functions, hyper_params);
 	else
 	{
-		hyper_params->num_of_layers = NUM_OF_LAYERS;
+		hyper_params->num_of_layers = input_hyper_params->num_of_layers;
 		hyper_params->num_of_nodes
 			= get_number_of_nodes_default(hyper_params->num_of_layers);
 	}
 	hyper_params->activation_types
 		= get_activation_types(hyper_params->num_of_layers);
-	hyper_params->dataset_split_order = input_hyper_params->dataset_split_order;
-	hyper_params->epochs = input_hyper_params->epochs;
-	hyper_params->learning_rate = input_hyper_params->learning_rate;
-	hyper_params->weight_init_mode = input_hyper_params->weight_init_mode;
 	return (hyper_params);
 }

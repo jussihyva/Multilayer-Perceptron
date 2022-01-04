@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 12:25:00 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 12:34:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:45:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,18 @@ static t_dataset_type	*split_with_mode_end(
 
 t_dataset_type	*dataset_split(
 						t_num_of_records *const num_of_records,
-						const t_dataset_split_order *dataset_split_order)
+						const t_split_order *split_order)
 {
 	t_dataset_type	*dataset_type_array;
 
 	num_of_records->train
-		= num_of_records->total * dataset_split_order->extra_info / 100;
+		= num_of_records->total * split_order->extra_info / 100;
 	num_of_records->test = num_of_records->total - num_of_records->train;
-	if (dataset_split_order->dataset_split_mode == E_BEGIN)
+	if (split_order->split_mode == E_BEGIN)
 		dataset_type_array = split_with_mode_begin(num_of_records);
-	else if (dataset_split_order->dataset_split_mode == E_END)
+	else if (split_order->split_mode == E_END)
 		dataset_type_array = split_with_mode_end(num_of_records);
-	else if (dataset_split_order->dataset_split_mode == E_RAND)
+	else if (split_order->split_mode == E_RAND)
 		dataset_type_array = split_with_mode_end(num_of_records);
 	else
 		dataset_type_array = split_with_mode_begin(num_of_records);

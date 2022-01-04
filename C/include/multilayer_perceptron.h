@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 14:29:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:36:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,18 +196,18 @@ typedef struct s_input_function_attr
 	size_t			name_len;
 }			t_input_function_attr;
 
-typedef enum e_dataset_split_mode
+typedef enum e_split_mode
 {
 	E_BEGIN,
 	E_END,
 	E_RAND
-}			t_dataset_split_mode;
+}			t_split_mode;
 
-typedef struct s_dataset_split_order
+typedef struct s_split_order
 {
-	t_dataset_split_mode	dataset_split_mode;
-	size_t					extra_info;
-}			t_dataset_split_order;
+	t_split_mode	split_mode;
+	size_t			extra_info;
+}			t_split_order;
 
 typedef struct s_input_data
 {
@@ -249,14 +249,14 @@ typedef struct s_weight_bias
 
 typedef struct s_hyper_params
 {
-	size_t						num_of_layers;
-	size_t						*num_of_nodes;
-	size_t						epochs;
-	double						learning_rate;
-	const t_dataset_split_order	*dataset_split_order;
-	t_weight_init_mode			weight_init_mode;
-	t_weight_bias				*bias_weight_init_values;
-	t_activation_type			*activation_types;
+	size_t					num_of_layers;
+	size_t					*num_of_nodes;
+	size_t					epochs;
+	double					learning_rate;
+	const t_split_order		*split_order;
+	t_weight_init_mode		weight_init_mode;
+	t_weight_bias			*bias_weight_init_values;
+	t_activation_type		*activation_types;
 }				t_hyper_params;
 
 typedef struct s_layer_input
@@ -439,8 +439,8 @@ t_prediction			*prediction_init(const int argc,
 							const char *const *const argv);
 t_training				*training_init(const int argc,
 							const char *const *const argv);
-size_t					set_number_of_epochs(
-							const t_argc_argv *const argc_argv);
+size_t					set_num_of_epochs(const t_argc_argv *const argc_argv);
+size_t					set_num_of_layers(const t_argc_argv *const argc_argv);
 double					set_learning_rate(const t_argc_argv *const argc_argv);
 void					prediction_validate(const t_matrix *const observed,
 							const t_vector *const argmax);
@@ -513,13 +513,11 @@ void					layer_remove_input(const t_layer_input **const layer);
 void					layer_remove_hidden(const t_layer_hidden **const layer);
 void					layer_remove_output(const t_layer_output **const layer);
 t_input_data			*input_data_init(const char *const dataset_file,
-							const t_dataset_split_order *dataset_split_order);
+							const t_split_order *split_order);
 void					input_data_remove(t_input_data **input_data);
-const t_dataset_split_order	*set_dataset_split_mode(
-							const t_argc_argv *const argc_argv);
-t_dataset_type			*dataset_split(
-							t_num_of_records *const num_of_records,
-							const t_dataset_split_order *dataset_split_order);
+const t_split_order		*set_split_mode(const t_argc_argv *const argc_argv);
+t_dataset_type			*dataset_split(t_num_of_records *const num_of_records,
+							const t_split_order *split_order);
 void					neural_network_mode_set(void *const *const layers,
 							const t_layer_type *const layer_types,
 							const t_dataset_type dataset_type,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:43:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,45 +28,45 @@ t_weight_init_mode	set_weight_init_mode(const t_argc_argv *const argc_argv)
 	return (weight_init_mode);
 }
 
-static t_dataset_split_mode	set_split_mode(const char mode_char)
+static t_split_mode	set_mode(const char mode_char)
 {
-	t_dataset_split_mode	dataset_split_mode;
+	t_split_mode	split_mode;
 
-	dataset_split_mode = 0;
+	split_mode = 0;
 	if (mode_char == 'B')
-		dataset_split_mode = E_BEGIN;
+		split_mode = E_BEGIN;
 	else if (mode_char == 'E')
-		dataset_split_mode = E_END;
+		split_mode = E_END;
 	else if (mode_char == 'R')
-		dataset_split_mode = E_RAND;
+		split_mode = E_RAND;
 	else
 		FT_LOG_ERROR("Split mode %c is not supported.", mode_char);
-	return (dataset_split_mode);
+	return (split_mode);
 }
 
-const t_dataset_split_order	*set_dataset_split_mode(
-								const t_argc_argv *const argc_argv)
+const t_split_order	*set_split_mode(
+						const t_argc_argv *const argc_argv)
 {
-	const char				*arg;
-	char					*endptr;
-	t_dataset_split_order	*dataset_split_order;
-	char					mode_char;
+	const char			*arg;
+	char				*endptr;
+	t_split_order		*split_order;
+	char				mode_char;
 
-	dataset_split_order = ft_memalloc(sizeof(*dataset_split_order));
+	split_order = ft_memalloc(sizeof(*split_order));
 	arg = argc_argv->argv[argc_argv->i];
 	mode_char = *arg;
 	arg++;
-	dataset_split_order->dataset_split_mode = set_split_mode(mode_char);
+	split_order->split_mode = set_mode(mode_char);
 	errno = 0;
-	dataset_split_order->extra_info = strtoul(arg, &endptr, 10);
+	split_order->extra_info = strtoul(arg, &endptr, 10);
 	if (errno != 0 || *endptr != '\0')
 		FT_LOG_ERROR("Value of param -s is not valid");
-	else if (dataset_split_order->extra_info > 100)
+	else if (split_order->extra_info > 100)
 		FT_LOG_ERROR("Maximum value for split mode (-s) is 100");
-	return (dataset_split_order);
+	return (split_order);
 }
 
-size_t	set_number_of_epochs(const t_argc_argv *const argc_argv)
+size_t	set_num_of_epochs(const t_argc_argv *const argc_argv)
 {
 	const char		*arg;
 	char			*endptr;
@@ -83,6 +83,24 @@ size_t	set_number_of_epochs(const t_argc_argv *const argc_argv)
 	if (epochs <= 0)
 		FT_LOG_ERROR("Minimum value for epochs (-E) is >0");
 	return (epochs);
+}
+
+size_t	set_num_of_layers(const t_argc_argv *const argc_argv)
+{
+	const char		*arg;
+	char			*endptr;
+	size_t			num_of_layers;
+
+	errno = 0;
+	arg = argc_argv->argv[argc_argv->i];
+	num_of_layers = ft_strtoi(arg, &endptr, 10);
+	if (errno != 0 || *endptr != '\0')
+		FT_LOG_ERROR("Value of param -E is not valid");
+	if (num_of_layers > 5)
+		FT_LOG_ERROR("Maximum number of layers (-M) is 5");
+	if (num_of_layers < 2)
+		FT_LOG_ERROR("Minimum number of layers (-M) is 2");
+	return (num_of_layers);
 }
 
 double	set_learning_rate(const t_argc_argv *const argc_argv)
@@ -158,12 +176,13 @@ void	send_hyper_params_to_database(
 	if (influxdb_connection)
 	{
 		learning_rate = hyper_params->learning_rate;
-		percentage = hyper_params->dataset_split_order->extra_info;
+		percentage = hyper_params->split_order->extra_info;
 		total_len = 0;
 		total_len += influxdb_measurement(&influxdb_line.measurement,
 				"dataset_train");
 		total_len += influxdb_tags_add(&influxdb_line.tag_set);
-		total_len += influxdb_fields_add(&influxdb_line.field_set, learning_rate, percentage);
+		total_len += influxdb_fields_add(&influxdb_line.field_set,
+				learning_rate, percentage);
 		total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
 		line = elements_merge(&influxdb_line, total_len);
 		influxdb_element_remove(&influxdb_line);

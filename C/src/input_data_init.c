@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:38:48 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/16 12:31:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:44:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_input_function_attr	*input_functions_init(
 
 t_input_data	*input_data_init(
 							const char *const dataset_file,
-							const t_dataset_split_order *dataset_split_order)
+							const t_split_order *split_order)
 {
 	t_input_data	*input_data;
 	t_file_attr		*file_attr;
@@ -75,7 +75,7 @@ t_input_data	*input_data_init(
 				&input_data->num_of_input_functions);
 		input_data->num_of_output_functions = 2;
 		input_data->dataset_type_array
-			= dataset_split(&input_data->num_of_records, dataset_split_order);
+			= dataset_split(&input_data->num_of_records, split_order);
 		input_data->dataset_array = dataset_init(input_data);
 	}
 	file_attr_remove(&file_attr);

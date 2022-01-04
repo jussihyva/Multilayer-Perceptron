@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:46:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 16:13:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:09:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	*arg_init(t_argc_argv *argc_argv)
 	cmd_args->logging_data = ft_event_logging_init(DEFAULT_LOGGING_LEVEL);
 	cmd_args->hyper_params.epochs = NUM_OF_EPOCH;
 	cmd_args->hyper_params.learning_rate = LEARNING_RATE;
+	cmd_args->hyper_params.num_of_layers = NUM_OF_LAYERS;
 	program_folder = dirname(((char **)argc_argv->argv)[0]);
 	cmd_args->weight_bias_file = ft_strjoin(program_folder, BIAS_WEIGHT_FILE);
 	return (cmd_args);
