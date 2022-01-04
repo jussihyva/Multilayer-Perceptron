@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 14:29:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 12:38:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,11 @@ static void	linear_function(
 		{
 			function_id = -1;
 			while (++function_id < a_input->size.rows)
-			{
 				table_z[node_id][example_id]
 					+= ((double **)weight_bias->weight
 						->table)[node_id][function_id]
 					* ((double **)a_input
 						->table)[function_id][example_id];
-			}
 		}
 		add_bias_value(example_id, z, weight_bias->bias);
 	}

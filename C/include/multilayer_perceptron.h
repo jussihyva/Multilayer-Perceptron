@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 17:27:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 12:48:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ typedef struct s_hyper_params
 	const t_dataset_split_order	*dataset_split_order;
 	t_weight_init_mode			weight_init_mode;
 	t_weight_bias				*bias_weight_init_values;
+	t_activation_type			*activation_types;
 }				t_hyper_params;
 
 typedef struct s_layer_input

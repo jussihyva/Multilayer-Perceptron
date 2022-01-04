@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 10:37:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/04 12:48:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,20 @@ static size_t	*get_number_of_nodes_default(const size_t num_of_layers)
 	return (num_of_nodes);
 }
 
+static t_activation_type	*get_activation_types(const size_t num_of_layers)
+{
+	const t_layer_profile	*layer_profile;
+	t_activation_type		*activation_types;
+	size_t					i;
+
+	activation_types = ft_memalloc(sizeof(*activation_types) * num_of_layers);
+	layer_profile = g_layer_attrs[num_of_layers];
+	i = -1;
+	while (++i < num_of_layers)
+		activation_types[i] = layer_profile[i].activation_type;
+	return (activation_types);
+}
+
 static t_weight_bias	*get_bias_weight_init_values(
 							const t_file_attr *const file_attr,
 							const size_t num_of_layers,
@@ -165,6 +179,8 @@ t_hyper_params	*hyper_params_init(
 		hyper_params->num_of_nodes
 			= get_number_of_nodes_default(hyper_params->num_of_layers);
 	}
+	hyper_params->activation_types
+		= get_activation_types(hyper_params->num_of_layers);
 	hyper_params->dataset_split_order = input_hyper_params->dataset_split_order;
 	hyper_params->epochs = input_hyper_params->epochs;
 	hyper_params->learning_rate = input_hyper_params->learning_rate;

@@ -21,7 +21,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 8,
+	"id": 7,
 	"links": [],
 	"panels": [
 	  {
@@ -72,8 +72,8 @@
 			"textSize": 1
 		  },
 		  "yAxisExtents": {
-			"min": null,
-			"max": null
+			"min": 0,
+			"max": 1
 		  },
 		  "yAxisTitle": {
 			"text": "",
@@ -325,8 +325,8 @@
 			"textSize": 1
 		  },
 		  "yAxisExtents": {
-			"min": null,
-			"max": null
+			"min": 0,
+			"max": 1
 		  },
 		  "yAxisTitle": {
 			"text": "",
