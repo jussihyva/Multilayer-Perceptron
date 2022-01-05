@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 12:34:10 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/04 17:40:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 22:28:51 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_training	*training_init(const int argc, const char *const *const argv)
 	training->cmd_args = ft_arg_parser(training->arg_parser);
 	cmd_args = training->cmd_args;
 	training->input_data = input_data_init(cmd_args->dataset_file,
-			training->cmd_args->hyper_params.split_order);
+			&training->cmd_args->hyper_params.split_order);
 	training->grad_descent_attr
 		= grad_descent_attr_initialize(training->input_data,
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);

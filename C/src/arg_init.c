@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:46:28 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 17:09:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 22:30:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	*arg_init_train(t_argc_argv *argc_argv)
 
 	cmd_args = arg_init(argc_argv);
 	cmd_args->hyper_params.weight_init_mode = E_ZERO;
+	cmd_args->hyper_params.split_order.split_mode = E_BEGIN;
+	cmd_args->hyper_params.split_order.extra_info = 70;
 	return (cmd_args);
 }
 

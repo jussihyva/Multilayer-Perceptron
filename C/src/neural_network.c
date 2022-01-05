@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:45:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 23:22:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ static void	layers_remove(
 	while (++i < num_of_layers)
 	{
 		if (layer_types[i] == E_LAYER_INPUT)
-			layer_remove_input((const t_layer_input **const)&(*layers)[i]);
+			layer_remove_input((t_layer_input **)&(*layers)[i]);
 		else if (layer_types[i] == E_LAYER_HIDDEN)
-			layer_remove_hidden((const t_layer_hidden **const)&(*layers)[i]);
+			layer_remove_hidden((t_layer_hidden **)&(*layers)[i]);
 		else if (layer_types[i] == E_LAYER_OUTPUT)
-			layer_remove_output((const t_layer_output **const)&(*layers)[i]);
+			layer_remove_output((t_layer_output **)&(*layers)[i]);
 	}
 	ft_memdel((void **)layers);
 	return ;

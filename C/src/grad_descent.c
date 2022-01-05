@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 13:07:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 23:35:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	grad_descent_attr_remove(
 			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
 		neural_network_remove(&(*grad_descent_attr)->neural_network,
 			(*grad_descent_attr)->hyper_params->num_of_layers);
+		hyper_params_remove((t_hyper_params **)&(*grad_descent_attr)
+			->hyper_params);
 		ft_memdel((void **)grad_descent_attr);
 	}
 	return ;

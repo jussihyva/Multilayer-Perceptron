@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ml_vector_remove.c                                 :+:      :+:    :+:   */
+/*   hyper_params_remove.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 19:52:18 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 00:20:08 by jkauppi          ###   ########.fr       */
+/*   Created: 2022/01/05 23:30:34 by jkauppi           #+#    #+#             */
+/*   Updated: 2022/01/06 00:21:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libml.h"
+#include "multilayer_perceptron.h"
 
-void	ml_vector_remove(t_vector **vector)
+void	hyper_params_remove(t_hyper_params **hyper_params)
 {
-	ft_memdel(&(*vector)->data);
-	ft_memdel((void **)&(*vector)->name_array);
-	ft_memdel((void **)vector);
+	ft_memdel((void **)&(*hyper_params)->activation_types);
+	ft_memdel((void **)&(*hyper_params)->num_of_nodes);
+	ft_memdel((void **)&(*hyper_params)->bias_weight_init_values);
+	ft_memdel((void **)hyper_params);
 	return ;
 }

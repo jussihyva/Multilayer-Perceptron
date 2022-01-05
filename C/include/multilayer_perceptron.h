@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 17:36:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 23:32:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ typedef struct s_hyper_params
 	size_t					*num_of_nodes;
 	size_t					epochs;
 	double					learning_rate;
-	const t_split_order		*split_order;
+	t_split_order			split_order;
 	t_weight_init_mode		weight_init_mode;
 	t_weight_bias			*bias_weight_init_values;
 	t_activation_type		*activation_types;
@@ -509,13 +509,14 @@ void					bias_weight_init(
 void					layer_print_input(const t_layer_input *const layer);
 void					layer_print_hidden(const t_layer_hidden *const layer);
 void					layer_print_output(const t_layer_output *const layer);
-void					layer_remove_input(const t_layer_input **const layer);
-void					layer_remove_hidden(const t_layer_hidden **const layer);
-void					layer_remove_output(const t_layer_output **const layer);
+void					layer_remove_input(t_layer_input **layer);
+void					layer_remove_hidden(t_layer_hidden **layer);
+void					layer_remove_output(t_layer_output **layer);
 t_input_data			*input_data_init(const char *const dataset_file,
 							const t_split_order *split_order);
 void					input_data_remove(t_input_data **input_data);
-const t_split_order		*set_split_mode(const t_argc_argv *const argc_argv);
+const t_split_order		*set_split_mode(const t_argc_argv *const argc_argv,
+							t_split_order *const split_order);
 t_dataset_type			*dataset_split(t_num_of_records *const num_of_records,
 							const t_split_order *split_order);
 void					neural_network_mode_set(void *const *const layers,
@@ -540,5 +541,6 @@ t_hyper_params			*hyper_params_init(
 							const size_t num_of_output_functions);
 t_layer_type			set_layer_type(const size_t id,
 							const size_t num_of_layers);
+void					hyper_params_remove(t_hyper_params **hyper_params);
 
 #endif

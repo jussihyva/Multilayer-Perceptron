@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 17:37:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 22:28:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	input_param_save_short(
 	else if (opt == 'A')
 		hyper_params->learning_rate = set_learning_rate(arg_parser->argc_argv);
 	else if (opt == 's')
-		hyper_params->split_order = set_split_mode(arg_parser->argc_argv);
+		set_split_mode(arg_parser->argc_argv, &hyper_params->split_order);
 	else if (opt == 'w')
 		hyper_params->weight_init_mode = set_weight_init_mode(
 				arg_parser->argc_argv);

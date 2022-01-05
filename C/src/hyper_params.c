@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/04 17:43:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/05 22:29:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@ static t_split_mode	set_mode(const char mode_char)
 }
 
 const t_split_order	*set_split_mode(
-						const t_argc_argv *const argc_argv)
+						const t_argc_argv *const argc_argv,
+						t_split_order *const split_order)
 {
 	const char			*arg;
 	char				*endptr;
-	t_split_order		*split_order;
 	char				mode_char;
 
-	split_order = ft_memalloc(sizeof(*split_order));
 	arg = argc_argv->argv[argc_argv->i];
 	mode_char = *arg;
 	arg++;
@@ -176,7 +175,7 @@ void	send_hyper_params_to_database(
 	if (influxdb_connection)
 	{
 		learning_rate = hyper_params->learning_rate;
-		percentage = hyper_params->split_order->extra_info;
+		percentage = hyper_params->split_order.extra_info;
 		total_len = 0;
 		total_len += influxdb_measurement(&influxdb_line.measurement,
 				"dataset_train");
