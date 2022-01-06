@@ -6,39 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 08:21:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 08:47:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 21:12:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-static t_bool	read_and_validate(
-							const char *string,
-							const t_data_type data_type,
-							void *value)
-{
-	t_bool		validation_result;
-	char		*endptr;
-
-	validation_result = E_TRUE;
-	if (data_type == E_SIZE_T)
-	{
-		errno = 0;
-		*(size_t *)value = (size_t)ft_strtoi(string, &endptr, 10);
-		if (errno != 0 || *endptr != '\0')
-			validation_result = E_FALSE;
-	}
-	else if (data_type == E_DOUBLE)
-	{
-		errno = 0;
-		*(double *)value = strtod(string, &endptr);
-		if (errno != 0 || *endptr != '\0')
-			validation_result = E_FALSE;
-	}
-	else
-		validation_result = E_FALSE;
-	return (validation_result);
-}
 
 static size_t	get_number_of_layers(const t_file_attr *const file_attr)
 {
@@ -46,7 +18,7 @@ static size_t	get_number_of_layers(const t_file_attr *const file_attr)
 	const char *const	*row;
 
 	row = file_attr->row_array[0];
-	if (!read_and_validate(row[0], E_SIZE_T, &num_of_layers))
+	if (!string_convert_and_validate(row[0], E_SIZE_T, &num_of_layers))
 		FT_LOG_ERROR("Contnet of file %s is not valid.",
 			file_attr->file_path);
 	return (num_of_layers);
@@ -72,7 +44,7 @@ static size_t	*get_number_of_nodes(
 	{
 		row_id = layer_id;
 		row = file_attr->row_array[row_id];
-		if (!read_and_validate(row[0], E_SIZE_T, &num_of_nodes[layer_id]))
+		if (!string_convert_and_validate(row[0], E_SIZE_T, &num_of_nodes[layer_id]))
 			FT_LOG_ERROR("Contnet of file %s is not valid.",
 				file_attr->file_path);
 	}
@@ -89,10 +61,7 @@ static t_weight_bias	*get_bias_weight_init_values(
 	t_size_2d			size;
 	size_t				row_id;
 	size_t				layer_id;
-	const char *const	*row;
 	t_weight_bias		*bias_weight;
-	double				**weight_table;
-	double				*bias_data;
 
 	row_id = num_of_layers - 2 + 1;
 	layer_id = 1;
@@ -105,26 +74,7 @@ static t_weight_bias	*get_bias_weight_init_values(
 		size.rows = num_of_nodes[layer_id];
 		size.cols = num_of_nodes[layer_id - 1];
 		bias_weight->weight = ml_matrix_create(size);
-
-
-		bias_data = (double *)bias_weight->bias->data;
-		weight_table = (double **)bias_weight->weight->table;
-		size.rows = -1;
-		while (++size.rows < num_of_nodes[layer_id])
-		{
-			row = file_attr->row_array[row_id];
-			size.cols = -1;
-			read_and_validate(row[size.cols + 1], E_DOUBLE,
-				&bias_data[size.rows]);
-			while (++size.cols < num_of_nodes[layer_id - 1])
-				read_and_validate(row[size.cols + 1], E_DOUBLE,
-					&weight_table[size.rows][size.cols]);
-			row_id++;
-		}
-
-		// bias_weight_values_read(bias_weight);
-
-
+		bias_weight_values_read(bias_weight, file_attr->row_array, row_id);
 		layer_id++;
 	}
 	return (bias_weight_init_values);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 20:13:48 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/02 12:32:14 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 21:22:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ static void	set_input_values_to_dataset(
 						const t_matrix *const train_x,
 						const t_matrix *const test_x)
 {
-	size_t			col_id_train;
-	size_t			col_id_test;
-	const char		*const *record;
-	size_t			record_id;
+	size_t				col_id_train;
+	size_t				col_id_test;
+	const char *const	*record;
+	size_t				record_id;
 
 	col_id_train = 0;
 	col_id_test = 0;
@@ -88,10 +88,10 @@ static void	set_output_values_to_dataset(
 						const t_matrix *const train_y,
 						const t_matrix *const test_y)
 {
-	size_t			col_id_train;
-	size_t			col_id_test;
-	const char		*const *record;
-	size_t			record_id;
+	size_t				col_id_train;
+	size_t				col_id_test;
+	const char *const	*record;
+	size_t				record_id;
 
 	col_id_train = 0;
 	col_id_test = 0;
@@ -104,7 +104,6 @@ static void	set_output_values_to_dataset(
 		else
 			add_y_values_to_dataset(test_y, col_id_test++, record);
 	}
-	// y_matrix_row_names(&dataset->y->row_names);
 	return ;
 }
 
