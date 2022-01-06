@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 20:13:48 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/06 21:22:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 22:20:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,64 +57,29 @@ static void	add_y_values_to_dataset(
 	return ;
 }
 
-static void	set_input_values_to_dataset(
-						const t_input_data *const input_data,
-						const t_matrix *const train_x,
-						const t_matrix *const test_x)
-{
-	size_t				col_id_train;
-	size_t				col_id_test;
-	const char *const	*record;
-	size_t				record_id;
-
-	col_id_train = 0;
-	col_id_test = 0;
-	record_id = -1;
-	while (++record_id < input_data->num_of_records.total)
-	{
-		record = input_data->input_record_array[record_id];
-		if (input_data->dataset_type_array[record_id] == E_TRAIN)
-			add_x_values_to_dataset(train_x, input_data, col_id_train++,
-				record);
-		else
-			add_x_values_to_dataset(test_x, input_data, col_id_test++,
-				record);
-	}
-	return ;
-}
-
-static void	set_output_values_to_dataset(
-						const t_input_data *const input_data,
-						const t_matrix *const train_y,
-						const t_matrix *const test_y)
-{
-	size_t				col_id_train;
-	size_t				col_id_test;
-	const char *const	*record;
-	size_t				record_id;
-
-	col_id_train = 0;
-	col_id_test = 0;
-	record_id = -1;
-	while (++record_id < input_data->num_of_records.total)
-	{
-		record = input_data->input_record_array[record_id];
-		if (input_data->dataset_type_array[record_id] == E_TRAIN)
-			add_y_values_to_dataset(train_y, col_id_train++, record);
-		else
-			add_y_values_to_dataset(test_y, col_id_test++, record);
-	}
-	return ;
-}
-
 static void	set_values_to_dataset(
 					const t_input_data *const input_data,
 					t_dataset **dataset_array)
 {
-	set_input_values_to_dataset(input_data, dataset_array[E_TRAIN]->x,
-		dataset_array[E_TEST]->x);
-	set_output_values_to_dataset(input_data, dataset_array[E_TRAIN]->y,
-		dataset_array[E_TEST]->y);
+	size_t				col_id[2];
+	const char *const	*record;
+	size_t				record_id;
+	t_dataset_type		dataset_type;
+	const t_dataset		*dataset;
+
+	col_id[0] = 0;
+	col_id[1] = 0;
+	record_id = -1;
+	while (++record_id < input_data->num_of_records.total)
+	{
+		dataset_type = input_data->dataset_type_array[record_id];
+		dataset = dataset_array[(int)dataset_type];
+		record = input_data->input_record_array[record_id];
+		add_x_values_to_dataset(dataset->x, input_data, col_id[dataset_type],
+			record);
+		add_y_values_to_dataset(dataset->y, col_id[dataset_type], record);
+		col_id[dataset_type]++;
+	}
 	return ;
 }
 
