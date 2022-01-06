@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 21:10:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 21:48:54 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -550,7 +550,7 @@ void					get_hyper_params_from_file(
 void					bias_weight_values_read(
 							t_weight_bias *const bias_weight,
 							const char *const *const *const row_array,
-							size_t row_id);
+							size_t *const row_id);
 t_bool					string_convert_and_validate(
 							const char *string,
 							const t_data_type data_type,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 08:21:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 21:12:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 21:51:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static size_t	*get_number_of_nodes(
 	{
 		row_id = layer_id;
 		row = file_attr->row_array[row_id];
-		if (!string_convert_and_validate(row[0], E_SIZE_T, &num_of_nodes[layer_id]))
+		if (!string_convert_and_validate(row[0], E_SIZE_T,
+				&num_of_nodes[layer_id]))
 			FT_LOG_ERROR("Contnet of file %s is not valid.",
 				file_attr->file_path);
 	}
@@ -74,7 +75,7 @@ static t_weight_bias	*get_bias_weight_init_values(
 		size.rows = num_of_nodes[layer_id];
 		size.cols = num_of_nodes[layer_id - 1];
 		bias_weight->weight = ml_matrix_create(size);
-		bias_weight_values_read(bias_weight, file_attr->row_array, row_id);
+		bias_weight_values_read(bias_weight, file_attr->row_array, &row_id);
 		layer_id++;
 	}
 	return (bias_weight_init_values);
