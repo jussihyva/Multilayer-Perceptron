@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/05 23:32:25 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/06 08:23:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -542,5 +542,10 @@ t_hyper_params			*hyper_params_init(
 t_layer_type			set_layer_type(const size_t id,
 							const size_t num_of_layers);
 void					hyper_params_remove(t_hyper_params **hyper_params);
+void					get_hyper_params_from_file(
+							const char *const weight_bias_file,
+							const size_t num_of_input_functions,
+							const size_t num_of_output_functions,
+							t_hyper_params	*hyper_params);
 
 #endif
