@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/04 11:15:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 10:18:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,35 @@ void	derivative_b(
 		while (++example_id < derivative_z->size.cols)
 			data_b[node_id] += table_z[node_id][example_id];
 		data_b[node_id] /= derivative_z->size.cols;
+	}
+	return ;
+}
+
+void	derivative_z(
+				const t_matrix *const d_z,
+				const t_layer_hidden *const layer)
+{
+	size_t				example_id;
+	size_t				node_id;
+	size_t				function_id;
+
+	example_id = -1;
+	while (++example_id < d_z->size.cols)
+	{
+		node_id = -1;
+		while (++node_id < layer->num_of_nodes)
+		{
+			function_id = -1;
+			while (++function_id < layer->weight_transposed->size.cols)
+			{
+				((double **)layer->d_z->table)[node_id][example_id]
+					+= ((double **)layer->weight_transposed
+						->table)[node_id][function_id]
+					* ((double **)d_z->table)[function_id][example_id];
+			}
+			((double **)layer->d_z->table)[node_id][example_id]
+				*= ((double **)layer->g_prime->table)[node_id][example_id];
+		}
 	}
 	return ;
 }

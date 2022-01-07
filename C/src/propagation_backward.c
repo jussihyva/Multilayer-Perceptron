@@ -6,43 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 18:23:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 16:40:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 11:12:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-static void	layer_hidden_print(const t_layer_hidden *const layer)
-{
-	const t_weight_bias		*weight_bias;
-	const t_weight_bias		*d_weight_bias;
-
-	weight_bias = &layer->weight_bias;
-	d_weight_bias = &layer->d_weight_bias;
-	ft_printf("LAYER: %lu\n", layer->id);
-	ml_matrix_print(" (g') G_prime", layer->g_prime);
-	ml_matrix_print(" (W[l + 1]) Weight transposed", layer->weight_transposed);
-	ml_matrix_print(" (dZ) Derivative Z", layer->d_z);
-	ml_matrix_print(" (dW) Derivative Weight", d_weight_bias->weight);
-	ml_matrix_print(" (W) Weight", weight_bias->weight);
-	ml_vector_print(" (B) Bias", weight_bias->bias);
-	return ;
-}
-
-static void	layer_output_print(const t_layer_output *const layer)
-{
-	const t_weight_bias		*weight_bias;
-	const t_weight_bias		*d_weight_bias;
-
-	weight_bias = &layer->weight_bias;
-	d_weight_bias = &layer->d_weight_bias;
-	ft_printf("LAYER: %lu\n", layer->id);
-	ml_matrix_print(" (dZ) Derivative Z", layer->d_z);
-	ml_matrix_print(" (dW) Derivative Weight", d_weight_bias->weight);
-	ml_matrix_print(" (W) Weight", weight_bias->weight);
-	ml_vector_print(" (B) Bias", weight_bias->bias);
-	return ;
-}
 
 static void	weight_bias_update(const size_t layer_id,
 						const t_weight_bias *const weight_bias,
@@ -57,11 +25,6 @@ static void	weight_bias_update(const size_t layer_id,
 	return ;
 }
 
-static void	propagation_backward_input(void)
-{
-	return ;
-}
-
 static void	propagation_backward_hidden(
 								const t_layer_hidden *const layer,
 								const t_matrix *const activation_input,
@@ -69,38 +32,18 @@ static void	propagation_backward_hidden(
 								const t_matrix *const d_z)
 {
 	size_t				layer_id;
-	size_t				example_id;
-	size_t				node_id;
-	size_t				function_id;
 
 	layer_id = layer->id;
 	ml_matrix_reset(layer->d_z);
 	g_prime(layer->z, layer->a, layer->g_prime, layer->activation_type);
 	ml_transpose(weight, layer->weight_transposed);
-	example_id = -1;
-	while (++example_id < d_z->size.cols)
-	{
-		node_id = -1;
-		while (++node_id < layer->num_of_nodes)
-		{
-			function_id = -1;
-			while (++function_id < layer->weight_transposed->size.cols)
-			{
-				((double **)layer->d_z->table)[node_id][example_id]
-					+= ((double **)layer->weight_transposed
-						->table)[node_id][function_id]
-					* ((double **)d_z->table)[function_id][example_id];
-			}
-			((double **)layer->d_z->table)[node_id][example_id]
-				*= ((double **)layer->g_prime->table)[node_id][example_id];
-		}
-	}
+	derivative_z(d_z, layer);
 	derivative_w(activation_input, layer->d_z, layer->d_weight_bias.weight);
 	derivative_b(layer->d_z, layer->d_weight_bias.bias);
 	weight_bias_update(layer_id, &layer->weight_bias, &layer->d_weight_bias,
 		layer->hyper_params);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_hidden_print(layer);
+		layer_print_hidden_b(layer);
 	return ;
 }
 
@@ -118,28 +61,8 @@ static void	propagation_backward_output(
 	weight_bias_update(layer_id, &layer->weight_bias, &layer->d_weight_bias,
 		layer->hyper_params);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_output_print(layer);
+		layer_print_output_b(layer);
 	return ;
-}
-
-const t_matrix	*get_activation_input(
-							void *const *const layers,
-							const t_layer_type *const layer_types,
-							const size_t layer_id)
-{
-	size_t				prev_layer_id;
-	const t_matrix		*activation_input;
-
-	activation_input = NULL;
-	if (layer_id)
-	{
-		prev_layer_id = layer_id - 1;
-		if (layer_types[prev_layer_id] == E_LAYER_HIDDEN)
-			activation_input = ((t_layer_hidden *)layers[prev_layer_id])->a;
-		else
-			activation_input = ((t_layer_input *)layers[prev_layer_id])->a;
-	}
-	return (activation_input);
 }
 
 static void	get_previous_weight_and_d_z(
@@ -180,14 +103,15 @@ void	propagation_backward(
 	const t_matrix		*activation_input;
 	const t_matrix		*weight;
 	const t_matrix		*d_z;
+	size_t				layer_id_prev;
 
 	i = num_of_layers;
-	while (i--)
+	while (--i)
 	{
-		activation_input = get_activation_input(layers, layer_types, i);
-		if (layer_types[i] == E_LAYER_INPUT)
-			propagation_backward_input();
-		else if (layer_types[i] == E_LAYER_OUTPUT)
+		layer_id_prev = i - 1;
+		activation_input = get_activation_input(layers[layer_id_prev],
+				layer_types[layer_id_prev]);
+		if (layer_types[i] == E_LAYER_OUTPUT)
 			propagation_backward_output(layers[i], activation_input);
 		else if (layer_types[i] == E_LAYER_HIDDEN)
 		{

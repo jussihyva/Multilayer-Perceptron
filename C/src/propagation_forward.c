@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 12:04:22 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 15:54:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 11:07:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	propagation_forward_hidden(
 	else if (layer->activation_type == E_RELU)
 		ml_relu(layer->z, layer->a);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_print_hidden(layer);
+		layer_print_hidden_f(layer);
 	return ;
 }
 
@@ -51,7 +51,7 @@ static void	propagation_forward_output(
 		ml_relu(layer->z, layer->y_hat);
 	ml_matrix_cost(layer->y, layer->y_hat, layer->cost[layer->dataset_type]);
 	if (ft_logging_level() <= LOG_DEBUG)
-		layer_print_output(layer);
+		layer_print_output_f(layer);
 	return ;
 }
 
@@ -62,17 +62,23 @@ void	propagation_forward(
 {
 	size_t				i;
 	const t_matrix		*activation_input;
+	size_t				layer_id_prev;
 
 	i = -1;
 	while (++i < num_of_layers)
 	{
-		activation_input = get_activation_input(layers, layer_types, i);
 		if (layer_types[i] == E_LAYER_INPUT)
 			propagation_forward_input(layers[i]);
-		else if (layer_types[i] == E_LAYER_OUTPUT)
-			propagation_forward_output(layers[i], activation_input);
 		else
-			propagation_forward_hidden(layers[i], activation_input);
+		{
+			layer_id_prev = i - 1;
+			activation_input = get_activation_input(layers[layer_id_prev],
+					layer_types[layer_id_prev]);
+			if (layer_types[i] == E_LAYER_OUTPUT)
+				propagation_forward_output(layers[i], activation_input);
+			else
+				propagation_forward_hidden(layers[i], activation_input);
+		}
 	}
 	return ;
 }

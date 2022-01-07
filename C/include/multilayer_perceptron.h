@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 21:48:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 11:04:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,9 +454,8 @@ void					g_prime(
 							const t_matrix *const g_prime,
 							const t_activation_type activation_type);
 const t_matrix			*get_activation_input(
-							void *const *const layers,
-							const t_layer_type *const layer_types,
-							const size_t layer_id);
+							void *const layer,
+							const t_layer_type layer_type);
 void					propagation_forward(void *const *const layers,
 							const t_layer_type *const layer_types,
 							const size_t num_of_layers);
@@ -507,8 +506,10 @@ void					bias_weight_init(
 							t_name *const row_name_array,
 							const t_weight_init_mode weight_init_mode);
 void					layer_print_input(const t_layer_input *const layer);
-void					layer_print_hidden(const t_layer_hidden *const layer);
-void					layer_print_output(const t_layer_output *const layer);
+void					layer_print_hidden_f(const t_layer_hidden *const layer);
+void					layer_print_hidden_b(const t_layer_hidden *const layer);
+void					layer_print_output_f(const t_layer_output *const layer);
+void					layer_print_output_b(const t_layer_output *const layer);
 void					layer_remove_input(t_layer_input **layer);
 void					layer_remove_hidden(t_layer_hidden **layer);
 void					layer_remove_output(t_layer_output **layer);
@@ -555,5 +556,8 @@ t_bool					string_convert_and_validate(
 							const char *string,
 							const t_data_type data_type,
 							void *value);
+void					derivative_z(
+							const t_matrix *const d_z,
+							const t_layer_hidden *const layer);
 
 #endif
