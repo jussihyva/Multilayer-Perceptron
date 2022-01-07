@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 11:23:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 23:09:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,7 +409,7 @@ void					linear_function_output(
 							const t_layer_output *const layer,
 							const t_matrix *const activation_input);
 t_neural_network		*neural_network_init(
-							const t_dataset *const *const dataset_array,
+							t_dataset **dataset_array,
 							const t_hyper_params *const hyper_params);
 void					grad_descent_attr_remove(
 							t_grad_descent_attr **grad_descent_attr);
@@ -507,7 +507,7 @@ void					neural_network_remove(
 void					*layer_init(
 							const size_t i,
 							const t_layer_type layer_type,
-							const t_dataset *const *const dataset_array,
+							t_dataset **dataset_array,
 							const t_hyper_params *const hyper_params);
 void					bias_weight_init(
 							const t_size_2d size,
@@ -529,8 +529,8 @@ const t_split_order		*set_split_mode(const t_argc_argv *const argc_argv,
 							t_split_order *const split_order);
 t_dataset_type			*dataset_split(t_num_of_records *const num_of_records,
 							const t_split_order *split_order);
-void					neural_network_mode_set(void *const *const layers,
-							const t_layer_type *const layer_types,
+void					neural_network_mode_set(
+							const t_neural_network *const neural_network,
 							const t_dataset_type dataset_type,
 							const size_t num_of_layers);
 t_weight_init_mode		set_weight_init_mode(

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 12:55:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 22:54:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_layer_input	*layer_init_input(
 					const size_t id,
-					const t_dataset *const *const dataset_array,
+					t_dataset **dataset_array,
 					const t_hyper_params *const hyper_params)
 {
 	t_layer_input		*layer;
@@ -70,7 +70,7 @@ static t_layer_hidden	*layer_init_hidden(
 
 static t_layer_output	*layer_init_output(
 								const size_t id,
-								const t_dataset *const *const dataset_array,
+								t_dataset **dataset_array,
 								const size_t *num_of_examples,
 								const t_hyper_params *const hyper_params)
 {
@@ -105,7 +105,7 @@ static t_layer_output	*layer_init_output(
 void	*layer_init(
 					const size_t i,
 					const t_layer_type layer_type,
-					const t_dataset *const *const dataset_array,
+					t_dataset **dataset_array,
 					const t_hyper_params *const hyper_params)
 {
 	void	*layer;

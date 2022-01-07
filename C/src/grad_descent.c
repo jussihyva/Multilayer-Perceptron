@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/05 23:35:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 23:11:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 				input_data->num_of_output_functions);
 		num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
 		grad_descent_attr->neural_network
-			= neural_network_init((const t_dataset *const *)
-				input_data->dataset_array, grad_descent_attr->hyper_params);
+			= neural_network_init(input_data->dataset_array,
+				grad_descent_attr->hyper_params);
 		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
 		layer = grad_descent_attr->neural_network->layers[num_of_layers - 1];
 		i.rows = layer->num_of_nodes;
@@ -75,16 +75,14 @@ void	grad_descent(
 	iter_cnt = 0;
 	while (++iter_cnt <= hyper_params->epochs)
 	{
-		neural_network_mode_set(layers, neural_network->layer_types, E_TRAIN,
-			num_of_layers);
+		neural_network_mode_set(neural_network, E_TRAIN, num_of_layers);
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		propagation_backward(layers, neural_network->layer_types,
 			num_of_layers);
 		send_iteration_result_to_database(influxdb_connection, layer_output,
 			iter_cnt);
 		send_hyper_params_to_database(influxdb_connection, hyper_params);
-		neural_network_mode_set(layers, neural_network->layer_types, E_TEST,
-			num_of_layers);
+		neural_network_mode_set(neural_network, E_TEST, num_of_layers);
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
 			cost_values_print(iter_cnt, hyper_params->epochs,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:10:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 23:17:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static char	*backslash_chars_add(
 	return (new_string);
 }
 
-static size_t	influxdb_tags_add(const char **const tags_set, const size_t dataset_type)
+static size_t	influxdb_tags_add(
+						const char **const tags_set,
+						const size_t dataset_type)
 {
 	t_queue		*string_queue;
 	char		*tag_value_pair;
@@ -129,8 +131,7 @@ void	send_iteration_result_to_database(
 		i = -1;
 		while (++i < NUM_OF_DATASETS)
 		{
-			total_len = 0;
-			total_len += influxdb_measurement(&influxdb_line.measurement,
+			total_len = influxdb_measurement(&influxdb_line.measurement,
 					"dataset_train");
 			total_len += influxdb_tags_add(&influxdb_line.tag_set, i);
 			total_len += influxdb_fields_add(&influxdb_line.field_set, iter_cnt,

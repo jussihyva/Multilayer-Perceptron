@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/05 23:22:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 23:10:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	**layers_init(
 							const t_layer_type *const layer_types,
-							const t_dataset *const *const dataset_array,
+							t_dataset **dataset_array,
 							const t_hyper_params *const hyper_params)
 {
 	size_t		i;
@@ -40,7 +40,7 @@ static const t_layer_type	*layer_types_init(const size_t num_of_layers)
 }
 
 t_neural_network	*neural_network_init(
-								const t_dataset *const *const dataset_array,
+								t_dataset **dataset_array,
 								const t_hyper_params *const hyper_params)
 {
 	t_neural_network	*neural_network;
@@ -49,6 +49,11 @@ t_neural_network	*neural_network_init(
 	neural_network->layer_types = layer_types_init(hyper_params->num_of_layers);
 	neural_network->layers = layers_init(neural_network->layer_types,
 			dataset_array, hyper_params);
+	if (hyper_params->weight_init_mode == E_TRAINED)
+		bias_weight_values_set(neural_network->layers,
+			neural_network->layer_types, hyper_params);
+	neural_network_mode_set(neural_network, E_TRAIN,
+		hyper_params->num_of_layers);
 	return (neural_network);
 }
 
@@ -127,13 +132,16 @@ static void	set_mode_for_output(t_layer_output *const layer,
 }
 
 void	neural_network_mode_set(
-					void *const *const layers,
-					const t_layer_type *const layer_types,
+					const t_neural_network *const neural_network,
 					const t_dataset_type dataset_type,
 					const size_t num_of_layers)
 {
+	void *const			*layers;
+	const t_layer_type	*layer_types;
 	size_t				i;
 
+	layers = neural_network->layers;
+	layer_types = neural_network->layer_types;
 	i = -1;
 	while (++i < num_of_layers)
 	{

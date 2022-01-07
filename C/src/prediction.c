@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 10:54:14 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 22:25:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,6 @@ int	main(int argc, char **argv)
 	{
 		num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
 		neural_network = grad_descent_attr->neural_network;
-		bias_weight_values_set(neural_network->layers,
-			neural_network->layer_types,
-			grad_descent_attr->hyper_params);
-		neural_network_mode_set(neural_network->layers,
-			neural_network->layer_types, E_TRAIN,
-			grad_descent_attr->hyper_params->num_of_layers);
 		propagation_forward(neural_network->layers,
 			neural_network->layer_types, num_of_layers);
 		ml_softmax(((t_layer_output *)neural_network->layers[num_of_layers - 1])

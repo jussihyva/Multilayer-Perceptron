@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:05:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/05 22:17:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 22:57:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	arg_usage_training(void)
 	ft_printf("Optional parameter:\n");
 	ft_printf("  -E <num of epochs>        Number of epochs\n");
 	ft_printf("  -A <learning rate>        Learning rate\n");
-	ft_printf("  -M <number of layers>     Number of layers in neural network (2-5)\n");
+	ft_printf("  -M <number of layers>     Number of layers in neural \
+network (2-5)\n");
 	ft_printf("  -s <dataset_split_mode>   Split input dataset file to \
 TRAIN and TEST parts\n");
 	ft_printf("  -w <weight init mode>     Set init values for weight matrix \
