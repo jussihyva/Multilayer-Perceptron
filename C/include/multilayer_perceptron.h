@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 11:04:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/07 11:23:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # define NUM_OF_EPOCH							5000
 # define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
+# define ONE_NODE								1
+# define TWO_NODES								2
+# define THREE_NODES							3
+# define FOUR_NODES								4
+# define FIVE_NODES								5
 
 typedef enum e_activation_type
 {
@@ -50,22 +55,26 @@ typedef struct s_layer_profile
 
 static const t_layer_profile	g_two_layers[2]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-		{2, E_LAYER_OUTPUT, E_SIGMOID}};
+{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+
 static const t_layer_profile	g_three_layers[3]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-		{3, E_LAYER_HIDDEN, E_RELU},
-		{2, E_LAYER_OUTPUT, E_SIGMOID}};
+{THREE_NODES, E_LAYER_HIDDEN, E_RELU},
+{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+
 static const t_layer_profile	g_four_layers[4]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-		{3, E_LAYER_HIDDEN, E_SIGMOID},
-		{3, E_LAYER_HIDDEN, E_SIGMOID},
-		{2, E_LAYER_OUTPUT, E_SIGMOID}};
+{THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
+{THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
+{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+
 static const t_layer_profile	g_five_layers[5]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-		{3, E_LAYER_HIDDEN, E_RELU},
-		{5, E_LAYER_HIDDEN, E_RELU},
-		{3, E_LAYER_HIDDEN, E_RELU},
-		{2, E_LAYER_OUTPUT, E_SIGMOID}};
+{THREE_NODES, E_LAYER_HIDDEN, E_RELU},
+{FIVE_NODES, E_LAYER_HIDDEN, E_RELU},
+{THREE_NODES, E_LAYER_HIDDEN, E_RELU},
+{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+
 static const t_layer_profile	*g_layer_attrs[6]
 	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers, g_five_layers};
 
