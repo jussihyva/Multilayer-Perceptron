@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 23:11:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 00:24:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,16 @@ void	grad_descent(
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		propagation_backward(layers, neural_network->layer_types,
 			num_of_layers);
-		send_iteration_result_to_database(influxdb_connection, layer_output,
-			iter_cnt);
-		send_hyper_params_to_database(influxdb_connection, hyper_params);
+		if (influxdb_connection && !(iter_cnt % 20))
+		{
+			send_layer_stat_to_database(influxdb_connection, layers,
+				neural_network->layer_types, num_of_layers);
+			send_iteration_result_to_database(influxdb_connection, layer_output,
+				iter_cnt);
+			send_hyper_params_to_database(influxdb_connection, hyper_params);
+		}
+		else
+			FT_LOG_DEBUG("Stat values are not sent to influxdb");
 		neural_network_mode_set(neural_network, E_TEST, num_of_layers);
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)

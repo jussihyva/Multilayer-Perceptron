@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 20:28:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 00:35:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,38 +32,30 @@ static t_queue	*bias_tag_set_name_value_queue_init(
 	return (name_value_queue);
 }
 
-void	send_bias_values_to_database(
-								const size_t layer_id,
-								const t_vector *const bias,
-								const t_hyper_params *const hyper_params)
+void	send_layer_stat_to_database(
+							const t_tcp_connection	*influxdb_connection,
+							void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t num_of_layers)
 {
-	t_influxdb_line			influxdb_line;
 	const char				*line;
-	size_t					total_len;
-	const t_tcp_connection	*influxdb_connection;
-	t_queue					*name_value_queue;
+	size_t					layer_id;
 
-	influxdb_connection = get_database_connection();
-	if (influxdb_connection)
+	layer_id = -1;
+	while (++layer_id < num_of_layers)
 	{
-		line = ft_strdup("");
-		total_len = 0;
-		total_len += influxdb_measurement(&influxdb_line.measurement,
-				"dataset_train");
-		name_value_queue = bias_tag_set_name_value_queue_init(hyper_params,
-				layer_id);
-		total_len += influxdb_tag_set(&influxdb_line.tag_set, name_value_queue);
-		total_len += influxdb_field_set(&influxdb_line.field_set, bias->data,
-				bias->size);
-		total_len += influxdb_timestamp(&influxdb_line.timestamp);
-		influxdb_line_merge(&influxdb_line, total_len, &line);
-		influxdb_line_remove(&influxdb_line);
+		if (layer_types[layer_id] == E_LAYER_INPUT)
+			continue ;
+		else if (layer_types[layer_id] == E_LAYER_HIDDEN)
+			line = get_layer_stat_hidden(layers[layer_id], layer_id);
+		else if (layer_types[layer_id] == E_LAYER_OUTPUT)
+			line = get_layer_stat_output(layers[layer_id], layer_id);
+		else
+			FT_LOG_FATAL("Unsupported layer type: %u",
+				layer_types[layer_id]);
 		ft_influxdb_write(influxdb_connection, line, NULL, 1);
 		ft_strdel((char **)&line);
-		ft_queue_remove(&name_value_queue);
 	}
-	else
-		FT_LOG_DEBUG("Cost value is not sent to influxdb");
 	return ;
 }
 
@@ -79,5 +71,28 @@ void	bias_update(
 	while (++i < hyper_params->num_of_nodes[layer_id])
 		((double *)bias->data)[i]
 			-= hyper_params->learning_rate * ((double *)d_bias->data)[i];
+	return ;
+}
+
+void	bias_stat_add(
+					char **const line,
+					const t_vector *const bias,
+					const t_hyper_params *const hyper_params,
+					const size_t layer_id)
+{
+	t_influxdb_line		influxdb_line;
+	size_t				len;
+	t_queue				*key_value_queue;
+
+	len = 0;
+	len += influxdb_measurement(&influxdb_line.measurement, "dataset_train");
+	key_value_queue = bias_tag_set_name_value_queue_init(hyper_params,
+			layer_id);
+	len += influxdb_tag_set(&influxdb_line.tag_set, key_value_queue);
+	len += influxdb_field_set(&influxdb_line.field_set, bias->data, bias->size);
+	len += influxdb_timestamp(&influxdb_line.timestamp);
+	ft_queue_remove(&key_value_queue);
+	influxdb_line_merge(&influxdb_line, len, line);
+	influxdb_line_remove(&influxdb_line);
 	return ;
 }

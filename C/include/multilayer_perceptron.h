@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 23:09:14 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 00:35:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -479,10 +479,11 @@ void					weight_update(const size_t layer_id,
 							const t_matrix *const weight,
 							const t_matrix *const d_weight,
 							const t_hyper_params *const hyper_params);
-void					send_bias_values_to_database(
-							const size_t layer_id,
-							const t_vector *const bias,
-							const t_hyper_params *const hyper_params);
+void					send_layer_stat_to_database(
+							const t_tcp_connection	*influxdb_connection,
+							void *const *const layers,
+							const t_layer_type *const layer_types,
+							const size_t num_of_layers);
 void					send_weight_values_to_database(
 							const size_t layer_id,
 							const t_matrix *const weight,
@@ -494,7 +495,7 @@ void					influxdb_line_remove(t_influxdb_line *influxdb_line);
 void					influxdb_line_merge(
 							const t_influxdb_line *const influxdb_line,
 							size_t total_len,
-							const char **const line);
+							char **const line);
 size_t					influxdb_tag_set(
 							const char **const tag_set,
 							t_queue *const name_value_queue);
@@ -568,5 +569,21 @@ t_bool					string_convert_and_validate(
 void					derivative_z(
 							const t_matrix *const d_z,
 							const t_layer_hidden *const layer);
+const char				*get_layer_stat_hidden(
+							const t_layer_hidden *const layer,
+							const size_t layer_id);
+const char				*get_layer_stat_output(
+							const t_layer_output *const layer,
+							const size_t layer_id);
+void					bias_stat_add(
+							char **const line,
+							const t_vector *const bias,
+							const t_hyper_params *const hyper_params,
+							const size_t layer_id);
+void					weight_stat_add(
+							char **const line,
+							const t_matrix *const weight,
+							const t_hyper_params *const hyper_params,
+							const size_t layer_id);
 
 #endif

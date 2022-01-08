@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/02 21:32:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 00:35:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,48 +38,6 @@ static t_queue	*weight_tag_set_name_value_queue_init(
 	return (name_value_queue);
 }
 
-void	send_weight_values_to_database(
-								const size_t layer_id,
-								const t_matrix *const weight,
-								const t_hyper_params *const hyper_params)
-{
-	t_influxdb_line			influxdb_line;
-	const char				*line;
-	size_t					total_len;
-	const t_tcp_connection	*influxdb_connection;
-	t_queue					*name_value_queue;
-	size_t					i;
-
-	influxdb_connection = get_database_connection();
-	if (influxdb_connection)
-	{
-		line = ft_strdup("");
-		total_len = 0;
-		i = -1;
-		while (++i < weight->size.rows)
-		{
-			total_len += influxdb_measurement(&influxdb_line.measurement,
-					"dataset_train");
-			name_value_queue
-				= weight_tag_set_name_value_queue_init(hyper_params, layer_id,
-					i);
-			total_len += influxdb_tag_set(&influxdb_line.tag_set,
-					name_value_queue);
-			ft_queue_remove(&name_value_queue);
-			total_len += influxdb_field_set(&influxdb_line.field_set,
-					weight->table[i], weight->size.cols);
-			total_len += influxdb_timestamp(&influxdb_line.timestamp);
-			influxdb_line_merge(&influxdb_line, total_len, &line);
-			influxdb_line_remove(&influxdb_line);
-		}
-		ft_influxdb_write(influxdb_connection, line, NULL, 1);
-		ft_strdel((char **)&line);
-	}
-	else
-		FT_LOG_DEBUG("Cost value is not sent to influxdb");
-	return ;
-}
-
 void	weight_update(
 				const size_t layer_id,
 				const t_matrix *const weight,
@@ -103,6 +61,37 @@ void	weight_update(
 			((double **)weight->table)[i.rows][i.cols]
 				-= hyper_params->learning_rate
 				* ((double **)d_weight->table)[i.rows][i.cols];
+	}
+	return ;
+}
+
+void	weight_stat_add(
+					char **const line,
+					const t_matrix *const weight,
+					const t_hyper_params *const hyper_params,
+					const size_t layer_id)
+{
+	t_influxdb_line		influxdb_line;
+	size_t				len;
+	t_queue				*key_value_queue;
+	size_t				i;
+
+	len = ft_strlen(*line);
+	i = -1;
+	while (++i < weight->size.rows)
+	{
+		len += influxdb_measurement(&influxdb_line.measurement,
+				"dataset_train");
+		key_value_queue
+			= weight_tag_set_name_value_queue_init(hyper_params, layer_id,
+				i);
+		len += influxdb_tag_set(&influxdb_line.tag_set, key_value_queue);
+		ft_queue_remove(&key_value_queue);
+		len += influxdb_field_set(&influxdb_line.field_set,
+				weight->table[i], weight->size.cols);
+		len += influxdb_timestamp(&influxdb_line.timestamp);
+		influxdb_line_merge(&influxdb_line, len, line);
+		influxdb_line_remove(&influxdb_line);
 	}
 	return ;
 }

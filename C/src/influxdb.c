@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 12:59:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 00:32:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,23 @@ void	influxdb_line_remove(t_influxdb_line *influxdb_line)
 
 void	influxdb_line_merge(
 						const t_influxdb_line *const influxdb_line,
-						size_t total_len,
-						const char **const line)
+						size_t len,
+						char **const line)
 {
 	char		*updated_line;
+	size_t		actual_len;
 
-	updated_line = ft_strnew(sizeof(*updated_line) * total_len);
-	ft_sprintf(updated_line, "%s%s%s%s%s",
-		*line,
-		influxdb_line->measurement,
-		influxdb_line->tag_set,
-		influxdb_line->field_set,
-		influxdb_line->timestamp);
+	updated_line = ft_strnew(sizeof(*updated_line) * len);
+	actual_len = ft_sprintf(updated_line, "%s%s%s%s%s",
+			*line,
+			influxdb_line->measurement,
+			influxdb_line->tag_set,
+			influxdb_line->field_set,
+			influxdb_line->timestamp);
 	ft_strdel((char **)line);
 	*line = updated_line;
-	if (ft_strlen(*line) != total_len)
-		FT_LOG_WARN("Influxdb line: %lu <--> %lu", ft_strlen(*line),
-			total_len);
+	if (actual_len != len)
+		FT_LOG_WARN("Influxdb line: %lu <--> %lu", actual_len, len);
 	return ;
 }
 
