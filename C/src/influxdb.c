@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 11:14:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 12:53:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static size_t	count_special_chars(
 	return (num_of_special_chars);
 }
 
-static char	*validate_influxdb_line_string(
+static char	*conv_special_chars(
 					const char *const special_chars,
 					const char *const string)
 {
@@ -59,7 +59,7 @@ size_t	influxdb_measurement(
 {
 	size_t		length;
 
-	*measurement = validate_influxdb_line_string(
+	*measurement = conv_special_chars(
 			SPECIAL_CHARS_INFLUXDB_MEASUREMENT, string);
 	length = ft_strlen(*measurement);
 	return (length);
@@ -114,7 +114,7 @@ static size_t	add(
 	else if (data_type == E_SIZE_T)
 		ft_sprintf(value_to_string, "%lu", *(size_t *)value);
 	if (special_chars)
-		validated_string = validate_influxdb_line_string(
+		validated_string = conv_special_chars(
 				SPECIAL_CHARS_INFLUXDB_FIELDS, value_to_string);
 	else
 		validated_string = ft_strdup(value_to_string);
@@ -137,6 +137,52 @@ static size_t	add_name_value_pair(
 	length += add(string_queue, &value,
 			E_DOUBLE, SPECIAL_CHARS_INFLUXDB_FIELDS);
 	return (length);
+}
+
+static size_t	conv_to_string(
+					const void *value,
+					const t_data_type data_type,
+					const char *const special_chars,
+					char **const string)
+{
+	char		prel_string[100];
+	size_t		len;
+
+	len = 0;
+	if (data_type == E_DOUBLE)
+		len = ft_sprintf(prel_string, "%f", *(double *)value);
+	else if (data_type == E_STRING)
+		len = ft_sprintf(prel_string, "%s", (char *)value);
+	else if (data_type == E_SIZE_T)
+		len = ft_sprintf(prel_string, "%lu", *(size_t *)value);
+	else
+		FT_LOG_FATAL("Unkonwn key type: %d", data_type);
+	*string = conv_special_chars(special_chars, prel_string);
+	return (len);
+}
+
+const char	*influxdb_key_value_pair_string_create(
+							const t_key_value_pair *const key_value_pair,
+							const char *const special_chars)
+{
+	char		*string;
+	char		*key_string;
+	char		*value_string;
+	size_t		len;
+
+	len = 0;
+	len += conv_to_string(key_value_pair->key, key_value_pair->key_type,
+			special_chars, &key_string);
+	len += 1;
+	len += conv_to_string(key_value_pair->value, key_value_pair->value_type,
+			special_chars, &value_string);
+	string = ft_memalloc(sizeof(*string) * len);
+	ft_strcat(string, key_string);
+	ft_strdel(&key_string);
+	ft_strcat(string, "=");
+	ft_strcat(string, value_string);
+	ft_strdel(&value_string);
+	return (string);
 }
 
 size_t	influxdb_field_set(

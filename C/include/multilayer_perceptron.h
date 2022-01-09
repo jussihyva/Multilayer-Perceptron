@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 11:14:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 12:51:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ typedef enum e_layer_type
 	E_LAYER_HIDDEN,
 	E_LAYER_OUTPUT
 }				t_layer_type;
+
+typedef enum e_data_type
+{
+	E_SIZE_T,
+	E_DOUBLE,
+	E_STRING
+}				t_data_type;
+
+typedef struct s_key_value_pair
+{
+	void			*key;
+	t_data_type		key_type;
+	void			*value;
+	t_data_type		value_type;
+}				t_key_value_pair;
 
 typedef struct s_layer_profile
 {
@@ -383,13 +398,6 @@ typedef struct s_prediction
 	t_grad_descent_attr		*grad_descent_attr;
 	t_input_data			*input_data;
 }				t_prediction;
-
-typedef enum e_data_type
-{
-	E_SIZE_T,
-	E_DOUBLE,
-	E_STRING
-}				t_data_type;
 
 t_dataset				**dataset_init(const t_input_data *const input_data);
 void					file_attr_remove(t_file_attr **file_attr);
