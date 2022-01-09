@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 00:35:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 11:14:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,13 +346,13 @@ typedef struct s_grad_descent_attr
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
-typedef struct s_influxdb_line
+typedef struct s_influxdb_elem
 {
 	const char	*measurement;
 	const char	*tag_set;
 	const char	*field_set;
 	const char	*timestamp;
-}				t_influxdb_line;
+}				t_influxdb_elem;
 
 typedef struct s_cmd_args
 {
@@ -491,10 +491,10 @@ void					send_weight_values_to_database(
 const t_tcp_connection	*get_database_connection(void);
 size_t					influxdb_measurement(const char **const measurement,
 							const char *const string);
-void					influxdb_line_remove(t_influxdb_line *influxdb_line);
-void					influxdb_line_merge(
-							const t_influxdb_line *const influxdb_line,
-							size_t total_len,
+void					influxdb_elem_remove(t_influxdb_elem *influxdb_elem);
+void					influxdb_line_extend(
+							const t_influxdb_elem *const influxdb_elem,
+							size_t len,
 							char **const line);
 size_t					influxdb_tag_set(
 							const char **const tag_set,
@@ -539,12 +539,7 @@ t_weight_init_mode		set_weight_init_mode(
 void					send_hyper_params_to_database(
 							const t_tcp_connection *const influxdb_connection,
 							const t_hyper_params *const hyper_params);
-size_t					influxdb_timestamp_add(const char **const timestamp);
-const char				*elements_merge(
-							const t_influxdb_line *const influxdb_line,
-							size_t total_len);
-void					influxdb_element_remove(
-							t_influxdb_line *const influxdb_line);
+size_t					influxdb_timestamp_set(const char **const timestamp);
 t_hyper_params			*hyper_params_init(
 							const char *const weight_bias_file,
 							const t_hyper_params *const input_hyper_params,

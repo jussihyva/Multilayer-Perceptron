@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 00:35:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 11:14:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,19 @@ void	bias_stat_add(
 					const t_hyper_params *const hyper_params,
 					const size_t layer_id)
 {
-	t_influxdb_line		influxdb_line;
+	t_influxdb_elem		influxdb_elem;
 	size_t				len;
 	t_queue				*key_value_queue;
 
 	len = 0;
-	len += influxdb_measurement(&influxdb_line.measurement, "dataset_train");
+	len += influxdb_measurement(&influxdb_elem.measurement, "dataset_train");
 	key_value_queue = bias_tag_set_name_value_queue_init(hyper_params,
 			layer_id);
-	len += influxdb_tag_set(&influxdb_line.tag_set, key_value_queue);
-	len += influxdb_field_set(&influxdb_line.field_set, bias->data, bias->size);
-	len += influxdb_timestamp(&influxdb_line.timestamp);
+	len += influxdb_tag_set(&influxdb_elem.tag_set, key_value_queue);
+	len += influxdb_field_set(&influxdb_elem.field_set, bias->data, bias->size);
+	len += influxdb_timestamp_set(&influxdb_elem.timestamp);
 	ft_queue_remove(&key_value_queue);
-	influxdb_line_merge(&influxdb_line, len, line);
-	influxdb_line_remove(&influxdb_line);
+	influxdb_line_extend(&influxdb_elem, len, line);
+	influxdb_elem_remove(&influxdb_elem);
 	return ;
 }

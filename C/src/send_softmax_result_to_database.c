@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/25 14:35:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 11:15:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ static size_t	influxdb_fields_add(
 void	send_softmax_result_to_database(
 							const t_grad_descent_attr *const grad_descent_attr)
 {
-	t_influxdb_line		influxdb_line;
-	const char			*line;
+	t_influxdb_elem		influxdb_elem;
+	char				*line;
 	const char			*example_id;
-	size_t				total_len;
+	size_t				len;
 	t_size_2d			i;
 
 	if (grad_descent_attr->influxdb_connection)
@@ -95,17 +95,18 @@ void	send_softmax_result_to_database(
 		i.cols = -1;
 		while (++i.cols < grad_descent_attr->softmax->size.cols)
 		{
-			total_len = 0;
-			total_len += influxdb_measurement(&influxdb_line.measurement,
+			len = 0;
+			len += influxdb_measurement(&influxdb_elem.measurement,
 					"dataset_train");
 			example_id = ft_itoa(i.cols);
-			total_len += influxdb_tags_add(&influxdb_line.tag_set, example_id);
+			len += influxdb_tags_add(&influxdb_elem.tag_set, example_id);
 			ft_strdel((char **)&example_id);
-			total_len += influxdb_fields_add(&influxdb_line.field_set,
+			len += influxdb_fields_add(&influxdb_elem.field_set,
 					grad_descent_attr->softmax, i.cols);
-			total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
-			line = elements_merge(&influxdb_line, total_len);
-			influxdb_element_remove(&influxdb_line);
+			len += influxdb_timestamp_set(&influxdb_elem.timestamp);
+			line = ft_strdup("");
+			influxdb_line_extend(&influxdb_elem, len, &line);
+			influxdb_elem_remove(&influxdb_elem);
 			ft_influxdb_write(grad_descent_attr->influxdb_connection,
 				line, NULL, 1);
 			ft_strdel((char **)&line);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 00:35:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 11:21:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,27 +71,27 @@ void	weight_stat_add(
 					const t_hyper_params *const hyper_params,
 					const size_t layer_id)
 {
-	t_influxdb_line		influxdb_line;
+	t_influxdb_elem		influxdb_elem;
 	size_t				len;
 	t_queue				*key_value_queue;
 	size_t				i;
 
-	len = ft_strlen(*line);
 	i = -1;
 	while (++i < weight->size.rows)
 	{
-		len += influxdb_measurement(&influxdb_line.measurement,
+		len = 0;
+		len += influxdb_measurement(&influxdb_elem.measurement,
 				"dataset_train");
 		key_value_queue
 			= weight_tag_set_name_value_queue_init(hyper_params, layer_id,
 				i);
-		len += influxdb_tag_set(&influxdb_line.tag_set, key_value_queue);
+		len += influxdb_tag_set(&influxdb_elem.tag_set, key_value_queue);
 		ft_queue_remove(&key_value_queue);
-		len += influxdb_field_set(&influxdb_line.field_set,
+		len += influxdb_field_set(&influxdb_elem.field_set,
 				weight->table[i], weight->size.cols);
-		len += influxdb_timestamp(&influxdb_line.timestamp);
-		influxdb_line_merge(&influxdb_line, len, line);
-		influxdb_line_remove(&influxdb_line);
+		len += influxdb_timestamp_set(&influxdb_elem.timestamp);
+		influxdb_line_extend(&influxdb_elem, len, line);
+		influxdb_elem_remove(&influxdb_elem);
 	}
 	return ;
 }

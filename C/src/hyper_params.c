@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/05 22:29:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/09 11:15:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ void	send_hyper_params_to_database(
 							const t_tcp_connection *const influxdb_connection,
 							const t_hyper_params *const hyper_params)
 {
-	t_influxdb_line		influxdb_line;
-	const char			*line;
-	size_t				total_len;
+	t_influxdb_elem		influxdb_elem;
+	char				*line;
+	size_t				len;
 	double				learning_rate;
 	size_t				percentage;
 
@@ -176,15 +176,16 @@ void	send_hyper_params_to_database(
 	{
 		learning_rate = hyper_params->learning_rate;
 		percentage = hyper_params->split_order.extra_info;
-		total_len = 0;
-		total_len += influxdb_measurement(&influxdb_line.measurement,
+		len = 0;
+		len += influxdb_measurement(&influxdb_elem.measurement,
 				"dataset_train");
-		total_len += influxdb_tags_add(&influxdb_line.tag_set);
-		total_len += influxdb_fields_add(&influxdb_line.field_set,
+		len += influxdb_tags_add(&influxdb_elem.tag_set);
+		len += influxdb_fields_add(&influxdb_elem.field_set,
 				learning_rate, percentage);
-		total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
-		line = elements_merge(&influxdb_line, total_len);
-		influxdb_element_remove(&influxdb_line);
+		len += influxdb_timestamp_set(&influxdb_elem.timestamp);
+		line = ft_strdup("");
+		influxdb_line_extend(&influxdb_elem, len, &line);
+		influxdb_elem_remove(&influxdb_elem);
 		ft_influxdb_write(influxdb_connection, line, NULL, 1);
 		ft_strdel((char **)&line);
 	}
