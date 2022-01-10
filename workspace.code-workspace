@@ -11,7 +11,8 @@
 			"multilayer_perceptron.h": "c",
 			"__locale": "c",
 			"libft_addons.h": "c",
-			"libml.h": "c"
+			"libml.h": "c",
+			"type_traits": "c"
 		},
 		"editor.insertSpaces": false
 	}

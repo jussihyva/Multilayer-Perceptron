@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:53:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 22:22:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -451,7 +451,8 @@ void					bias_weight_values_set(
 							const t_layer_type *const layer_types,
 							const t_hyper_params *const hyper_params);
 void					send_softmax_result_to_database(
-							const t_grad_descent_attr *const grad_descent_attr);
+							const t_tcp_connection *const influxdb_connection,
+							const t_matrix *const softmax);
 t_prediction			*prediction_init(const int argc,
 							const char *const *const argv);
 t_training				*training_init(const int argc,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 16:32:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 22:41:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	weight_update(
 	return ;
 }
 
-size_t	get_weight_key_value_pairs(
+static size_t	get_weight_key_value_pairs(
 						const t_matrix *const weight,
 						const size_t row_id,
 						const char *const special_chars,

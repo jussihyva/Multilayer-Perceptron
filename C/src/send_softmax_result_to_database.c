@@ -6,113 +6,149 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:12:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 23:40:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static size_t	influxdb_tags_add(
-							char **const tag_set,
-							const char *const example_id)
+static size_t	add_record_type(
+							const char *const record_type,
+							const char *const special_chars,
+							t_queue *const key_value_queue)
 {
-	t_queue			*string_queue;
-	const char		*tag_value_pair;
-	size_t			length;
+	size_t				length;
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
 
-	string_queue = ft_queue_init();
 	length = 0;
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	tag_value_pair = ft_strdup("Record_type=Softmax");
-	length += ft_strlen(tag_value_pair);
-	ft_enqueue(string_queue, (void *)tag_value_pair);
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	tag_value_pair = ft_strjoin("ExampleId=", example_id);
-	length += ft_strlen(tag_value_pair);
-	ft_enqueue(string_queue, (void *)tag_value_pair);
-	*tag_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
+	key_value_pair.key = "Record_type";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)record_type;
+	key_value_pair.value_type = E_STRING;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
 	return (length);
 }
 
-static size_t	influxdb_fields_add(
-							char **const field_set,
-							const t_matrix *matrix,
-							const size_t col)
+static size_t	add_exampleid(
+						const size_t example_id,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
 {
-	t_queue			*string_queue;
-	size_t			i;
-	char			string[100];
-	double			value;
-	double			bigger_value;
-	size_t			length;
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
+	size_t				length;
 
 	length = 0;
-	string_queue = ft_queue_init();
-	ft_sprintf(string, "ExampleId=%u", col);
-	length += ft_strlen(string);
-	ft_enqueue(string_queue, ft_strdup(string));
-	bigger_value = DBL_MIN;
-	i = -1;
-	while (++i < matrix->size.rows)
-	{
-		length++;
-		ft_enqueue(string_queue, ft_strdup(","));
-		ft_sprintf(string, "%d", i);
-		length += ft_strlen(string);
-		ft_enqueue(string_queue, ft_strdup(string));
-		length++;
-		ft_enqueue(string_queue, ft_strdup("="));
-		value = ((double **)matrix->table)[i][col];
-		bigger_value = ft_max_double(bigger_value, value);
-		ft_sprintf(string, "%f", value);
-		length += ft_strlen(string);
-		ft_enqueue(string_queue, ft_strdup(string));
-	}
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	ft_sprintf(string, "BiggerValue=%f", bigger_value);
-	length += ft_strlen(string);
-	ft_enqueue(string_queue, ft_strdup(string));
-	*field_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
+	key_value_pair.key = "ExampleId";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&example_id;
+	key_value_pair.value_type = E_SIZE_T;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
 	return (length);
+}
+
+static size_t	add_bigger_value(
+						const double bigger_value,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
+{
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
+	size_t				length;
+
+	length = 0;
+	key_value_pair.key = "BiggerValue";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&bigger_value;
+	key_value_pair.value_type = E_DOUBLE;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
+	return (length);
+}
+
+static size_t	get_softmax_key_value_pairs(
+						const t_matrix *const softmax,
+						const size_t col_id,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
+{
+	size_t				length;
+	size_t				row_id;
+	char				*key_value_string;
+	t_key_value_pair	key_value_pair;
+	double				bigger_value;
+
+	length = 0;
+	key_value_pair.key_type = E_SIZE_T;
+	key_value_pair.value_type = E_DOUBLE;
+	row_id = -1;
+	while (++row_id < softmax->size.rows)
+	{
+		key_value_pair.key = (void *)&row_id;
+		key_value_pair.value
+			= (void *)&((double **)softmax->table)[row_id][col_id];
+		bigger_value = ft_max_double(bigger_value,
+				*(double *)key_value_pair.value);
+		length += influxdb_key_value_pair_string_create(&key_value_pair,
+				special_chars, &key_value_string);
+		ft_enqueue(key_value_queue, (void *)key_value_string);
+	}
+	length += add_bigger_value(bigger_value, special_chars, key_value_queue);
+	return (length);
+}
+
+static size_t	influxdb_elem_create(
+						t_influxdb_elem *influxdb_elem,
+						t_queue *key_value_queue,
+						const t_matrix *const softmax,
+						const size_t col_id)
+{
+	size_t				len;
+
+	len = 0;
+	influxdb_elem->measurement = ft_strdup("");
+	get_measurement_value("dataset_train", key_value_queue);
+	add_record_type("Softmax", SPECIAL_CHARS_INFLUXDB_TAGS, key_value_queue);
+	add_exampleid(col_id, SPECIAL_CHARS_INFLUXDB_TAGS, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem->tag_set,
+			key_value_queue);
+	add_exampleid(col_id, SPECIAL_CHARS_INFLUXDB_TAGS, key_value_queue);
+	get_softmax_key_value_pairs(softmax, col_id, SPECIAL_CHARS_INFLUXDB_FIELDS,
+		key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem->field_set,
+			key_value_queue);
+	len += influxdb_timestamp_set(&influxdb_elem->timestamp);
+	return (len);
 }
 
 void	send_softmax_result_to_database(
-							const t_grad_descent_attr *const grad_descent_attr)
+					const t_tcp_connection *const influxdb_connection,
+					const t_matrix *const softmax)
 {
 	t_influxdb_elem		influxdb_elem;
 	char				*line;
-	const char			*example_id;
 	size_t				len;
 	t_size_2d			i;
+	t_queue				*key_value_queue;
 
-	if (grad_descent_attr->influxdb_connection)
+	key_value_queue = ft_queue_init();
+	i.cols = -1;
+	while (++i.cols < softmax->size.cols)
 	{
-		i.cols = -1;
-		while (++i.cols < grad_descent_attr->softmax->size.cols)
-		{
-			len = 0;
-			len += influxdb_measurement(&influxdb_elem.measurement,
-					"dataset_train");
-			example_id = ft_itoa(i.cols);
-			len += influxdb_tags_add(&influxdb_elem.tag_set, example_id);
-			ft_strdel((char **)&example_id);
-			len += influxdb_fields_add(&influxdb_elem.field_set,
-					grad_descent_attr->softmax, i.cols);
-			len += influxdb_timestamp_set(&influxdb_elem.timestamp);
-			line = ft_strdup("");
-			influxdb_line_extend(&influxdb_elem, len, &line);
-			influxdb_elem_remove(&influxdb_elem);
-			ft_influxdb_write(grad_descent_attr->influxdb_connection,
-				line, NULL, 1);
-			ft_strdel((char **)&line);
-		}
+		len = influxdb_elem_create(&influxdb_elem, key_value_queue, softmax,
+				i.cols);
+		line = ft_strdup("");
+		influxdb_line_extend(&influxdb_elem, len, &line);
+		influxdb_elem_remove(&influxdb_elem);
+		ft_influxdb_write(influxdb_connection, line, NULL, 1);
+		ft_strdel((char **)&line);
 	}
-	else
-		FT_LOG_DEBUG("Cost value is not sent to influxdb");
+	ft_queue_remove(&key_value_queue);
 	return ;
 }

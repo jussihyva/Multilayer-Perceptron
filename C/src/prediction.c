@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 22:25:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 22:24:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,11 @@ int	main(int argc, char **argv)
 			neural_network->layer_types, num_of_layers);
 		ml_softmax(((t_layer_output *)neural_network->layers[num_of_layers - 1])
 			->y_hat, grad_descent_attr->softmax);
-		send_softmax_result_to_database(grad_descent_attr);
+		if (grad_descent_attr->influxdb_connection)
+			send_softmax_result_to_database(grad_descent_attr
+				->influxdb_connection, grad_descent_attr->softmax);
+		else
+			FT_LOG_DEBUG("Softmax values are not sent to influxdb");
 		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
 			grad_descent_attr->argmax_values);
 		if (ft_logging_level() <= LOG_INFO)
