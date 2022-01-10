@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 23:10:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:56:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,116 +52,7 @@ t_neural_network	*neural_network_init(
 	if (hyper_params->weight_init_mode == E_TRAINED)
 		bias_weight_values_set(neural_network->layers,
 			neural_network->layer_types, hyper_params);
-	neural_network_mode_set(neural_network, E_TRAIN,
+	layer_mode_set(neural_network, E_TRAIN,
 		hyper_params->num_of_layers);
 	return (neural_network);
-}
-
-static void	layers_remove(
-					void **const *layers,
-					const t_layer_type *const layer_types,
-					const size_t num_of_layers)
-{
-	size_t			i;
-
-	i = -1;
-	while (++i < num_of_layers)
-	{
-		if (layer_types[i] == E_LAYER_INPUT)
-			layer_remove_input((t_layer_input **)&(*layers)[i]);
-		else if (layer_types[i] == E_LAYER_HIDDEN)
-			layer_remove_hidden((t_layer_hidden **)&(*layers)[i]);
-		else if (layer_types[i] == E_LAYER_OUTPUT)
-			layer_remove_output((t_layer_output **)&(*layers)[i]);
-	}
-	ft_memdel((void **)layers);
-	return ;
-}
-
-static void	set_mode_for_input(t_layer_input *const layer,
-					const t_dataset_type dataset_type)
-{
-	layer->dataset_type = dataset_type;
-	if (dataset_type == E_TRAIN)
-	{
-		layer->x = layer->x_train;
-		layer->a = layer->a_train;
-	}
-	else
-	{
-		layer->x = layer->x_test;
-		layer->a = layer->a_test;
-	}
-	return ;
-}
-
-static void	set_mode_for_hidden(t_layer_hidden *const layer,
-					const t_dataset_type dataset_type)
-{
-	layer->dataset_type = dataset_type;
-	if (dataset_type == E_TRAIN)
-	{
-		layer->z = layer->z_train;
-		layer->a = layer->a_train;
-	}
-	else
-	{
-		layer->z = layer->z_test;
-		layer->a = layer->a_test;
-	}
-	return ;
-}
-
-static void	set_mode_for_output(t_layer_output *const layer,
-					const t_dataset_type dataset_type)
-{
-	layer->dataset_type = dataset_type;
-	if (dataset_type == E_TRAIN)
-	{
-		layer->z = layer->z_train;
-		layer->y = layer->y_train;
-		layer->y_hat = layer->y_hat_train;
-	}
-	else
-	{
-		layer->z = layer->z_test;
-		layer->y = layer->y_test;
-		layer->y_hat = layer->y_hat_test;
-	}
-	return ;
-}
-
-void	neural_network_mode_set(
-					const t_neural_network *const neural_network,
-					const t_dataset_type dataset_type,
-					const size_t num_of_layers)
-{
-	void *const			*layers;
-	const t_layer_type	*layer_types;
-	size_t				i;
-
-	layers = neural_network->layers;
-	layer_types = neural_network->layer_types;
-	i = -1;
-	while (++i < num_of_layers)
-	{
-		if (layer_types[i] == E_LAYER_INPUT)
-			set_mode_for_input(layers[i], dataset_type);
-		else if (layer_types[i] == E_LAYER_OUTPUT)
-			set_mode_for_output(layers[i], dataset_type);
-		else
-			set_mode_for_hidden(layers[i], dataset_type);
-	}
-	return ;
-}
-
-void	neural_network_remove(
-					const t_neural_network **neural_network,
-					const size_t num_of_layers)
-{
-	layers_remove(&(*neural_network)->layers, (*neural_network)->layer_types,
-		num_of_layers);
-	ft_memdel((void **)&(*neural_network)->layer_types);
-	ft_memdel((void **)neural_network);
-	return ;
 }

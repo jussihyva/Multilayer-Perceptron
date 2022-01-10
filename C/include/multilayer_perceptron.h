@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:13:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:53:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -538,7 +538,7 @@ const t_split_order		*set_split_mode(const t_argc_argv *const argc_argv,
 							t_split_order *const split_order);
 t_dataset_type			*dataset_split(t_num_of_records *const num_of_records,
 							const t_split_order *split_order);
-void					neural_network_mode_set(
+void					layer_mode_set(
 							const t_neural_network *const neural_network,
 							const t_dataset_type dataset_type,
 							const size_t num_of_layers);

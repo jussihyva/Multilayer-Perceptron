@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 00:24:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:57:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	grad_descent(
 	iter_cnt = 0;
 	while (++iter_cnt <= hyper_params->epochs)
 	{
-		neural_network_mode_set(neural_network, E_TRAIN, num_of_layers);
+		layer_mode_set(neural_network, E_TRAIN, num_of_layers);
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		propagation_backward(layers, neural_network->layer_types,
 			num_of_layers);
@@ -89,7 +89,7 @@ void	grad_descent(
 		}
 		else
 			FT_LOG_DEBUG("Stat values are not sent to influxdb");
-		neural_network_mode_set(neural_network, E_TEST, num_of_layers);
+		layer_mode_set(neural_network, E_TEST, num_of_layers);
 		propagation_forward(layers, neural_network->layer_types, num_of_layers);
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
 			cost_values_print(iter_cnt, hyper_params->epochs,
