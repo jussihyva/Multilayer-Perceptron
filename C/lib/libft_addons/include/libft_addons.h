@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/01 13:59:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 13:21:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,7 @@ t_file_attr				*ft_read_file(const char *const file_path,
 const char				**ft_strsplit_ex(const char *const str,
 							const char delim, size_t *const number_of_values,
 							t_bool do_trim);
-const char				*ft_strcat_queue(t_queue *const queue,
+char					*ft_strcat_queue(t_queue *const queue,
 							const size_t string_length);
 time_t					ft_gettime(void);
 t_arg_parser			*ft_arg_parser_init(
@@ -329,5 +329,6 @@ t_arg_parser			*ft_arg_parser_init(
 							t_usage_print fn_usage_print);
 void					ft_influxdb_remove(
 							const t_tcp_connection **influxdb_connection);
+void					ft_strext(char **const str, const char *const str_ext);
 
 #endif

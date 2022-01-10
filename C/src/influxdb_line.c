@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 19:16:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 11:41:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 11:29:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 // const char	*influxdb_line_create(void)
 // {
-// 	t_influxdb_line		influxdb_line;
+// 	t_influxdb_elem		influxdb_elem;
 // 	const char			*line;
 // 	size_t				total_len;
 
-// 	total_len = influxdb_measurement(&influxdb_line.measurement,
+// 	total_len = influxdb_measurement(&influxdb_elem.measurement,
 // 			"dataset_train");
-// 	total_len += influxdb_tags_add(&influxdb_line.tag_set, i);
-// 	total_len += influxdb_fields_add(&influxdb_line.field_set, iter_cnt,
+// 	total_len += influxdb_tags_add(&influxdb_elem.tag_set, i);
+// 	total_len += influxdb_fields_add(&influxdb_elem.field_set, iter_cnt,
 // 			layer_output->cost[i]);
-// 	total_len += influxdb_timestamp_add(&influxdb_line.timestamp);
-// 	line = elements_merge(&influxdb_line, total_len);
+// 	total_len += influxdb_timestamp_add(&influxdb_elem.timestamp);
+// 	line = elements_merge(&influxdb_elem, total_len);
 // 	return (line);
 // }
 

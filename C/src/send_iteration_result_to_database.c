@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/09 11:15:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 12:35:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static size_t	influxdb_tags_add(
 }
 
 static size_t	influxdb_fields_add(
-							const char **const field_set,
+							char **const field_set,
 							const size_t iter_cnt,
 							const t_vector *vector)
 {

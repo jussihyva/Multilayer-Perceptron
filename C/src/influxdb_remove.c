@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat_queue.c                                  :+:      :+:    :+:   */
+/*   influxdb_remove.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 12:49:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 12:37:01 by jkauppi          ###   ########.fr       */
+/*   Created: 2022/01/10 13:24:07 by jkauppi           #+#    #+#             */
+/*   Updated: 2022/01/10 13:24:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft_addons.h"
+#include "multilayer_perceptron.h"
 
-char	*ft_strcat_queue(
-					t_queue *const queue,
-					const size_t string_length)
+void	influxdb_elem_remove(t_influxdb_elem *influxdb_elem)
 {
-	char		*str;
-	const char	*sub_str;
-
-	str = ft_strnew(string_length);
-	while (!ft_is_queue_empty(queue))
-	{
-		sub_str = ft_dequeue(queue);
-		ft_strcat(str, sub_str);
-		ft_strdel((char **)&sub_str);
-	}
-	return (str);
+	ft_strdel((char **)&influxdb_elem->measurement);
+	ft_strdel((char **)&influxdb_elem->tag_set);
+	ft_strdel((char **)&influxdb_elem->field_set);
+	ft_strdel((char **)&influxdb_elem->timestamp);
+	return ;
 }
