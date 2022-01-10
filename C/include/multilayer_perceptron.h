@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 13:17:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:13:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,8 +363,8 @@ typedef struct s_grad_descent_attr
 
 typedef struct s_influxdb_elem
 {
-	const char	*measurement;
-	const char	*tag_set;
+	char		*measurement;
+	char		*tag_set;
 	char		*field_set;
 	const char	*timestamp;
 }				t_influxdb_elem;
@@ -497,7 +497,7 @@ void					send_weight_values_to_database(
 							const t_matrix *const weight,
 							const t_hyper_params *const hyper_params);
 const t_tcp_connection	*get_database_connection(void);
-size_t					influxdb_measurement(const char **const measurement,
+size_t					influxdb_measurement(char **const measurement,
 							const char *const string);
 void					influxdb_elem_remove(t_influxdb_elem *influxdb_elem);
 void					influxdb_line_extend(
@@ -505,9 +505,9 @@ void					influxdb_line_extend(
 							size_t len,
 							char **const line);
 size_t					influxdb_tag_set(
-							const char **const tag_set,
+							char **const tag_set,
 							t_queue *const name_value_queue);
-size_t					influxdb_field_set(char **const field_set,
+size_t					influxdb_elem_string_create(char **const elem_string,
 							t_queue *key_value_queue);
 size_t					influxdb_timestamp(const char **const timestamp);
 void					neural_network_remove(
@@ -595,5 +595,8 @@ size_t					influxdb_key_value_pair_string_create(
 char					*influxdb_special_chars_conv(
 							const char *const special_chars,
 							const char *const string);
+size_t					get_measurement_value(
+							const char *const measurement,
+							t_queue *const queue);
 
 #endif

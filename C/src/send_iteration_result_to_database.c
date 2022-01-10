@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 12:35:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:11:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*backslash_chars_add(
 }
 
 static size_t	influxdb_tags_add(
-						const char **const tags_set,
+						char **const tags_set,
 						const size_t dataset_type)
 {
 	t_queue		*string_queue;

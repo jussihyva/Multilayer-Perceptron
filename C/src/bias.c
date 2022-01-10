@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 12:03:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 16:32:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,11 @@ void	bias_stat_add(
 	len += influxdb_tag_set(&influxdb_elem.tag_set, key_value_queue);
 	get_bias_key_value_pairs(bias, SPECIAL_CHARS_INFLUXDB_FIELDS,
 		key_value_queue);
-	len += influxdb_field_set(&influxdb_elem.field_set, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.field_set,
+			key_value_queue);
 	len += influxdb_timestamp_set(&influxdb_elem.timestamp);
-	ft_queue_remove(&key_value_queue);
 	influxdb_line_extend(&influxdb_elem, len, line);
 	influxdb_elem_remove(&influxdb_elem);
+	ft_queue_remove(&key_value_queue);
 	return ;
 }

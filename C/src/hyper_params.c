@@ -6,159 +6,55 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 10:37:31 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/10 12:39:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:36:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-t_weight_init_mode	set_weight_init_mode(const t_argc_argv *const argc_argv)
+static size_t	get_influxdb_tag_key_value_pairs(
+							const char *const special_chars,
+							t_queue *const key_value_queue)
 {
-	t_weight_init_mode		weight_init_mode;
-	const char				*arg;
+	size_t				length;
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
 
-	weight_init_mode = E_ZERO;
-	arg = argc_argv->argv[argc_argv->i];
-	if (ft_strequ(arg, "0"))
-		weight_init_mode = E_ZERO;
-	else if (ft_strequ(arg, "1"))
-		weight_init_mode = E_RAND_0_TO_1;
-	else
-		FT_LOG_ERROR("Weight mode %s is not supported.", arg);
-	return (weight_init_mode);
-}
-
-static t_split_mode	set_mode(const char mode_char)
-{
-	t_split_mode	split_mode;
-
-	split_mode = 0;
-	if (mode_char == 'B')
-		split_mode = E_BEGIN;
-	else if (mode_char == 'E')
-		split_mode = E_END;
-	else if (mode_char == 'R')
-		split_mode = E_RAND;
-	else
-		FT_LOG_ERROR("Split mode %c is not supported.", mode_char);
-	return (split_mode);
-}
-
-const t_split_order	*set_split_mode(
-						const t_argc_argv *const argc_argv,
-						t_split_order *const split_order)
-{
-	const char			*arg;
-	char				*endptr;
-	char				mode_char;
-
-	arg = argc_argv->argv[argc_argv->i];
-	mode_char = *arg;
-	arg++;
-	split_order->split_mode = set_mode(mode_char);
-	errno = 0;
-	split_order->extra_info = strtoul(arg, &endptr, 10);
-	if (errno != 0 || *endptr != '\0')
-		FT_LOG_ERROR("Value of param -s is not valid");
-	else if (split_order->extra_info > 100)
-		FT_LOG_ERROR("Maximum value for split mode (-s) is 100");
-	return (split_order);
-}
-
-size_t	set_num_of_epochs(const t_argc_argv *const argc_argv)
-{
-	const char		*arg;
-	char			*endptr;
-	size_t			epochs;
-
-	errno = 0;
-	arg = argc_argv->argv[argc_argv->i];
-	epochs = ft_strtoi(arg, &endptr, 10);
-	if (errno != 0 || *endptr != '\0')
-		FT_LOG_ERROR("Value of param -E is not valid");
-	if (epochs > 100000)
-		FT_LOG_ERROR("Maximum value for epochs (-E) is "
-			"100000 (100 thousand)");
-	if (epochs <= 0)
-		FT_LOG_ERROR("Minimum value for epochs (-E) is >0");
-	return (epochs);
-}
-
-size_t	set_num_of_layers(const t_argc_argv *const argc_argv)
-{
-	const char		*arg;
-	char			*endptr;
-	size_t			num_of_layers;
-
-	errno = 0;
-	arg = argc_argv->argv[argc_argv->i];
-	num_of_layers = ft_strtoi(arg, &endptr, 10);
-	if (errno != 0 || *endptr != '\0')
-		FT_LOG_ERROR("Value of param -E is not valid");
-	if (num_of_layers > 5)
-		FT_LOG_ERROR("Maximum number of layers (-M) is 5");
-	if (num_of_layers < 2)
-		FT_LOG_ERROR("Minimum number of layers (-M) is 2");
-	return (num_of_layers);
-}
-
-double	set_learning_rate(const t_argc_argv *const argc_argv)
-{
-	const char		*arg;
-	char			*endptr;
-	double			learning_rate;
-
-	errno = 0;
-	arg = argc_argv->argv[argc_argv->i];
-	learning_rate = strtod(arg, &endptr);
-	if (errno != 0 || *endptr != '\0')
-		FT_LOG_ERROR("Value of param -A is not valid");
-	if (learning_rate > 1)
-		FT_LOG_ERROR("Maximum value for learning rate (-A) is 1");
-	if (learning_rate <= 0)
-		FT_LOG_ERROR("Minimum value for learning rate (-A) is >0");
-	return (learning_rate);
-}
-
-static size_t	influxdb_tags_add(const char **const tags_set)
-{
-	t_queue		*string_queue;
-	char		*tag_value_pair;
-	size_t		length;
-
-	string_queue = ft_queue_init();
 	length = 0;
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	tag_value_pair = ft_strdup("Record_type=Hyper");
-	length += ft_strlen(tag_value_pair);
-	ft_enqueue(string_queue, (void *)tag_value_pair);
-	*tags_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
+	key_value_pair.key = "Record_type";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = "Hyper";
+	key_value_pair.value_type = E_STRING;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
 	return (length);
 }
 
-static size_t	influxdb_fields_add(
-							char **const field_set,
-							const double learning_rate,
-							const size_t percentage)
+static size_t	get_hyper_params_key_value_pairs(
+							const t_hyper_params *const hyper_params,
+							const char *const special_chars,
+							t_queue *const key_value_queue)
 {
-	t_queue				*string_queue;
-	char				string_for_values[100];
 	size_t				length;
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
 
 	length = 0;
-	string_queue = ft_queue_init();
-	ft_sprintf(string_for_values, "learning_rate=%f", learning_rate);
-	length += ft_strlen(string_for_values);
-	ft_enqueue(string_queue, ft_strdup(string_for_values));
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	ft_sprintf(string_for_values, "percentage=%u", percentage);
-	length += ft_strlen(string_for_values);
-	ft_enqueue(string_queue, ft_strdup(string_for_values));
-	*field_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
+	key_value_pair.key = "learning_rate";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&hyper_params->learning_rate;
+	key_value_pair.value_type = E_DOUBLE;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
+	key_value_pair.key = "percentage";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&hyper_params->split_order.extra_info;
+	key_value_pair.value_type = E_SIZE_T;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
 	return (length);
 }
 
@@ -169,27 +65,26 @@ void	send_hyper_params_to_database(
 	t_influxdb_elem		influxdb_elem;
 	char				*line;
 	size_t				len;
-	double				learning_rate;
-	size_t				percentage;
+	t_queue				*key_value_queue;
 
-	if (influxdb_connection)
-	{
-		learning_rate = hyper_params->learning_rate;
-		percentage = hyper_params->split_order.extra_info;
-		len = 0;
-		len += influxdb_measurement(&influxdb_elem.measurement,
-				"dataset_train");
-		len += influxdb_tags_add(&influxdb_elem.tag_set);
-		len += influxdb_fields_add(&influxdb_elem.field_set,
-				learning_rate, percentage);
-		len += influxdb_timestamp_set(&influxdb_elem.timestamp);
-		line = ft_strdup("");
-		influxdb_line_extend(&influxdb_elem, len, &line);
-		influxdb_elem_remove(&influxdb_elem);
-		ft_influxdb_write(influxdb_connection, line, NULL, 1);
-		ft_strdel((char **)&line);
-	}
-	else
-		FT_LOG_DEBUG("Cost value is not sent to influxdb");
+	key_value_queue = ft_queue_init();
+	len = 0;
+	influxdb_elem.measurement = ft_strdup("");
+	get_measurement_value("dataset_train", key_value_queue);
+	get_influxdb_tag_key_value_pairs(SPECIAL_CHARS_INFLUXDB_TAGS,
+		key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.tag_set,
+			key_value_queue);
+	get_hyper_params_key_value_pairs(hyper_params,
+		SPECIAL_CHARS_INFLUXDB_FIELDS, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.field_set,
+			key_value_queue);
+	len += influxdb_timestamp_set(&influxdb_elem.timestamp);
+	line = ft_strdup("");
+	influxdb_line_extend(&influxdb_elem, len, &line);
+	influxdb_elem_remove(&influxdb_elem);
+	ft_influxdb_write(influxdb_connection, line, NULL, 1);
+	ft_strdel((char **)&line);
+	ft_queue_remove(&key_value_queue);
 	return ;
 }

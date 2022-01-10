@@ -6,14 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 12:38:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:12:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
 static size_t	influxdb_tags_add(
-							const char **const tag_set,
+							char **const tag_set,
 							const char *const example_id)
 {
 	t_queue			*string_queue;
