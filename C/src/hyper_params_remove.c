@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 23:30:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 00:21:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:15:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,24 @@
 
 void	hyper_params_remove(t_hyper_params **hyper_params)
 {
+	size_t		i;
+
 	ft_memdel((void **)&(*hyper_params)->activation_types);
 	ft_memdel((void **)&(*hyper_params)->num_of_nodes);
-	ft_memdel((void **)&(*hyper_params)->bias_weight_init_values);
+	if ((*hyper_params)->bias_weight_init_values)
+	{
+		i = -1;
+		while (++i < (*hyper_params)->num_of_layers)
+		{
+			if ((*hyper_params)->bias_weight_init_values[i].bias)
+				ml_vector_remove(&(*hyper_params)
+					->bias_weight_init_values[i].bias);
+			if ((*hyper_params)->bias_weight_init_values[i].weight)
+				ml_matrix_remove(&(*hyper_params)
+					->bias_weight_init_values[i].weight);
+		}
+		ft_memdel((void **)&(*hyper_params)->bias_weight_init_values);
+	}
 	ft_memdel((void **)hyper_params);
 	return ;
 }

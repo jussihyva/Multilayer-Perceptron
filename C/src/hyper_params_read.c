@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 08:21:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 21:51:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:19:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void	get_hyper_params_from_file(
 	hyper_params->bias_weight_init_values
 		= get_bias_weight_init_values(file_attr,
 			hyper_params->num_of_layers, hyper_params->num_of_nodes);
+	file_attr_remove(&file_attr);
 	return ;
 }

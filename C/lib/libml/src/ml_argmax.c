@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 13:54:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/11/22 14:53:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/10 23:57:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,7 @@ void	ml_argmax(
 {
 	t_size_2d		i;
 	double			value;
-	t_bool			remove_argmax;
 
-	remove_argmax = E_TRUE;
-	if (argmax_values)
-		remove_argmax = E_FALSE;
-	else
-		argmax_values = ft_memalloc(sizeof(*argmax_values));
 	ml_vector_set(argmax_values, DBL_MIN);
 	i.cols = -1;
 	while (++i.cols < matrix->size.cols)
@@ -41,7 +35,5 @@ void	ml_argmax(
 			}
 		}
 	}
-	if (remove_argmax)
-		ml_matrix_remove((t_matrix **)&argmax_values);
 	return ;
 }

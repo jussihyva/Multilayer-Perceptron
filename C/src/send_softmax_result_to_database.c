@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 23:40:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:03:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ static size_t	get_softmax_key_value_pairs(
 	t_key_value_pair	key_value_pair;
 	double				bigger_value;
 
+	bigger_value = DBL_MIN;
 	length = 0;
 	key_value_pair.key_type = E_SIZE_T;
 	key_value_pair.value_type = E_DOUBLE;

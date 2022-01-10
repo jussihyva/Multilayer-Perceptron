@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 22:24:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:01:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 	arg_parser = (*prediction)->arg_parser;
 	print_leaks = cmd_args->print_leaks;
 	grad_descent_attr_remove(&grad_descent_attr);
+	input_data_remove(&(*prediction)->input_data);
 	arg_remove(&cmd_args);
 	arg_parser_remove(&arg_parser);
 	ft_memdel((void **)prediction);
