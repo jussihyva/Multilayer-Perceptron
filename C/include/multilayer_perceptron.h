@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 22:22:57 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 12:47:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -444,6 +444,10 @@ void					normalize(const t_matrix *const input,
 							const t_matrix *const output);
 void					bias_weight_values_save(void *const *const layers,
 							const t_layer_type *const layer_types,
+							t_read_attr *const read_attr,
+							const t_hyper_params *const hyper_params);
+void					neural_network_save(void *const *const layers,
+							const t_layer_type *const layer_types,
 							const char *const weight_bias_file,
 							const t_hyper_params *const hyper_params);
 void					bias_weight_values_set(
@@ -599,5 +603,9 @@ char					*influxdb_special_chars_conv(
 size_t					get_measurement_value(
 							const char *const measurement,
 							t_queue *const queue);
+size_t					add_record_type(
+							const char *const record_type,
+							const char *const special_chars,
+							t_queue *const key_value_queue);
 
 #endif

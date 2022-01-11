@@ -6,114 +6,105 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:35:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:11:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 12:22:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static size_t	new_length_calculate(
-					const char *special_chars,
-					const char *const string)
+static size_t	add_dataset(
+						const size_t dataset,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
 {
-	const char	*ptr;
-	size_t		length;
-
-	length = ft_strlen(string);
-	ptr = string;
-	while (*ptr)
-	{
-		if (ft_strchr(special_chars, *ptr))
-			length++;
-		ptr++;
-	}
-	return (length);
-}
-
-static char	*backslash_chars_add(
-					const char *const special_chars,
-					const char *const string)
-{
-	char			*new_string;
-	const char		*ptr;
-	size_t			new_length;
-	size_t			i;
-
-	new_length = new_length_calculate(special_chars, string);
-	new_string = ft_strnew(new_length);
-	i = 0;
-	ptr = string;
-	while (*ptr)
-	{
-		if (ft_strchr(special_chars, *ptr))
-			new_string[i++] = '\\';
-		new_string[i++] = *ptr;
-		ptr++;
-	}
-	return (new_string);
-}
-
-static size_t	influxdb_tags_add(
-						char **const tags_set,
-						const size_t dataset_type)
-{
-	t_queue		*string_queue;
-	char		*tag_value_pair;
-	size_t		length;
-
-	string_queue = ft_queue_init();
-	length = 0;
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	tag_value_pair = ft_strdup("Record_type=Cost");
-	length += ft_strlen(tag_value_pair);
-	ft_enqueue(string_queue, (void *)tag_value_pair);
-	length++;
-	ft_enqueue(string_queue, ft_strdup(","));
-	tag_value_pair = ft_strnew(100);
-	ft_sprintf(tag_value_pair, "Dataset=%lu", dataset_type);
-	length += ft_strlen(tag_value_pair);
-	ft_enqueue(string_queue, (void *)tag_value_pair);
-	*tags_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
-	return (length);
-}
-
-static size_t	influxdb_fields_add(
-							char **const field_set,
-							const size_t iter_cnt,
-							const t_vector *vector)
-{
-	char				*string;
-	t_queue				*string_queue;
-	size_t				i;
-	char				string_for_values[100];
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
 	size_t				length;
 
 	length = 0;
-	string_queue = ft_queue_init();
-	ft_sprintf(string_for_values, "iter=%u", iter_cnt);
-	length += ft_strlen(string_for_values);
-	ft_enqueue(string_queue, ft_strdup(string_for_values));
+	key_value_pair.key = "Dataset";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&dataset;
+	key_value_pair.value_type = E_SIZE_T;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
+	return (length);
+}
+
+static size_t	add_iter(
+						const size_t iter,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
+{
+	t_key_value_pair	key_value_pair;
+	char				*key_value_string;
+	size_t				length;
+
+	length = 0;
+	key_value_pair.key = "iter";
+	key_value_pair.key_type = E_STRING;
+	key_value_pair.value = (void *)&iter;
+	key_value_pair.value_type = E_SIZE_T;
+	length += influxdb_key_value_pair_string_create(&key_value_pair,
+			special_chars, &key_value_string);
+	ft_enqueue(key_value_queue, (void *)key_value_string);
+	return (length);
+}
+
+static size_t	add_vector(
+						const t_vector *const vector,
+						const char *const special_chars,
+						t_queue *const key_value_queue)
+{
+	size_t				length;
+	size_t				i;
+	char				*key_value_string;
+	t_key_value_pair	key_value_pair;
+
+	length = 0;
+	key_value_pair.key_type = E_SIZE_T;
+	key_value_pair.value_type = E_DOUBLE;
 	i = -1;
 	while (++i < vector->size)
 	{
-		length++;
-		ft_enqueue(string_queue, ft_strdup(","));
-		ft_sprintf(string_for_values, "%d", i);
-		length += ft_strlen(string_for_values);
-		ft_enqueue(string_queue, ft_strdup(string_for_values));
-		length++;
-		ft_enqueue(string_queue, ft_strdup("="));
-		ft_sprintf(string_for_values, "%f", ((double *)vector->data)[i]);
-		string = backslash_chars_add(SPECIAL_CHARS_INFLUXDB_FIELDS,
-				string_for_values);
-		length += ft_strlen(string);
-		ft_enqueue(string_queue, string);
+		key_value_pair.key = (void *)&i;
+		key_value_pair.value = (void *)&((double *)vector->data)[i];
+		length += influxdb_key_value_pair_string_create(&key_value_pair,
+				special_chars, &key_value_string);
+		ft_enqueue(key_value_queue, (void *)key_value_string);
 	}
-	*field_set = ft_strcat_queue(string_queue, length);
-	ft_queue_remove(&string_queue);
 	return (length);
+}
+
+static char	*influxdb_elem_create(
+						const t_vector *const cost,
+						const size_t dataset,
+						const size_t iter_cnt)
+{
+	t_influxdb_elem		influxdb_elem;
+	t_queue				*key_value_queue;
+	size_t				len;
+	char				*line;
+
+	key_value_queue = ft_queue_init();
+	len = 0;
+	influxdb_elem.measurement = ft_strdup("");
+	get_measurement_value("dataset_train", key_value_queue);
+	add_record_type("Cost", SPECIAL_CHARS_INFLUXDB_TAGS, key_value_queue);
+	add_dataset(dataset, SPECIAL_CHARS_INFLUXDB_TAGS, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.tag_set,
+			key_value_queue);
+	add_iter(iter_cnt, SPECIAL_CHARS_INFLUXDB_FIELDS, key_value_queue);
+	add_vector(cost, SPECIAL_CHARS_INFLUXDB_FIELDS, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.field_set,
+			key_value_queue);
+	len += influxdb_timestamp_set(&influxdb_elem.timestamp);
+	line = ft_strdup("");
+	influxdb_line_extend(&influxdb_elem, len, &line);
+	influxdb_elem_remove(&influxdb_elem);
+	ft_queue_remove(&key_value_queue);
+	return (line);
 }
 
 void	send_iteration_result_to_database(
@@ -121,9 +112,7 @@ void	send_iteration_result_to_database(
 							const t_layer_output *const layer_output,
 							const size_t iter_cnt)
 {
-	t_influxdb_elem		influxdb_elem;
 	char				*line;
-	size_t				len;
 	size_t				i;
 
 	if (influxdb_connection)
@@ -131,16 +120,7 @@ void	send_iteration_result_to_database(
 		i = -1;
 		while (++i < NUM_OF_DATASETS)
 		{
-			len = 0;
-			len += influxdb_measurement(&influxdb_elem.measurement,
-					"dataset_train");
-			len += influxdb_tags_add(&influxdb_elem.tag_set, i);
-			len += influxdb_fields_add(&influxdb_elem.field_set, iter_cnt,
-					layer_output->cost[i]);
-			len += influxdb_timestamp_set(&influxdb_elem.timestamp);
-			line = ft_strdup("");
-			influxdb_line_extend(&influxdb_elem, len, &line);
-			influxdb_elem_remove(&influxdb_elem);
+			line = influxdb_elem_create(layer_output->cost[i], i, iter_cnt);
 			ft_influxdb_write(influxdb_connection, line, NULL, 1);
 			ft_strdel((char **)&line);
 		}

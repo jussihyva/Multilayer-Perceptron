@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 22:54:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/11 13:19:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,15 @@ static t_layer_hidden	*layer_init_hidden(
 	return (layer);
 }
 
+static void	cost_init(
+			t_vector **const cost,
+			const t_size_2d *size)
+{
+	cost[E_TRAIN] = ml_vector_create(size->rows);
+	cost[E_TEST] = ml_vector_create(size->rows);
+	return ;
+}
+
 static t_layer_output	*layer_init_output(
 								const size_t id,
 								t_dataset **dataset_array,
@@ -93,8 +102,7 @@ static t_layer_output	*layer_init_output(
 	bias_weight_init(size, &layer->weight_bias, NULL,
 		hyper_params->weight_init_mode);
 	bias_weight_init(size, &layer->d_weight_bias, NULL, E_ZERO);
-	layer->cost[E_TRAIN] = ml_vector_create(size.rows);
-	layer->cost[E_TEST] = ml_vector_create(size.rows);
+	cost_init(layer->cost, &size);
 	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
 	layer->hyper_params = hyper_params;
 	layer->num_of_nodes = hyper_params->num_of_nodes[id];
