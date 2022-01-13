@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/11 12:47:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 11:36:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,6 +341,9 @@ typedef struct s_layer_output
 	const t_hyper_params	*hyper_params;
 	t_dataset_type			dataset_type;
 	t_activation_type		activation_type;
+	const t_matrix			*softmax;
+	const t_vector			*argmax;
+	const t_vector			*argmax_values;
 }				t_layer_output;
 
 typedef struct s_neural_network
@@ -355,9 +358,6 @@ typedef struct s_grad_descent_attr
 	const t_neural_network		*neural_network;
 	const t_hyper_params		*hyper_params;
 	const char					*weight_bias_file;
-	const t_matrix				*softmax;
-	const t_vector				*argmax;
-	const t_vector				*argmax_values;
 	const t_tcp_connection		*influxdb_connection;
 }				t_grad_descent_attr;
 
@@ -502,16 +502,11 @@ void					send_weight_values_to_database(
 							const t_matrix *const weight,
 							const t_hyper_params *const hyper_params);
 const t_tcp_connection	*get_database_connection(void);
-size_t					influxdb_measurement(char **const measurement,
-							const char *const string);
 void					influxdb_elem_remove(t_influxdb_elem *influxdb_elem);
 void					influxdb_line_extend(
 							const t_influxdb_elem *const influxdb_elem,
 							size_t len,
 							char **const line);
-size_t					influxdb_tag_set(
-							char **const tag_set,
-							t_queue *const name_value_queue);
 size_t					influxdb_elem_string_create(char **const elem_string,
 							t_queue *key_value_queue);
 size_t					influxdb_timestamp(const char **const timestamp);
@@ -607,5 +602,12 @@ size_t					add_record_type(
 							const char *const record_type,
 							const char *const special_chars,
 							t_queue *const key_value_queue);
+void					prediction_result(
+							t_grad_descent_attr *grad_descent_attr);
+t_layer_output			*layer_init_output(
+							const size_t id,
+							t_dataset **dataset_array,
+							const size_t *num_of_examples,
+							const t_hyper_params *const hyper_params);
 
 #endif

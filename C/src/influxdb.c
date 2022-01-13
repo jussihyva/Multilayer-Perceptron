@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:39:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:13:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 10:38:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,50 +44,6 @@ size_t	get_measurement_value(
 	length = conv_to_string((void *)measurement, E_STRING,
 			SPECIAL_CHARS_INFLUXDB_MEASUREMENT, &string);
 	ft_enqueue(queue, (void *)string);
-	return (length);
-}
-
-size_t	influxdb_measurement(
-						char **const measurement,
-						const char *const string)
-{
-	size_t		length;
-
-	*measurement = influxdb_special_chars_conv(
-			SPECIAL_CHARS_INFLUXDB_MEASUREMENT, string);
-	length = ft_strlen(*measurement);
-	return (length);
-}
-
-size_t	influxdb_tag_set(
-					char **const tag_set,
-					t_queue *const name_value_queue)
-{
-	size_t			length;
-	const char		*name_value_string;
-	char			*updated_string;
-
-	*tag_set = ft_strdup("");
-	while (!ft_is_queue_empty(name_value_queue))
-	{
-		updated_string = ft_strjoin(*tag_set, ",");
-		ft_strdel((char **)tag_set);
-		*tag_set = updated_string;
-		name_value_string = (char *)ft_dequeue(name_value_queue);
-		updated_string = ft_strjoin(*tag_set, name_value_string);
-		ft_strdel((char **)&name_value_string);
-		ft_strdel((char **)tag_set);
-		*tag_set = updated_string;
-	}
-	updated_string = ft_strjoin(*tag_set, " ");
-	ft_strdel((char **)tag_set);
-	*tag_set = updated_string;
-	length = ft_strlen(*tag_set);
-	if (length <= 2)
-	{
-		ft_strdel((char **)tag_set);
-		length = 0;
-	}
 	return (length);
 }
 

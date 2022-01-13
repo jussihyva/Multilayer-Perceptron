@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:14:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/11 00:01:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 10:51:23 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,6 @@ static void	main_remove(t_prediction **prediction, const char *const prog_name)
 	return ;
 }
 
-static void	print_result(t_grad_descent_attr *grad_descent_attr)
-{
-	ml_matrix_print("Observed", grad_descent_attr->dataset->y);
-	ml_matrix_print("Softmax", grad_descent_attr->softmax);
-	ml_vector_print("ARGMAX VALUES", grad_descent_attr->argmax_values);
-	return ;
-}
-
 int	main(int argc, char **argv)
 {
 	t_prediction				*prediction;
@@ -63,19 +55,7 @@ int	main(int argc, char **argv)
 		neural_network = grad_descent_attr->neural_network;
 		propagation_forward(neural_network->layers,
 			neural_network->layer_types, num_of_layers);
-		ml_softmax(((t_layer_output *)neural_network->layers[num_of_layers - 1])
-			->y_hat, grad_descent_attr->softmax);
-		if (grad_descent_attr->influxdb_connection)
-			send_softmax_result_to_database(grad_descent_attr
-				->influxdb_connection, grad_descent_attr->softmax);
-		else
-			FT_LOG_DEBUG("Softmax values are not sent to influxdb");
-		ml_argmax(grad_descent_attr->softmax, grad_descent_attr->argmax,
-			grad_descent_attr->argmax_values);
-		if (ft_logging_level() <= LOG_INFO)
-			print_result(grad_descent_attr);
-		prediction_validate(grad_descent_attr->dataset->y,
-			grad_descent_attr->argmax);
+		prediction_result(grad_descent_attr);
 	}
 	main_remove(&prediction, "prediction");
 	return (0);

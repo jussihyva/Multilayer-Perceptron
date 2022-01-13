@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:06:20 by jkauppi           #+#    #+#              #
-#    Updated: 2022/01/11 12:34:00 by jkauppi          ###   ########.fr        #
+#    Updated: 2022/01/13 11:00:42 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRC_C_FILES				=	file_attr_remove.c dataset_remove.c derivative.c \
 							influxdb_special_chars.c influxdb_remove.c \
 							hyper_params_set_1.c hyper_params_set_2.c \
 							neural_network_remove.c layer_mode.c \
-							influxdb_tags.c neural_network_save.c
+							influxdb_tags.c neural_network_save.c \
+							prediction_result.c layer_init_output.c
 SRC_H_FILES				=	multilayer_perceptron.h
 LOCAL_LIBS				=	libml.a libft_addons.a libftprintf.a libft.a
 GLOBAL_LIBS				=	libssl.a libcrypto.a

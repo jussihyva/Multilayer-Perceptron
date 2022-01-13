@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 09:59:19 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/11 13:19:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 11:02:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,48 +61,6 @@ static t_layer_hidden	*layer_init_hidden(
 	bias_weight_init(size, &layer->weight_bias, NULL,
 		hyper_params->weight_init_mode);
 	bias_weight_init(size, &layer->d_weight_bias, NULL, E_ZERO);
-	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
-	layer->hyper_params = hyper_params;
-	layer->num_of_nodes = hyper_params->num_of_nodes[id];
-	layer->activation_type = hyper_params->activation_types[id];
-	return (layer);
-}
-
-static void	cost_init(
-			t_vector **const cost,
-			const t_size_2d *size)
-{
-	cost[E_TRAIN] = ml_vector_create(size->rows);
-	cost[E_TEST] = ml_vector_create(size->rows);
-	return ;
-}
-
-static t_layer_output	*layer_init_output(
-								const size_t id,
-								t_dataset **dataset_array,
-								const size_t *num_of_examples,
-								const t_hyper_params *const hyper_params)
-{
-	t_layer_output		*layer;
-	t_size_2d			size;
-
-	layer = ft_memalloc(sizeof(*layer));
-	layer->id = id;
-	layer->y_train = dataset_array[E_TRAIN]->y;
-	layer->y_test = dataset_array[E_TEST]->y;
-	size.rows = hyper_params->num_of_nodes[id];
-	size.cols = num_of_examples[E_TRAIN];
-	layer->z_train = ml_matrix_create(size);
-	layer->y_hat_train = ml_matrix_create(size);
-	layer->d_z = ml_matrix_create(size);
-	size.cols = num_of_examples[E_TEST];
-	layer->z_test = ml_matrix_create(size);
-	layer->y_hat_test = ml_matrix_create(size);
-	size.cols = hyper_params->num_of_nodes[id - 1];
-	bias_weight_init(size, &layer->weight_bias, NULL,
-		hyper_params->weight_init_mode);
-	bias_weight_init(size, &layer->d_weight_bias, NULL, E_ZERO);
-	cost_init(layer->cost, &size);
 	layer->layer_type = set_layer_type(id, hyper_params->num_of_layers);
 	layer->hyper_params = hyper_params;
 	layer->num_of_nodes = hyper_params->num_of_nodes[id];

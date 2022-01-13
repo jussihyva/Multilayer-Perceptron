@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 10:58:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 16:32:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 10:38:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,12 @@ void	bias_stat_add(
 	t_queue				*key_value_queue;
 
 	len = 0;
-	len += influxdb_measurement(&influxdb_elem.measurement, "dataset_train");
 	key_value_queue = ft_queue_init();
+	influxdb_elem.measurement = ft_strdup("");
+	get_measurement_value("dataset_train", key_value_queue);
 	bias_tag_set_name_value_queue_init(hyper_params, layer_id, key_value_queue);
-	len += influxdb_tag_set(&influxdb_elem.tag_set, key_value_queue);
+	len += influxdb_elem_string_create(&influxdb_elem.tag_set,
+			key_value_queue);
 	get_bias_key_value_pairs(bias, SPECIAL_CHARS_INFLUXDB_FIELDS,
 		key_value_queue);
 	len += influxdb_elem_string_create(&influxdb_elem.field_set,

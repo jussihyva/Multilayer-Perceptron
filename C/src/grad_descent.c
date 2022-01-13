@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:57:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:09:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		layer = grad_descent_attr->neural_network->layers[num_of_layers - 1];
 		i.rows = layer->num_of_nodes;
 		i.cols = layer->y_hat_train->size.cols;
-		grad_descent_attr->softmax = ml_matrix_create(i);
-		i.rows = grad_descent_attr->softmax->size.cols;
-		grad_descent_attr->argmax = ml_vector_create(i.rows);
-		grad_descent_attr->argmax_values = ml_vector_create(i.rows);
 	}
 	else
 		grad_descent_attr = NULL;
@@ -56,6 +52,27 @@ static void	cost_values_print(
 	ft_printf("epoch %lu/%lu - loss: %f", iter_cnt, epochs,
 		((double *)cost[E_TRAIN]->data)[0]);
 	ft_printf(" - val_loss: %f\n", ((double *)cost[E_TEST]->data)[0]);
+	return ;
+}
+
+static void	send_stat_to_database(
+					const t_tcp_connection *const influxdb_connection,
+					const t_neural_network *const neural_network,
+					size_t iter_cnt,
+					const t_hyper_params *const hyper_params)
+{
+	void *const		*layers;
+	t_layer_output	*layer_output;
+	size_t			num_of_layers;
+
+	layers = neural_network->layers;
+	num_of_layers = hyper_params->num_of_layers;
+	layer_output = ((t_layer_output **)layers)[num_of_layers - 1];
+	send_layer_stat_to_database(influxdb_connection, layers,
+		neural_network->layer_types, num_of_layers);
+	send_iteration_result_to_database(influxdb_connection, layer_output,
+		iter_cnt);
+	send_hyper_params_to_database(influxdb_connection, hyper_params);
 	return ;
 }
 
@@ -80,13 +97,8 @@ void	grad_descent(
 		propagation_backward(layers, neural_network->layer_types,
 			num_of_layers);
 		if (influxdb_connection && !(iter_cnt % 20))
-		{
-			send_layer_stat_to_database(influxdb_connection, layers,
-				neural_network->layer_types, num_of_layers);
-			send_iteration_result_to_database(influxdb_connection, layer_output,
-				iter_cnt);
-			send_hyper_params_to_database(influxdb_connection, hyper_params);
-		}
+			send_stat_to_database(influxdb_connection, neural_network, iter_cnt,
+				hyper_params);
 		else
 			FT_LOG_DEBUG("Stat values are not sent to influxdb");
 		layer_mode_set(neural_network, E_TEST, num_of_layers);
@@ -103,9 +115,6 @@ void	grad_descent_attr_remove(
 {
 	if (*grad_descent_attr)
 	{
-		ml_matrix_remove((t_matrix **)&(*grad_descent_attr)->softmax);
-		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax);
-		ml_vector_remove((t_vector **)&(*grad_descent_attr)->argmax_values);
 		if ((*grad_descent_attr)->influxdb_connection)
 			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
 		neural_network_remove(&(*grad_descent_attr)->neural_network,

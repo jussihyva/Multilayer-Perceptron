@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:29:55 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/06 00:03:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 11:37:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ void	layer_remove_output(t_layer_output **layer)
 	ml_vector_remove((t_vector **)&(*layer)->weight_bias.bias);
 	ml_matrix_remove((t_matrix **)&(*layer)->d_weight_bias.weight);
 	ml_vector_remove((t_vector **)&(*layer)->d_weight_bias.bias);
+	ml_matrix_remove((t_matrix **)&(*layer)->softmax);
+	ml_vector_remove((t_vector **)&(*layer)->argmax);
+	ml_vector_remove((t_vector **)&(*layer)->argmax_values);
 	ft_memdel((void **)layer);
 	return ;
 }
