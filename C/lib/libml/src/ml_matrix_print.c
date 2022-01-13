@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:29:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/12/15 13:30:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/14 00:52:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	print_value(
 		if (length)
 			ft_printf("%*f", length + 2, value);
 		else
-			ft_printf("%10f", value);
+			ft_printf("%10f ", value);
 	}
 	else if (i == ((size_t)(total / 2)))
 		ft_printf(" ...  ");

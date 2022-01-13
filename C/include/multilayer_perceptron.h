@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/13 11:36:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/14 01:32:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define THREE_NODES							3
 # define FOUR_NODES								4
 # define FIVE_NODES								5
+# define MAX_RESULT_OF_LINEAR_CALCULATION		1.0e+4
 
 typedef enum e_activation_type
 {

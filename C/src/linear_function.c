@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 14:54:43 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 12:38:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/14 01:32:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,17 @@ static void	add_bias_value(
 						const t_vector *const bias)
 {
 	size_t		node_id;
+	double		**z_table;
 
+	z_table = (double **)z->table;
 	node_id = -1;
 	while (++node_id < z->size.rows)
 	{
-		((double **)z->table)[node_id][example_id]
-			+= ((double *)bias->data)[node_id];
+		z_table[node_id][example_id] += ((double *)bias->data)[node_id];
+		if (z_table[node_id][example_id] > MAX_RESULT_OF_LINEAR_CALCULATION ||
+			z_table[node_id][example_id] < -MAX_RESULT_OF_LINEAR_CALCULATION)
+			FT_LOG_ERROR("Result of linear calculation (z) is too high. "
+				"Adjust hyper params.");
 	}
 	return ;
 }

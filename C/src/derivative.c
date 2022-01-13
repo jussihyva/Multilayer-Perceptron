@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 18:03:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/07 10:18:47 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/14 01:54:05 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	derivative_w(
 			{
 				table_w[node_id][function_id]
 					+= ((double **)x->table)[function_id][example_id]
-					* ((double **)derivative_z->table)[node_id][example_id];
+					* ((double **)derivative_z->table)[node_id][example_id]
+					/ x->size.cols;
 			}
-			table_w[node_id][function_id] /= x->size.cols;
 		}
 	}
 	return ;
@@ -87,8 +87,8 @@ void	derivative_b(
 	{
 		example_id = -1;
 		while (++example_id < derivative_z->size.cols)
-			data_b[node_id] += table_z[node_id][example_id];
-		data_b[node_id] /= derivative_z->size.cols;
+			data_b[node_id] += table_z[node_id][example_id]
+				/ derivative_z->size.cols;
 	}
 	return ;
 }
