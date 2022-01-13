@@ -6,43 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/13 12:09:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:23:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-t_grad_descent_attr	*grad_descent_attr_initialize(
-								const t_input_data *const input_data,
-								const char *const weight_bias_file,
-								const t_hyper_params *const input_hyper_params)
-{
-	t_grad_descent_attr		*grad_descent_attr;
-	const t_layer_output	*layer;
-	t_size_2d				i;
-	size_t					num_of_layers;
-
-	if (input_data->dataset_array[E_TRAIN])
-	{
-		grad_descent_attr = ft_memalloc(sizeof(*grad_descent_attr));
-		grad_descent_attr->weight_bias_file = weight_bias_file;
-		grad_descent_attr->hyper_params
-			= hyper_params_init(weight_bias_file, input_hyper_params,
-				input_data->num_of_input_functions,
-				input_data->num_of_output_functions);
-		num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
-		grad_descent_attr->neural_network
-			= neural_network_init(input_data->dataset_array,
-				grad_descent_attr->hyper_params);
-		grad_descent_attr->dataset = input_data->dataset_array[E_TRAIN];
-		layer = grad_descent_attr->neural_network->layers[num_of_layers - 1];
-		i.rows = layer->num_of_nodes;
-		i.cols = layer->y_hat_train->size.cols;
-	}
-	else
-		grad_descent_attr = NULL;
-	return (grad_descent_attr);
-}
 
 static void	cost_values_print(
 					const size_t iter_cnt,
@@ -76,6 +44,20 @@ static void	send_stat_to_database(
 	return ;
 }
 
+static void	train_actions(
+				const t_neural_network *const neural_network,
+				const size_t num_of_layers)
+{
+	void *const		*layers;
+
+	layers = neural_network->layers;
+	layer_mode_set(neural_network, E_TRAIN, num_of_layers);
+	propagation_forward(layers, neural_network->layer_types, num_of_layers);
+	propagation_backward(layers, neural_network->layer_types,
+		num_of_layers);
+	return ;
+}
+
 void	grad_descent(
 				const t_neural_network *const neural_network,
 				const t_hyper_params *const hyper_params,
@@ -92,10 +74,7 @@ void	grad_descent(
 	iter_cnt = 0;
 	while (++iter_cnt <= hyper_params->epochs)
 	{
-		layer_mode_set(neural_network, E_TRAIN, num_of_layers);
-		propagation_forward(layers, neural_network->layer_types, num_of_layers);
-		propagation_backward(layers, neural_network->layer_types,
-			num_of_layers);
+		train_actions(neural_network, num_of_layers);
 		if (influxdb_connection && !(iter_cnt % 20))
 			send_stat_to_database(influxdb_connection, neural_network, iter_cnt,
 				hyper_params);
@@ -106,22 +85,6 @@ void	grad_descent(
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
 			cost_values_print(iter_cnt, hyper_params->epochs,
 				layer_output->cost);
-	}
-	return ;
-}
-
-void	grad_descent_attr_remove(
-						t_grad_descent_attr **grad_descent_attr)
-{
-	if (*grad_descent_attr)
-	{
-		if ((*grad_descent_attr)->influxdb_connection)
-			ft_influxdb_remove(&(*grad_descent_attr)->influxdb_connection);
-		neural_network_remove(&(*grad_descent_attr)->neural_network,
-			(*grad_descent_attr)->hyper_params->num_of_layers);
-		hyper_params_remove((t_hyper_params **)&(*grad_descent_attr)
-			->hyper_params);
-		ft_memdel((void **)grad_descent_attr);
 	}
 	return ;
 }

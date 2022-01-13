@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:34:47 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/13 10:38:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:36:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,11 @@ void	weight_stat_add(
 	i = -1;
 	while (++i < weight->size.rows)
 	{
-		len = 0;
 		influxdb_elem.measurement = ft_strdup("");
 		get_measurement_value("dataset_train", key_value_queue);
 		weight_tag_set_name_value_queue_init(hyper_params, layer_id,
 			i, key_value_queue);
-		len += influxdb_elem_string_create(&influxdb_elem.tag_set,
+		len = influxdb_elem_string_create(&influxdb_elem.tag_set,
 				key_value_queue);
 		get_weight_key_value_pairs(weight, i, SPECIAL_CHARS_INFLUXDB_FIELDS,
 			key_value_queue);
