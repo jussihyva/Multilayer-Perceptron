@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/14 01:32:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/16 23:53:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,6 +378,7 @@ typedef struct s_cmd_args
 	t_bool					print_leaks;
 	t_bool					is_influxdb;
 	const char				*dataset_file;
+	char					*dataset_test_file;
 	const char				*weight_bias_file;
 	t_hyper_params			hyper_params;
 }				t_cmd_args;
@@ -465,7 +466,7 @@ t_training				*training_init(const int argc,
 size_t					set_num_of_epochs(const t_argc_argv *const argc_argv);
 size_t					set_num_of_layers(const t_argc_argv *const argc_argv);
 double					set_learning_rate(const t_argc_argv *const argc_argv);
-void					prediction_validate(const t_matrix *const observed,
+t_bool					*prediction_validate(const t_matrix *const observed,
 							const t_vector *const argmax);
 void					update_content_of_matrix(
 							const t_file_attr *const file_attr,
@@ -610,5 +611,11 @@ t_layer_output			*layer_init_output(
 							t_dataset **dataset_array,
 							const size_t *num_of_examples,
 							const t_hyper_params *const hyper_params);
+void					arg_param_save_short(
+							t_cmd_args *const cmd_args,
+							char opt,
+							t_arg_parser *arg_parser);
+char					*set_dataset_test_file(
+							const t_argc_argv *const argc_argv);
 
 #endif

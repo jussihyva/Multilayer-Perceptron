@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:46:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/13 11:45:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/17 00:02:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	print_result(
 {
 	ml_matrix_print("Observed", dataset->y);
 	ml_matrix_print("Softmax", layer_output->softmax);
-	ml_vector_print("ARGMAX VALUES", layer_output->argmax_values);
 	return ;
 }
 
@@ -27,6 +26,7 @@ void	prediction_result(t_grad_descent_attr *grad_descent_attr)
 	const t_neural_network		*neural_network;
 	size_t						num_of_layers;
 	t_layer_output				*layer_output;
+	t_bool						*accuracy_array;
 
 	neural_network = grad_descent_attr->neural_network;
 	num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
@@ -41,6 +41,7 @@ void	prediction_result(t_grad_descent_attr *grad_descent_attr)
 		layer_output->argmax_values);
 	if (ft_logging_level() <= LOG_INFO)
 		print_result(grad_descent_attr->dataset, layer_output);
-	prediction_validate(grad_descent_attr->dataset->y, layer_output->argmax);
+	accuracy_array = prediction_validate(grad_descent_attr->dataset->y,
+			layer_output->argmax);
 	return ;
 }

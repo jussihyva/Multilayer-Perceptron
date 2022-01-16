@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 17:36:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/10 17:36:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/16 21:22:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,12 @@ double	set_learning_rate(const t_argc_argv *const argc_argv)
 	if (learning_rate <= 0)
 		FT_LOG_ERROR("Minimum value for learning rate (-A) is >0");
 	return (learning_rate);
+}
+
+char	*set_dataset_test_file(const t_argc_argv *const argc_argv)
+{
+	char	*file;
+
+	file = ft_strdup(argc_argv->argv[argc_argv->i]);
+	return (file);
 }

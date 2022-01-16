@@ -6,22 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:07:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/05 22:28:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/16 21:15:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
-
-static t_logging_level	set_logging_level(const t_argc_argv *const argc_argv)
-{
-	const char			*arg;
-	t_logging_level		logging_level;
-
-	arg = argc_argv->argv[argc_argv->i];
-	logging_level = ft_logging_level_param_validate(arg);
-	ft_log_set_level(logging_level);
-	return (logging_level);
-}
 
 static void	check_number_of_mandatory_variables(t_arg_parser *arg_parser)
 {
@@ -57,36 +46,6 @@ static void	input_param_mandatory_validate(
 	return ;
 }
 
-static void	input_param_save_short(
-								t_cmd_args *const cmd_args,
-								char opt,
-								t_arg_parser *arg_parser)
-{
-	t_hyper_params		*hyper_params;
-
-	hyper_params = &cmd_args->hyper_params;
-	if (opt == 'L')
-		cmd_args->logging_level = set_logging_level(arg_parser->argc_argv);
-	else if (opt == 'S')
-		cmd_args->is_influxdb = E_TRUE;
-	else if (opt == 'A')
-		hyper_params->learning_rate = set_learning_rate(arg_parser->argc_argv);
-	else if (opt == 's')
-		set_split_mode(arg_parser->argc_argv, &hyper_params->split_order);
-	else if (opt == 'w')
-		hyper_params->weight_init_mode = set_weight_init_mode(
-				arg_parser->argc_argv);
-	else if (opt == 'E')
-		hyper_params->epochs = set_num_of_epochs(arg_parser->argc_argv);
-	else if (opt == 'M')
-		hyper_params->num_of_layers = set_num_of_layers(arg_parser->argc_argv);
-	else if (opt == 'l')
-		cmd_args->print_leaks = E_TRUE;
-	else if (opt == 'h')
-		arg_parser->fn_usage_print();
-	return ;
-}
-
 void	arg_analyze(
 					void *const cmd_args,
 					char opt,
@@ -94,7 +53,7 @@ void	arg_analyze(
 					t_cmd_param_type cmd_param_type)
 {
 	if (cmd_param_type == E_OPTIONAL_SHORT)
-		input_param_save_short(cmd_args, opt, arg_parser);
+		arg_param_save_short(cmd_args, opt, arg_parser);
 	else
 		input_param_mandatory_validate(cmd_args, opt, arg_parser);
 	return ;

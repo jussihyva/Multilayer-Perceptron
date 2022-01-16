@@ -1,0 +1,408 @@
+{
+	"annotations": {
+	  "list": [
+		{
+		  "builtIn": 1,
+		  "datasource": "-- Grafana --",
+		  "enable": true,
+		  "hide": true,
+		  "iconColor": "rgba(0, 211, 255, 1)",
+		  "name": "Annotations & Alerts",
+		  "target": {
+			"limit": 100,
+			"matchAny": false,
+			"tags": [],
+			"type": "dashboard"
+		  },
+		  "type": "dashboard"
+		}
+	  ]
+	},
+	"editable": true,
+	"gnetId": null,
+	"graphTooltip": 0,
+	"id": 7,
+	"links": [],
+	"panels": [
+	  {
+		"datasource": null,
+		"description": "",
+		"gridPos": {
+		  "h": 11,
+		  "w": 23,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 2,
+		"options": {
+		  "border": {
+			"show": false,
+			"color": "yellow",
+			"size": 1
+		  },
+		  "fieldSets": [
+			{
+			  "col": 3,
+			  "color": "#fcccc7",
+			  "dotSize": 1,
+			  "hidden": false,
+			  "lineSize": 1,
+			  "lineType": "none"
+			},
+			{
+			  "col": 1,
+			  "color": "#da6cdd",
+			  "dotSize": 2,
+			  "lineSize": 0,
+			  "lineType": "none",
+			  "hidden": false
+			}
+		  ],
+		  "grid": {
+			"color": "gray"
+		  },
+		  "legend": {
+			"show": false,
+			"size": 3
+		  },
+		  "rotateYAxisTitle": false,
+		  "xAxis": {
+			"col": 2,
+			"inverted": false
+		  },
+		  "xAxisExtents": {
+			"min": 0,
+			"max": 15
+		  },
+		  "xAxisTitle": {
+			"text": "Time",
+			"color": "white",
+			"textSize": 1
+		  },
+		  "yAxisExtents": {
+			"min": 0,
+			"max": 1
+		  },
+		  "yAxisTitle": {
+			"text": "",
+			"color": "#777",
+			"textSize": 1
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "table",
+			"select": [
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"ExampleId"
+				  ],
+				  "type": "field"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"0"
+				  ],
+				  "type": "field"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Softmax"
+			  }
+			]
+		  }
+		],
+		"title": "Cost (Node 1)",
+		"type": "michaeldmoore-scatter-panel"
+	  },
+	  {
+		"aliasColors": {},
+		"bars": false,
+		"dashLength": 10,
+		"dashes": false,
+		"datasource": null,
+		"fill": 0,
+		"fillGradient": 0,
+		"gridPos": {
+		  "h": 8,
+		  "w": 23,
+		  "x": 0,
+		  "y": 11
+		},
+		"hiddenSeries": false,
+		"id": 5,
+		"legend": {
+		  "avg": false,
+		  "current": false,
+		  "max": false,
+		  "min": false,
+		  "show": true,
+		  "total": false,
+		  "values": false
+		},
+		"lines": true,
+		"linewidth": 1,
+		"nullPointMode": "null",
+		"options": {
+		  "alertThreshold": true
+		},
+		"percentage": false,
+		"pluginVersion": "8.1.1",
+		"pointradius": 2,
+		"points": false,
+		"renderer": "flot",
+		"seriesOverrides": [
+		  {
+			"alias": "dataset_train.mean_1",
+			"yaxis": 2
+		  },
+		  {
+			"alias": "dataset_train.Learning rate",
+			"yaxis": 1
+		  },
+		  {
+			"alias": "dataset_train.Percentage",
+			"yaxis": 2
+		  }
+		],
+		"spaceLength": 10,
+		"stack": false,
+		"steppedLine": false,
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"learning_rate"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Learning rate"
+				  ],
+				  "type": "alias"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"percentage"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				},
+				{
+				  "params": [
+					"Percentage"
+				  ],
+				  "type": "alias"
+				}
+			  ]
+			],
+			"tags": []
+		  }
+		],
+		"thresholds": [],
+		"timeFrom": null,
+		"timeRegions": [],
+		"timeShift": null,
+		"title": "Hyper params",
+		"tooltip": {
+		  "shared": true,
+		  "sort": 0,
+		  "value_type": "individual"
+		},
+		"type": "graph",
+		"xaxis": {
+		  "buckets": null,
+		  "mode": "time",
+		  "name": null,
+		  "show": true,
+		  "values": []
+		},
+		"yaxes": [
+		  {
+			"$$hashKey": "object:50",
+			"format": "short",
+			"label": null,
+			"logBase": 1,
+			"max": "2",
+			"min": "0",
+			"show": true
+		  },
+		  {
+			"$$hashKey": "object:51",
+			"format": "short",
+			"label": null,
+			"logBase": 1,
+			"max": "100",
+			"min": "0",
+			"show": true
+		  }
+		],
+		"yaxis": {
+		  "align": false,
+		  "alignLevel": null
+		}
+	  },
+	  {
+		"datasource": null,
+		"description": "",
+		"gridPos": {
+		  "h": 10,
+		  "w": 23,
+		  "x": 0,
+		  "y": 19
+		},
+		"id": 3,
+		"options": {
+		  "border": {
+			"show": false,
+			"color": "yellow",
+			"size": 1
+		  },
+		  "fieldSets": [
+			{
+			  "col": 1,
+			  "color": "#fcccc7",
+			  "dotSize": 1,
+			  "hidden": false,
+			  "lineSize": 1,
+			  "lineType": "none"
+			}
+		  ],
+		  "grid": {
+			"color": "gray"
+		  },
+		  "legend": {
+			"show": false,
+			"size": 3
+		  },
+		  "rotateYAxisTitle": false,
+		  "xAxis": {
+			"col": 2,
+			"inverted": false
+		  },
+		  "xAxisExtents": {
+			"min": null,
+			"max": null
+		  },
+		  "xAxisTitle": {
+			"text": "Time",
+			"color": "white",
+			"textSize": 1
+		  },
+		  "yAxisExtents": {
+			"min": 0,
+			"max": 1
+		  },
+		  "yAxisTitle": {
+			"text": "",
+			"color": "#777",
+			"textSize": 1
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "table",
+			"select": [
+			  [
+				{
+				  "params": [
+					"1"
+				  ],
+				  "type": "field"
+				}
+			  ],
+			  [
+				{
+				  "params": [
+					"iter"
+				  ],
+				  "type": "field"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Cost"
+			  }
+			]
+		  }
+		],
+		"title": "Cost (Node 2)",
+		"type": "michaeldmoore-scatter-panel"
+	  }
+	],
+	"refresh": "5s",
+	"schemaVersion": 30,
+	"style": "dark",
+	"tags": [],
+	"templating": {
+	  "list": []
+	},
+	"time": {
+	  "from": "now-15m",
+	  "to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "Softmax_Scatter",
+	"uid": "Softmax_Scatter",
+	"version": 2
+  }
