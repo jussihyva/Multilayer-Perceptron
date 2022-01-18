@@ -141,6 +141,10 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 #### 3.2.3 Gradient descent
 
+##### 3.2.3.1 Overview
+
+![Documentation/GradientDescent.gif]
+
 ##### 3.2.3.1 Loss function
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y},y)=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
