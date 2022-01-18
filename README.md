@@ -143,7 +143,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ##### 3.2.3.1 Overview
 
-![Documentation/GradientDescent.gif]
+![Gradient Descent](Documentation/GradientDescent.gif)
 
 ##### 3.2.3.1 Loss function
 
