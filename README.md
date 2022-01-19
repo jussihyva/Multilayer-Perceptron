@@ -163,7 +163,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ###### 3.2.3.3.2 z
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{z}=\hat{y}-y)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z}=\hat{Y}-Y)
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>z"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}z)
 
@@ -193,7 +193,7 @@ One layer model is the first model I implemented. A purpose of the model is to i
 
 ##### 3.3.1.1 Naming rules and equations
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;Normalization=(max(X)-min(X))*\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;Normalization=\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;weight(W)=w_{i}^{[l](j)})
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;bias(B)=b_{i}^{[l]})
