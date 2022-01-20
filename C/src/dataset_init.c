@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 20:13:48 by juhani            #+#    #+#             */
-/*   Updated: 2022/01/06 22:20:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:37:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_dataset	**dataset_init(const t_input_data *const input_data)
 	dataset_array[E_TRAIN]->x = ml_matrix_create(size);
 	size.cols = input_data->num_of_records.test;
 	dataset_array[E_TEST]->x = ml_matrix_create(size);
-	size.rows = input_data->num_of_output_functions;
+	size.rows = NUMBER_OF_OUTPUT_FUNCTIONS;
 	size.cols = input_data->num_of_records.train;
 	dataset_array[E_TRAIN]->y = ml_matrix_create(size);
 	size.cols = input_data->num_of_records.test;

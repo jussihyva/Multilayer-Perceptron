@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 08:21:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/11 00:19:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:42:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ static size_t	get_number_of_layers(const t_file_attr *const file_attr)
 static size_t	*get_number_of_nodes(
 							const t_file_attr *const file_attr,
 							const size_t num_of_layers,
-							const size_t num_of_input_functions,
-							const size_t num_of_output_functions)
+							const size_t num_of_input_functions)
 {
 	size_t				*num_of_nodes;
 	const char *const	*row;
@@ -49,7 +48,7 @@ static size_t	*get_number_of_nodes(
 			FT_LOG_ERROR("Contnet of file %s is not valid.",
 				file_attr->file_path);
 	}
-	num_of_nodes[layer_id] = num_of_output_functions;
+	num_of_nodes[layer_id] = NUMBER_OF_OUTPUT_FUNCTIONS;
 	return (num_of_nodes);
 }
 
@@ -84,7 +83,6 @@ static t_weight_bias	*get_bias_weight_init_values(
 void	get_hyper_params_from_file(
 						const char *const weight_bias_file,
 						const size_t num_of_input_functions,
-						const size_t num_of_output_functions,
 						t_hyper_params	*hyper_params)
 {
 	t_file_attr		*file_attr;
@@ -92,8 +90,7 @@ void	get_hyper_params_from_file(
 	file_attr = ft_read_file(weight_bias_file, E_CSV);
 	hyper_params->num_of_layers = get_number_of_layers(file_attr);
 	hyper_params->num_of_nodes = get_number_of_nodes(file_attr,
-			hyper_params->num_of_layers, num_of_input_functions,
-			num_of_output_functions);
+			hyper_params->num_of_layers, num_of_input_functions);
 	hyper_params->bias_weight_init_values
 		= get_bias_weight_init_values(file_attr,
 			hyper_params->num_of_layers, hyper_params->num_of_nodes);

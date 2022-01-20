@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:46:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/17 00:02:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:59:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ static void	print_result(
 {
 	ml_matrix_print("Observed", dataset->y);
 	ml_matrix_print("Softmax", layer_output->softmax);
+	return ;
+}
+
+static void	binary_cross_entropy_print(const t_vector *const cost)
+{
+	ft_printf("E(Benign)=%.2f\n", ((double *)cost->data)[0]);
+	ft_printf("E(Malignant)=%.2f\n", ((double *)cost->data)[1]);
 	return ;
 }
 
@@ -41,6 +48,7 @@ void	prediction_result(t_grad_descent_attr *grad_descent_attr)
 		layer_output->argmax_values);
 	if (ft_logging_level() <= LOG_INFO)
 		print_result(grad_descent_attr->dataset, layer_output);
+	binary_cross_entropy_print(layer_output->cost[E_TRAIN]);
 	accuracy_array = prediction_validate(grad_descent_attr->dataset->y,
 			layer_output->argmax);
 	return ;

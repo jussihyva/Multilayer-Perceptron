@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 12:15:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/13 12:17:05 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:42:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ t_grad_descent_attr	*grad_descent_attr_initialize(
 		grad_descent_attr->weight_bias_file = weight_bias_file;
 		grad_descent_attr->hyper_params
 			= hyper_params_init(weight_bias_file, input_hyper_params,
-				input_data->num_of_input_functions,
-				input_data->num_of_output_functions);
+				input_data->num_of_input_functions);
 		num_of_layers = grad_descent_attr->hyper_params->num_of_layers;
 		grad_descent_attr->neural_network
 			= neural_network_init(input_data->dataset_array,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/16 23:53:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:40:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define NUM_OF_DATASETS						2
 # define NUM_OF_LAYERS							4
 # define NUMBER_OF_COLUMNS						32
+# define NUMBER_OF_OUTPUT_FUNCTIONS				2
 # define NUM_INFLUXDB_ELEMENTS					4
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
 # define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
@@ -71,25 +72,25 @@ typedef struct s_layer_profile
 
 static const t_layer_profile	g_two_layers[2]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+{NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	g_three_layers[3]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
 {THREE_NODES, E_LAYER_HIDDEN, E_RELU},
-{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+{NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	g_four_layers[4]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
 {THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
 {THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
-{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+{NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	g_five_layers[5]
 	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
 {THREE_NODES, E_LAYER_HIDDEN, E_RELU},
 {FIVE_NODES, E_LAYER_HIDDEN, E_RELU},
 {THREE_NODES, E_LAYER_HIDDEN, E_RELU},
-{TWO_NODES, E_LAYER_OUTPUT, E_SIGMOID}};
+{NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	*g_layer_attrs[6]
 	= {NULL, NULL, g_two_layers, g_three_layers, g_four_layers, g_five_layers};
@@ -237,7 +238,6 @@ typedef struct s_split_order
 typedef struct s_input_data
 {
 	size_t						num_of_input_functions;
-	size_t						num_of_output_functions;
 	const char *const *const	*input_record_array;
 	const t_dataset_type		*dataset_type_array;
 	t_num_of_records			num_of_records;
@@ -553,15 +553,13 @@ size_t					influxdb_timestamp_set(const char **const timestamp);
 t_hyper_params			*hyper_params_init(
 							const char *const weight_bias_file,
 							const t_hyper_params *const input_hyper_params,
-							const size_t num_of_input_functions,
-							const size_t num_of_output_functions);
+							const size_t num_of_input_functions);
 t_layer_type			set_layer_type(const size_t id,
 							const size_t num_of_layers);
 void					hyper_params_remove(t_hyper_params **hyper_params);
 void					get_hyper_params_from_file(
 							const char *const weight_bias_file,
 							const size_t num_of_input_functions,
-							const size_t num_of_output_functions,
 							t_hyper_params	*hyper_params);
 void					bias_weight_values_read(
 							t_weight_bias *const bias_weight,

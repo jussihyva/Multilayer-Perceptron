@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/06 08:28:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/20 12:38:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ static t_activation_type	*get_activation_types(const size_t num_of_layers)
 t_hyper_params	*hyper_params_init(
 						const char *const weight_bias_file,
 						const t_hyper_params *const input_hyper_params,
-						const size_t num_of_input_functions,
-						const size_t num_of_output_functions)
+						const size_t num_of_input_functions)
 {
 	t_hyper_params	*hyper_params;
 
@@ -55,7 +54,7 @@ t_hyper_params	*hyper_params_init(
 	hyper_params->weight_init_mode = input_hyper_params->weight_init_mode;
 	if (input_hyper_params->weight_init_mode == E_TRAINED)
 		get_hyper_params_from_file(weight_bias_file, num_of_input_functions,
-			num_of_output_functions, hyper_params);
+			hyper_params);
 	else
 	{
 		hyper_params->num_of_layers = input_hyper_params->num_of_layers;
