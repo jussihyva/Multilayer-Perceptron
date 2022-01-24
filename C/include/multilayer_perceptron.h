@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/20 12:40:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/24 18:11:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -615,5 +615,9 @@ void					arg_param_save_short(
 							t_arg_parser *arg_parser);
 char					*set_dataset_test_file(
 							const t_argc_argv *const argc_argv);
+void					send_accuracy_result_to_database(
+							const t_tcp_connection *const influxdb_connection,
+							const t_bool *const accuracy_array,
+							const size_t num_of_examples);
 
 #endif

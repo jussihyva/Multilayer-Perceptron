@@ -21,7 +21,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 7,
+	"id": 8,
 	"links": [],
 	"panels": [
 	  {
@@ -53,9 +53,9 @@
 			  "col": 1,
 			  "color": "#da6cdd",
 			  "dotSize": 2,
+			  "hidden": false,
 			  "lineSize": 0,
-			  "lineType": "none",
-			  "hidden": false
+			  "lineType": "none"
 			}
 		  ],
 		  "grid": {
@@ -71,8 +71,8 @@
 			"inverted": false
 		  },
 		  "xAxisExtents": {
-			"min": 0,
-			"max": 15
+			"min": null,
+			"max": null
 		  },
 		  "xAxisTitle": {
 			"text": "Time",
@@ -136,171 +136,13 @@
 		"type": "michaeldmoore-scatter-panel"
 	  },
 	  {
-		"aliasColors": {},
-		"bars": false,
-		"dashLength": 10,
-		"dashes": false,
-		"datasource": null,
-		"fill": 0,
-		"fillGradient": 0,
-		"gridPos": {
-		  "h": 8,
-		  "w": 23,
-		  "x": 0,
-		  "y": 11
-		},
-		"hiddenSeries": false,
-		"id": 5,
-		"legend": {
-		  "avg": false,
-		  "current": false,
-		  "max": false,
-		  "min": false,
-		  "show": true,
-		  "total": false,
-		  "values": false
-		},
-		"lines": true,
-		"linewidth": 1,
-		"nullPointMode": "null",
-		"options": {
-		  "alertThreshold": true
-		},
-		"percentage": false,
-		"pluginVersion": "8.1.1",
-		"pointradius": 2,
-		"points": false,
-		"renderer": "flot",
-		"seriesOverrides": [
-		  {
-			"alias": "dataset_train.mean_1",
-			"yaxis": 2
-		  },
-		  {
-			"alias": "dataset_train.Learning rate",
-			"yaxis": 1
-		  },
-		  {
-			"alias": "dataset_train.Percentage",
-			"yaxis": 2
-		  }
-		],
-		"spaceLength": 10,
-		"stack": false,
-		"steppedLine": false,
-		"targets": [
-		  {
-			"groupBy": [
-			  {
-				"params": [
-				  "$__interval"
-				],
-				"type": "time"
-			  },
-			  {
-				"params": [
-				  "null"
-				],
-				"type": "fill"
-			  }
-			],
-			"measurement": "dataset_train",
-			"orderByTime": "ASC",
-			"policy": "default",
-			"refId": "A",
-			"resultFormat": "time_series",
-			"select": [
-			  [
-				{
-				  "params": [
-					"learning_rate"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Learning rate"
-				  ],
-				  "type": "alias"
-				}
-			  ],
-			  [
-				{
-				  "params": [
-					"percentage"
-				  ],
-				  "type": "field"
-				},
-				{
-				  "params": [],
-				  "type": "mean"
-				},
-				{
-				  "params": [
-					"Percentage"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"tags": []
-		  }
-		],
-		"thresholds": [],
-		"timeFrom": null,
-		"timeRegions": [],
-		"timeShift": null,
-		"title": "Hyper params",
-		"tooltip": {
-		  "shared": true,
-		  "sort": 0,
-		  "value_type": "individual"
-		},
-		"type": "graph",
-		"xaxis": {
-		  "buckets": null,
-		  "mode": "time",
-		  "name": null,
-		  "show": true,
-		  "values": []
-		},
-		"yaxes": [
-		  {
-			"$$hashKey": "object:50",
-			"format": "short",
-			"label": null,
-			"logBase": 1,
-			"max": "2",
-			"min": "0",
-			"show": true
-		  },
-		  {
-			"$$hashKey": "object:51",
-			"format": "short",
-			"label": null,
-			"logBase": 1,
-			"max": "100",
-			"min": "0",
-			"show": true
-		  }
-		],
-		"yaxis": {
-		  "align": false,
-		  "alignLevel": null
-		}
-	  },
-	  {
 		"datasource": null,
 		"description": "",
 		"gridPos": {
 		  "h": 10,
 		  "w": 23,
 		  "x": 0,
-		  "y": 19
+		  "y": 11
 		},
 		"id": 3,
 		"options": {
@@ -313,7 +155,7 @@
 			{
 			  "col": 1,
 			  "color": "#fcccc7",
-			  "dotSize": 1,
+			  "dotSize": 3,
 			  "hidden": false,
 			  "lineSize": 1,
 			  "lineType": "none"
@@ -362,7 +204,7 @@
 			  [
 				{
 				  "params": [
-					"1"
+					"Accuracy"
 				  ],
 				  "type": "field"
 				}
@@ -370,7 +212,7 @@
 			  [
 				{
 				  "params": [
-					"iter"
+					"ExampleId"
 				  ],
 				  "type": "field"
 				}
@@ -380,7 +222,7 @@
 			  {
 				"key": "Record_type",
 				"operator": "=",
-				"value": "Cost"
+				"value": "Accuracy"
 			  }
 			]
 		  }
@@ -397,12 +239,12 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-15m",
+	  "from": "now-5m",
 	  "to": "now"
 	},
 	"timepicker": {},
 	"timezone": "",
 	"title": "Softmax_Scatter",
 	"uid": "Softmax_Scatter",
-	"version": 2
+	"version": 1
   }
