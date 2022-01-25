@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:46:01 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/24 18:19:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/25 10:29:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,19 @@ static void	send_result_to_database(
 						const t_layer_output *const layer_output,
 						t_bool *accuracy_array)
 {
-	send_softmax_result_to_database(grad_descent_attr->influxdb_connection,
-		layer_output->softmax);
-	send_accuracy_result_to_database(grad_descent_attr->influxdb_connection,
-		accuracy_array, layer_output->argmax->size);
+	size_t				example_id;
+	t_queue				*key_value_queue;
+
+	key_value_queue = ft_queue_init();
+	example_id = -1;
+	while (++example_id < layer_output->softmax->size.cols)
+	{
+		send_softmax_result_to_database(grad_descent_attr->influxdb_connection,
+			key_value_queue, layer_output->softmax, example_id);
+		send_accuracy_result_to_database(grad_descent_attr->influxdb_connection,
+			key_value_queue, accuracy_array, example_id);
+	}
+	ft_queue_remove(&key_value_queue);
 	return ;
 }
 

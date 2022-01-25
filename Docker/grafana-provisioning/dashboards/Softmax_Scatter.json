@@ -132,17 +132,133 @@
 			]
 		  }
 		],
-		"title": "Cost (Node 1)",
+		"title": "Softmax",
 		"type": "michaeldmoore-scatter-panel"
 	  },
 	  {
 		"datasource": null,
-		"description": "",
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 5,
+		  "w": 23,
+		  "x": 0,
+		  "y": 11
+		},
+		"id": 5,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "$__interval"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "dataset_train",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"Accuracy"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "Record_type",
+				"operator": "=",
+				"value": "Accuracy"
+			  }
+			]
+		  }
+		],
+		"title": "Accuracy",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"description": "1 = Right\n0 = Wrong",
 		"gridPos": {
 		  "h": 10,
 		  "w": 23,
 		  "x": 0,
-		  "y": 11
+		  "y": 16
 		},
 		"id": 3,
 		"options": {
@@ -227,7 +343,7 @@
 			]
 		  }
 		],
-		"title": "Cost (Node 2)",
+		"title": "Correctness check",
 		"type": "michaeldmoore-scatter-panel"
 	  }
 	],
@@ -246,5 +362,5 @@
 	"timezone": "",
 	"title": "Softmax_Scatter",
 	"uid": "Softmax_Scatter",
-	"version": 1
+	"version": 2
   }

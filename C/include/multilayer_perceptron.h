@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/24 18:11:56 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/25 10:26:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,7 +458,9 @@ void					bias_weight_values_set(
 							const t_hyper_params *const hyper_params);
 void					send_softmax_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
-							const t_matrix *const softmax);
+							t_queue *const key_value_queue,
+							const t_matrix *const softmax,
+							const size_t example_id);
 t_prediction			*prediction_init(const int argc,
 							const char *const *const argv);
 t_training				*training_init(const int argc,
@@ -617,7 +619,8 @@ char					*set_dataset_test_file(
 							const t_argc_argv *const argc_argv);
 void					send_accuracy_result_to_database(
 							const t_tcp_connection *const influxdb_connection,
+							t_queue *const key_value_queue,
 							const t_bool *const accuracy_array,
-							const size_t num_of_examples);
+							const size_t example_id);
 
 #endif

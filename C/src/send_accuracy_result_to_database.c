@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:33:42 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/24 18:44:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/25 10:27:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,27 +81,20 @@ static size_t	influxdb_elem_create(
 
 void	send_accuracy_result_to_database(
 					const t_tcp_connection *const influxdb_connection,
+					t_queue *const key_value_queue,
 					const t_bool *const accuracy_array,
-					const size_t num_of_examples)
+					const size_t example_id)
 {
 	t_influxdb_elem		influxdb_elem;
 	char				*line;
 	size_t				len;
-	t_size_2d			i;
-	t_queue				*key_value_queue;
 
-	key_value_queue = ft_queue_init();
-	i.cols = -1;
-	while (++i.cols < num_of_examples)
-	{
-		len = influxdb_elem_create(&influxdb_elem, key_value_queue,
-				accuracy_array, i.cols);
-		line = ft_strdup("");
-		influxdb_line_extend(&influxdb_elem, len, &line);
-		influxdb_elem_remove(&influxdb_elem);
-		ft_influxdb_write(influxdb_connection, line, NULL, 1);
-		ft_strdel((char **)&line);
-	}
-	ft_queue_remove(&key_value_queue);
+	len = influxdb_elem_create(&influxdb_elem, key_value_queue, accuracy_array,
+			example_id);
+	line = ft_strdup("");
+	influxdb_line_extend(&influxdb_elem, len, &line);
+	influxdb_elem_remove(&influxdb_elem);
+	ft_influxdb_write(influxdb_connection, line, NULL, 1);
+	ft_strdel((char **)&line);
 	return ;
 }
