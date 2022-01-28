@@ -153,35 +153,42 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=\frac{1}{m}\sum_{i=1}^{m}\ell(\hat{y}^{(i)},y^{(i)}))
 
-##### 3.2.3.3 Derivative functions
+##### 3.2.4 Derivative
 
-##### 3.2.3.3.1 y hat
+##### 3.2.4.1 Overview
+
+![Derivative](Documentation/Derivative.drawio.png)
+
+##### 3.2.4.2 y hat
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{\hat{y}}=-(\frac{y}{\hat{y}}+\frac{1-y}{1-\hat{y}}))
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>\hat{y}"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}\hat{y}})
 
-###### 3.2.3.3.2 z
+###### 3.2.4.3 Z output layer
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z}=\hat{Y}-Y)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z^{L}}=\hat{Y}-Y)
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>z"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}z)
+###### 3.2.4.4 Z hidden layer
 
-###### 3.2.3.3.3 weight
+![g](https://latex.codecogs.com/svg.latex?\Large&space;g'=A^{l}*(1-A^{l}))
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z^{l}}=W^{l+1}.T*\delta{Z^{l+1}}*g')
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{w}=x*\delta{z})
+###### 3.2.4.5 weight
 
-###### 3.2.3.3.4 bias
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{W^{l}}=A^{l-1}*\delta{Z^{l}})
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b}=\delta{z})
-@id:ms-vscode.cpptools-extension-pack
-##### 3.2.3.4 Update weight
+###### 3.2.4.6 bias
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;w=\alpha*\delta{w})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{B^{l}}=\delta{Z^{l}})
 
-##### 3.2.3.5 Update bias
+##### 3.2.4.7 Update weight
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;b=\alpha*\delta{b})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;W^{l}=W^{l}-\alpha*\delta{W^{l}})
+
+##### 3.2.4.8 Update bias
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;B^{l}=B^{l}-\alpha*\delta{B^{l}})
 
 ### 3.3 Neural network models
 
