@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 15:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/11 12:33:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/28 00:30:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char **argv)
 	t_grad_descent_attr			*grad_descent_attr;
 	const t_neural_network		*neural_network;
 	void *const					*layers;
+	size_t						iter_cnt;
 
 	training = training_init(argc, (const char *const *)argv);
 	grad_descent_attr = training->grad_descent_attr;
@@ -55,8 +56,10 @@ int	main(int argc, char **argv)
 	{
 		neural_network = grad_descent_attr->neural_network;
 		layers = neural_network->layers;
-		grad_descent(neural_network, grad_descent_attr->hyper_params,
+		iter_cnt = grad_descent(neural_network, grad_descent_attr->hyper_params,
 			grad_descent_attr->influxdb_connection);
+		cost_values_print(iter_cnt, grad_descent_attr->hyper_params->epochs,
+			layers[grad_descent_attr->hyper_params->num_of_layers - 1]);
 		neural_network_save(layers, neural_network->layer_types,
 			grad_descent_attr->weight_bias_file,
 			grad_descent_attr->hyper_params);

@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/16 23:02:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/02/03 22:35:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "multilayer_perceptron.h"
 
-static void	cost_values_print(
+void	cost_values_print(
 					const size_t iter_cnt,
 					const size_t epochs,
 					const t_layer_output *const layer_output)
@@ -74,14 +74,14 @@ static t_bool	is_early_stop(const size_t iter_cnt, const t_vector *const cost)
 		if (prev_cost && ((current_cost - prev_cost) / current_cost > 0.005))
 		{
 			early_stop = E_TRUE;
-			FT_LOG_INFO("Eraly stop is valid!");
+			FT_LOG_INFO("Early stop is valid!");
 		}
 		prev_cost = ((double *)cost->data)[0];
 	}
 	return (early_stop);
 }
 
-void	grad_descent(
+size_t	grad_descent(
 				const t_neural_network *const neural_network,
 				const t_hyper_params *const hyper_params,
 				const t_tcp_connection *const influxdb_connection)
@@ -90,9 +90,7 @@ void	grad_descent(
 	t_layer_output	*layer_output;	
 	size_t			iter_cnt;
 	size_t			num_of_layers;
-	t_bool			early_stop;
 
-	early_stop = E_FALSE;
 	num_of_layers = hyper_params->num_of_layers;
 	layers = neural_network->layers;
 	layer_output = ((t_layer_output **)layers)[num_of_layers - 1];
@@ -111,4 +109,5 @@ void	grad_descent(
 		if (!(iter_cnt % 100) || iter_cnt == hyper_params->epochs)
 			cost_values_print(iter_cnt, hyper_params->epochs, layer_output);
 	}
+	return (iter_cnt);
 }

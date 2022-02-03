@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/25 10:26:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/01/28 00:31:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -427,7 +427,7 @@ t_grad_descent_attr		*grad_descent_attr_initialize(
 							const t_input_data *const input_data,
 							const char *const weight_bias_file,
 							const t_hyper_params *const hyper_params);
-void					grad_descent(
+size_t					grad_descent(
 							const t_neural_network *const neural_network,
 							const t_hyper_params *const hyper_params,
 							const t_tcp_connection *const influxdb_connection);
@@ -622,5 +622,9 @@ void					send_accuracy_result_to_database(
 							t_queue *const key_value_queue,
 							const t_bool *const accuracy_array,
 							const size_t example_id);
+void					cost_values_print(
+							const size_t iter_cnt,
+							const size_t epochs,
+							const t_layer_output *const layer_output);
 
 #endif
