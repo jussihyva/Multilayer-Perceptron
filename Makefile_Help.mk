@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 12:26:25 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/24 11:23:24 by jkauppi          ###   ########.fr        #
+#    Updated: 2022/04/08 08:43:38 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ help:
 	@echo ""
 	@echo "3. Help"
 	@for program in $(C_PROGRAMS) ; do \
-		echo "  $(CUR_DIR)/$$program -h" ; \
+		echo "  $(CUR_DIR)/C/$$program -h" ; \
 	done
 	@echo ""
 	@echo "4. Readme"
