@@ -9,3 +9,6 @@ jupyter-selfsigned.crt
 influxdb-selfsigned.key
 influxdb-selfsigned.crt
 Data/BiasWeight.yml
+.vscode/targets.log
+.vscode/dryrun.log
+.vscode/configurationCache.log

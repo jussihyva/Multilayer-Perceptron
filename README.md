@@ -73,7 +73,7 @@ The aim of this chapter is to give an overview of the dataset content
 Based on the result I did these observations:
 
 - The Count function shows that the examples (rows in the dataset) includes data for all columns
-- Mode functio is missing from the list. I think that is not big issue. That because of all columns includes values so no reason to add any missing values.
+- Mode function is missing from the list. I think that is not big issue. That because of all columns includes values so no reason to add any missing values.
 - Fo some reason (maybe a lack of competence) I cannot sey much more about these numbers
 
 ![Aggregate functions](Documentation/Aggregate_functions.png)
@@ -123,21 +123,43 @@ The correlation pictures indicate similar things to Scatter matrix pictures. So,
 
 Implemented functions are used for [Logistic regression](https://en.m.wikipedia.org/wiki/Logistic_regression).
 
-#### 3.2.1 Logistic regression
+#### 3.2.1 Main steps
 
-##### 3.2.1.1 Linear function
+- Input params normalization
+- Gradient descent
+    - Initialize parameters
+    - Forward propagation
+    - Cost calcualtion
+    - Initialize backward propacation
+    - Backward propagation
+    - Update parameters
+
+#### 3.2.2 Logistic regression
+
+##### 3.2.2.1 Linear function
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;z=wx+b)
 
-##### 3.2.1.2 Non-linear functions
+##### 3.2.2.2 Non-linear functions
 
-###### 3.2.1.2.1 Sigmoid function
+###### 3.2.2.2.1 Sigmoid function
 
 [sigmoid function](https://en.m.wikipedia.org/wiki/Sigmoid_function) is used in last layer to get results (0 or 1) from a model. Why did I decide to use sigmoid? To be honest I don't know (maybe in the future, I will) any other possible functionality to get a logistic result (0 < x < 1) than sigmoid. And it seems that sigmoid is widely used in machine learning models.
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=-\frac{1}{1+e^{-z}}=\sigma)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=-\frac{1}{1+e^{-z}}=\sigma(z))
 
-<img src="Documentation/Sigmoid.jpg" alt="drawing" width="600"/>
+<img src="Documentation/sigmoid.jpg" alt="drawing" width="600"/>
+
+###### 3.2.2.2.1 ReLU function (Rectified Linear Unit)
+
+Main reason to use [ReLU function](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))
+- The rectified linear activation is the default activation when developing multilayer Perceptron and convolutional neural networks.
+- The rectified linear activation function overcomes the vanishing gradient problem, allowing models to learn faster and perform better.
+- The sigmoid and hyperbolic tangent activation functions cannot be used in networks with many layers due to the vanishing gradient problem.
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;f(z)=max(0,z))
+
+<img src="Documentation/ReLU.jpg" alt="drawing" width="600"/>
 
 #### 3.2.3 Gradient descent
 
@@ -145,13 +167,22 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ![Gradient Descent](Documentation/GradientDescent.gif)
 
-##### 3.2.3.1 Loss function
+##### 3.2.3.2 Cost functions
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\ell(\hat{y},y)=\begin{Bmatrix}y=1;\ell=log(\hat{y})\\\\y=0;\ell=log(1-\hat{y})\end{Bmatrix})
+###### 3.2.3.2.1 Cross Entropy (This one I implemented)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=-\frac{1}{m}\sum_{i=1}^{m}y*log(\hat{y})+(1-y)*log(1-\hat{y}))
 
-##### 3.2.3.2 Cost function
+###### 3.2.3.2.2 Hinge
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=\frac{1}{m}\sum_{i=1}^{m}\ell(\hat{y}^{(i)},y^{(i)}))
+###### 3.2.3.2.3 Huber
+
+###### 3.2.3.2.4 Kullback-Leibler
+
+###### 3.2.3.2.5 RMSE
+
+###### 3.2.3.2.6 MAE (L1)
+
+###### 3.2.3.2.7 MSE (L2)
 
 ##### 3.2.4 Derivative
 
@@ -180,7 +211,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ###### 3.2.4.6 bias
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{B^{l}}=\delta{Z^{l}})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b^{l}}=\delta{Z^{l}})
 
 ##### 3.2.4.7 Update weight
 
@@ -188,7 +219,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 ##### 3.2.4.8 Update bias
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;B^{l}=B^{l}-\alpha*\delta{B^{l}})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;b^{l}=b^{l}-\alpha*\delta{b^{l}})
 
 ### 3.3 Neural network models
 
@@ -200,20 +231,22 @@ One layer model is the first model I implemented. A purpose of the model is to i
 
 ##### 3.3.1.1 Naming rules and equations
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;Normalization=\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;Xnormalized=\frac{x_{i}^{j}-min(X)}{max(X)-min(X)})
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;weight(W)=w_{i}^{[l](j)})
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;bias(B)=b_{i}^{[l]})
+![g](https://latex.codecogs.com/svg.latex?\Large&space;bias(b)=b_{i}^{[l]})
 
 [l] = The superscript value inside squared brackets is the layer number. Input layer is always number 0.
 (i) = The superscript value inside round brackets is the example number. The first example is number 1.
  j  = The subscript value is the node number. In this model I have two nodes.
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;X=ToBeDefined)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;X=Xnormalized)
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;Z=WA+B)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;Z=WA+b)
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;g(z)=-\frac{1}{1+e^{-z}}=sigmoid=\sigma)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;g(z)=-\frac{1}{1+e^{-z}}=sigmoid(z)=\sigma(z))
+
+![g](https://latex.codecogs.com/svg.latex?\Large&space;g(z)=max(0,z)=relu(z))
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;A=g(z)=\hat{y})
 
