@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:26:53 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/20 12:38:38 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/03 14:54:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_hyper_params	*hyper_params_init(
 	hyper_params->split_order = input_hyper_params->split_order;
 	hyper_params->epochs = input_hyper_params->epochs;
 	hyper_params->learning_rate = input_hyper_params->learning_rate;
+	hyper_params->is_early_stop = input_hyper_params->is_early_stop;
 	hyper_params->weight_init_mode = input_hyper_params->weight_init_mode;
 	if (input_hyper_params->weight_init_mode == E_TRAINED)
 		get_hyper_params_from_file(weight_bias_file, num_of_input_functions,

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/28 00:31:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/03 14:31:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,7 @@ typedef struct s_hyper_params
 	size_t					*num_of_nodes;
 	size_t					epochs;
 	double					learning_rate;
+	t_bool					is_early_stop;
 	t_split_order			split_order;
 	t_weight_init_mode		weight_init_mode;
 	t_weight_bias			*bias_weight_init_values;

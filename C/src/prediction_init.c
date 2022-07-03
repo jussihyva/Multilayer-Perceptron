@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 10:44:14 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/04 17:41:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/03 15:09:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_prediction	*prediction_init(const int argc, const char *const *const argv)
 	prediction = ft_memalloc(sizeof(*prediction));
 	prediction->argc_argv.argc = argc;
 	prediction->argc_argv.argv = argv;
-	prediction->argc_argv.opt_pars = ft_strdup("L:hl");
+	prediction->argc_argv.opt_pars = ft_strdup("L:hlI");
 	prediction->argc_argv.mandatory_params = 1;
 	prediction->arg_parser = ft_arg_parser_init(&prediction->argc_argv,
 			arg_init_predict, arg_analyze, arg_usage_prediction);
@@ -34,7 +34,8 @@ t_prediction	*prediction_init(const int argc, const char *const *const argv)
 	prediction->grad_descent_attr
 		= grad_descent_attr_initialize(prediction->input_data,
 			cmd_args->weight_bias_file, &cmd_args->hyper_params);
-	prediction->grad_descent_attr->influxdb_connection
-		= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
+	if (cmd_args->is_influxdb)
+		prediction->grad_descent_attr->influxdb_connection
+			= ft_influxdb_connect("127.0.0.1", "8086", E_TLS);
 	return (prediction);
 }

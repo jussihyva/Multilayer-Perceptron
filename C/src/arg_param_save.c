@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 21:09:15 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/16 21:18:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/03 14:31:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ static void	arg_param_save_short_part_1(
 	hyper_params = &cmd_args->hyper_params;
 	if (opt == 'L')
 		cmd_args->logging_level = set_logging_level(arg_parser->argc_argv);
-	else if (opt == 'S')
+	else if (opt == 'I')
 		cmd_args->is_influxdb = E_TRUE;
+	else if (opt == 'S')
+		hyper_params->is_early_stop = E_TRUE;
 	else if (opt == 'A')
 		hyper_params->learning_rate = set_learning_rate(arg_parser->argc_argv);
 	else if (opt == 's')

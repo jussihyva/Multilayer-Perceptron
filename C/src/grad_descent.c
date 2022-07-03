@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 09:12:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/02/03 22:35:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/03 15:02:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ size_t	grad_descent(
 		FT_LOG_DEBUG("Stat values are not sent to influxdb");
 	iter_cnt = 0;
 	while (++iter_cnt <= hyper_params->epochs
-		&& !is_early_stop(iter_cnt, layer_output->cost[E_TEST]))
+		&& (!hyper_params->is_early_stop
+			|| !is_early_stop(iter_cnt, layer_output->cost[E_TEST])))
 	{
 		train_actions(neural_network, num_of_layers);
 		if (influxdb_connection && !(iter_cnt % 20))
