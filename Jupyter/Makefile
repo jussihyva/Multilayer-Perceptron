@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 16:31:11 by jkauppi           #+#    #+#              #
-#    Updated: 2021/11/16 11:29:24 by jkauppi          ###   ########.fr        #
+#    Updated: 2022/07/03 16:46:29 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ build: $(SELF_SIGNED_CRT)
 
 start: build
 	$(DOCKER_COMPOSE) up -d
-	@echo "$(GREEN)Docker for jupyter/grafana started!$(PURPLE) Login to grafana: http://localhost:8000$(END)"
+	@echo "$(GREEN)Docker for jupyter/grafana started!$(PURPLE) Login to grafana: http://localhost:8000 (password=Hive42)$(END)"
 
 login_jupyter:
 	docker exec -it jupyter bash

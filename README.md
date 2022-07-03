@@ -127,12 +127,12 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 
 - Input params normalization
 - Gradient descent
-    - Initialize parameters
-    - Forward propagation
-    - Cost calcualtion
-    - Initialize backward propacation
-    - Backward propagation
-    - Update parameters
+  - Initialize parameters
+  - Forward propagation
+  - Cost calcualtion
+  - Initialize backward propacation
+  - Backward propagation
+  - Update parameters
 
 #### 3.2.2 Logistic regression
 
@@ -153,6 +153,7 @@ Implemented functions are used for [Logistic regression](https://en.m.wikipedia.
 ###### 3.2.2.2.1 ReLU function (Rectified Linear Unit)
 
 Main reason to use [ReLU function](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))
+
 - The rectified linear activation is the default activation when developing multilayer Perceptron and convolutional neural networks.
 - The rectified linear activation function overcomes the vanishing gradient problem, allowing models to learn faster and perform better.
 - The sigmoid and hyperbolic tangent activation functions cannot be used in networks with many layers due to the vanishing gradient problem.
@@ -169,20 +170,18 @@ Main reason to use [ReLU function](https://en.wikipedia.org/wiki/Rectifier_(neur
 
 ##### 3.2.3.2 Cost functions
 
-###### 3.2.3.2.1 Cross Entropy (This one I implemented)
+###### 3.2.3.2.1 Cross Entropy
+
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=-\frac{1}{m}\sum_{i=1}^{m}y*log(\hat{y})+(1-y)*log(1-\hat{y}))
 
-###### 3.2.3.2.2 Hinge
+###### 3.2.3.2.2 Another cost functions
 
-###### 3.2.3.2.3 Huber
-
-###### 3.2.3.2.4 Kullback-Leibler
-
-###### 3.2.3.2.5 RMSE
-
-###### 3.2.3.2.6 MAE (L1)
-
-###### 3.2.3.2.7 MSE (L2)
+- [Hinge](https://en.wikipedia.org/wiki/Hinge_loss)
+- [Huber](https://en.wikipedia.org/wiki/Huber_loss)
+- [Kullback-Leibler](https://en.wikipedia.org/wiki/Huber_loss)
+- [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation)
+- [MAE (L1)](https://en.wikipedia.org/wiki/Mean_absolute_error)
+- [MSE (L2)](https://en.wikipedia.org/wiki/Mean_squared_error)
 
 ##### 3.2.4 Derivative
 
