@@ -13,7 +13,7 @@
 ifdef D
 	DATASET			=	$(D)
 else
-	DATASET			=	"../Data/data.csv"
+	DATASET			=	"Data/data.csv"
 endif
 
 ifdef L
