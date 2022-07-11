@@ -168,13 +168,13 @@ Main reason to use [ReLU function](https://en.wikipedia.org/wiki/Rectifier_(neur
 
 ![Gradient Descent](Documentation/GradientDescent.gif)
 
-##### 3.2.3.2 Cost functions
+##### 3.2.4 Cost functions
 
-###### 3.2.3.2.1 Cross Entropy
+###### 3.2.4.1 Cross Entropy
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;J(w,b)=-\frac{1}{m}\sum_{i=1}^{m}y*log(\hat{y})+(1-y)*log(1-\hat{y}))
 
-###### 3.2.3.2.2 Another cost functions
+###### 3.2.4.2 Another cost functions
 
 - [Hinge](https://en.wikipedia.org/wiki/Hinge_loss)
 - [Huber](https://en.wikipedia.org/wiki/Huber_loss)
@@ -183,42 +183,52 @@ Main reason to use [ReLU function](https://en.wikipedia.org/wiki/Rectifier_(neur
 - [MAE (L1)](https://en.wikipedia.org/wiki/Mean_absolute_error)
 - [MSE (L2)](https://en.wikipedia.org/wiki/Mean_squared_error)
 
-##### 3.2.4 Derivative
+##### 3.2.5 Derivative
 
-##### 3.2.4.1 Overview
+##### 3.2.5.1 Overview
 
 ![Derivative](Documentation/Derivative.drawio.png)
 
-##### 3.2.4.2 y hat
+##### 3.2.5.2 y hat
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{\hat{y}}=-(\frac{y}{\hat{y}}+\frac{1-y}{1-\hat{y}}))
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;"slope>\hat{y}"=\frac{{\delta}\ell(\hat{y},y)}{{\delta}\hat{y}})
 
-###### 3.2.4.3 Z output layer
+###### 3.2.5.3 Z output layer
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z^{L}}=\hat{Y}-Y)
 
-###### 3.2.4.4 Z hidden layer
+###### 3.2.5.4 Z hidden layer
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;g'=A^{l}*(1-A^{l}))
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{Z^{l}}=W^{l+1}.T*\delta{Z^{l+1}}*g')
 
-###### 3.2.4.5 weight
+###### 3.2.5.5 weight
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{W^{l}}=A^{l-1}*\delta{Z^{l}})
 
-###### 3.2.4.6 bias
+###### 3.2.5.6 bias
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;\delta{b^{l}}=\delta{Z^{l}})
 
-##### 3.2.4.7 Update weight
+##### 3.2.5.7 Update weight
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;W^{l}=W^{l}-\alpha*\delta{W^{l}})
 
-##### 3.2.4.8 Update bias
+##### 3.2.5.8 Update bias
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;b^{l}=b^{l}-\alpha*\delta{b^{l}})
+
+#### 3.2.6 Sofmax
+
+The softmax function is a function that turns a vector of K real values into a vector of K real values that sum to 1. The input values can be positive, negative, zero, or greater than one, but the softmax transforms them into values between 0 and 1, so that they can be interpreted as probabilities. If one of the inputs is small or negative, the softmax turns it into a small probability, and if an input is large, then it turns it into a large probability, but it will always remain between 0 and 1.
+Refer to [Softmax Function](https://deepai.org/machine-learning-glossary-and-terms/softmax-layer)
+
+#### 3.2.7 Argmax
+
+In mathematics, the arguments of the maxima (abbreviated arg max or argmax) are the points, or elements, of the domain of some function at which the function values are maximized.[note 1] In contrast to global maxima, which refers to the largest outputs of a function, arg max refers to the inputs, or arguments, at which the function outputs are as large as possible.
+Refer to [Arg max](https://en.wikipedia.org/wiki/Arg_max)
 
 ### 3.3 Neural network models
 
@@ -239,7 +249,7 @@ One layer model is the first model I implemented. A purpose of the model is to i
 (i) = The superscript value inside round brackets is the example number. The first example is number 1.
  j  = The subscript value is the node number. In this model I have two nodes.
 
-![g](https://latex.codecogs.com/svg.latex?\Large&space;X=Xnormalized)
+![g](https://latex.codecogs.com/svg.latex?\Large&space;A=X=Xnormalized)
 
 ![g](https://latex.codecogs.com/svg.latex?\Large&space;Z=WA+b)
 
@@ -268,10 +278,10 @@ Layer 3 is hidden layer which includes three nodes (Units). Non-linear function 
 ## 4. Lessons learned
 
 Used hyper parameters
-Learning rate:      0.5
-Epochs:             1300
-Activation function: Sigmoid
-Weight start values : 0
+Learning rate:      0.04
+Epochs:             50000
+Activation function: ReLU and Sigmoid
+Weight start values : Random (0...1)
 Bias start values: 0
 Cost function: Refert to chapter 3.2.3.2 (Cost function)
 Input param normalization (values between 0 to 1)
