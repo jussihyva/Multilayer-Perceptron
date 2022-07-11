@@ -80,9 +80,9 @@ static const t_layer_profile	g_three_layers[3]
 {NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	g_four_layers[4]
-	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_NO_ACTIVATION},
-{THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
-{THREE_NODES, E_LAYER_HIDDEN, E_SIGMOID},
+	= {{NUMBER_OF_COLUMNS - 2, E_LAYER_INPUT, E_RELU},
+{THREE_NODES, E_LAYER_HIDDEN, E_RELU},
+{THREE_NODES, E_LAYER_HIDDEN, E_RELU},
 {NUMBER_OF_OUTPUT_FUNCTIONS, E_LAYER_OUTPUT, E_SIGMOID}};
 
 static const t_layer_profile	g_five_layers[5]
