@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:32:39 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 14:54:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:56:25 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ void			ml_vector_remove(t_vector **vector);
 void			ml_matrix_print(const char *const name,
 					const t_matrix *const matrix);
 void			ml_matrix_rand(t_matrix *const matrix, const int min,
-					const int max);
+					const int max, const t_bool fixed);
 void			ml_matrix_cost(const t_matrix *const y,
 					const t_matrix *const y_hat, t_vector *const cost_vector);
 t_vector		*ml_vector_create(const size_t length);
 void			ml_vector_print(const char *const name,
 					const t_vector *const vector);
-int				ml_fast_rand(void);
+int				ml_fast_rand(const t_bool fixed);
 void			ml_vector_rand(t_vector *const vector, const int min,
-					const int max);
+					const int max, const t_bool fixed);
 void			ml_vector_reset(t_vector *const vector);
 void			ml_matrix_reset(t_matrix *const matrix);
 const t_vector	*ml_matrix_min(const t_matrix *const matrix);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 15:40:49 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/01/03 16:36:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/11 11:21:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	g_prime_relu(
 		while (++i.cols < z->size.cols)
 		{
 			value = z_table[i.rows][i.cols];
-			if (value < 0)
+			if (value <= 0)
 				g_prime_table[i.rows][i.cols] = 0;
 			else if (value > 0)
 				g_prime_table[i.rows][i.cols] = 1;

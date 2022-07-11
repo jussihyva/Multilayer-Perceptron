@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 19:05:59 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/07/03 15:18:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/11 12:17:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ network (2-5)\n");
 	ft_printf("  -s <dataset_split_mode>   Split input dataset file to \
 TRAIN and TEST parts\n");
 	ft_printf("  -w <weight init mode>     Set init values for weight matrix \
-0->ZERO and 1->RAND\n");
+0->Fixed and 1->RAND\n");
 	ft_printf("  -h                        Help printout\n");
 	ft_printf("  -L                        %s\n",
 		"Logging level");

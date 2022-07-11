@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:25:55 by jkauppi           #+#    #+#             */
-/*   Updated: 2022/07/11 08:02:51 by jkauppi          ###   ########.fr       */
+/*   Updated: 2022/07/11 12:18:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define SPECIAL_CHARS_INFLUXDB_MEASUREMENT		", "
 # define SPECIAL_CHARS_INFLUXDB_TAGS			", ="
 # define SPECIAL_CHARS_INFLUXDB_FIELDS			", ="
-# define LEARNING_RATE							1.0
+# define LEARNING_RATE							0.04
 # define NUM_OF_EPOCH							5000
 # define BIAS_WEIGHT_FILE						"/../Data/BiasWeight.yml"
 # define SUB_STRING_MAX_LENGTH					100
